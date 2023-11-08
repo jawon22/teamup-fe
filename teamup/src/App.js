@@ -1,6 +1,7 @@
 import './App.css';
 import Sidebar from './components/Sidebar';
 import "./components/Sidebar";
+import Emp from './components/emp';
 import "./components/styles.css";
 
 
@@ -10,6 +11,7 @@ function App() {
         <div className=' main-content container-fluid '>
         
         <Sidebar />
+        <Emp/>
         </div>
   
   </>
