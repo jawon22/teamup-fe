@@ -1,0 +1,58 @@
+.side-bar {
+    background-color: aquamarine;
+    position: fixed;
+    top: 0;
+    left: -150px; /* 초기 위치를 왼쪽으로 설정 */
+    width: 200px;
+    height: 100%;
+    transition: left 1s, background-color 3s;
+}
+/* 나중에 hover 빼고 hide 클래스 만들어서 버튼 누르면 들어가게 만들기 */
+.side-bar:hover {
+    left: 0; /* 사이드바가 왼쪽에서 화면 안으로 이동 */
+    background-color: black;
+}
+
+/* 나머지 CSS 스타일은 이전과 동일하게 유지합니다 */
+.side-bar > .icon > div {
+    text-align: right;
+    padding: 10px;
+    color: black;
+}
+/* 이건 나중에 제거 아이콘으로 토글 */
+.side-bar:hover > .icon > div:last-child {
+    display: block;
+    color: white;
+}
+
+.side-bar:hover > .icon > div:first-child {
+    display: none;
+}
+
+.side-bar > .icon > div:last-child {
+    display: none;
+}
+
+.main-content.container-fluid{
+    margin-left: 20px;
+    transition: margin-left 1s;
+}
+
+.side-bar:hover + .main-content {
+    margin-left: 180px; 
+}
+
+/* 반응형 스타일링 */
+@media (max-width: 320px) {
+    .side-bar {
+        width: 75%;
+    }
+
+    .main-content.container-fluid {
+        margin-left: 3%;
+    }
+
+    .side-bar:hover + .main-content {
+        margin-left: 0;
+    }
+}
