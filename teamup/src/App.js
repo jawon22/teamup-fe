@@ -9,9 +9,9 @@ function App() {
   return (
   <>
         <div className=' main-content container-fluid '>
-        
         <Sidebar />
-        <Emp />
+        {/* 메인 화면 */}
+
         </div>
   
   </>
