@@ -23,7 +23,7 @@ const Sidebar = () => {
                 </div>
                 <div className='row'>
                     <div className='col'>
-                        <div className="sidebar-menu  me-4">
+                        <div className="sidebar-menu  me-1">
                             <div className='text-end border  border-radius pe-3' >
                                 {user}
                             </div>
@@ -36,34 +36,34 @@ const Sidebar = () => {
                 
                 <nav className="navbar navbar-expand-lg bg-white " data-bs-theme="light">
                     <div className="container-fluid ">
-                        <NavLink className="navbar-brand" href="#">Navbar</NavLink>
+                        <NavLink className="navbar-brand">Navbar</NavLink>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarColor03">
                             <ul className="navbar-nav me-auto">
                                 <li className="nav-item">
-                                    <NavLink className="nav-link active" href="#">Home
+                                    <NavLink className="nav-link active">Home
                                         <span className="visually-hidden">(current)</span>
                                     </NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" href="#">Features</NavLink>
+                                    <NavLink className="nav-link">Features</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" href="#">Pricing</NavLink>
+                                    <NavLink className="nav-link">Pricing</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" href="#">About</NavLink>
+                                    <NavLink className="nav-link">About</NavLink>
                                 </li>
                                 <li className="nav-item dropdown">
-                                    <NavLink className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</NavLink>
+                                    <NavLink className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</NavLink>
                                     <div className="dropdown-menu">
-                                        <NavLink className="dropdown-item" href="#">Action</NavLink>
-                                        <NavLink className="dropdown-item" href="#">Another action</NavLink>
-                                        <NavLink className="dropdown-item" href="#">Something else here</NavLink>
+                                        <NavLink className="dropdown-item">Action</NavLink>
+                                        <NavLink className="dropdown-item">Another action</NavLink>
+                                        <NavLink className="dropdown-item">Something else here</NavLink>
                                         <div className="dropdown-divider"></div>
-                                        <NavLink className="dropdown-item" href="#">Separated link</NavLink>
+                                        <NavLink className="dropdown-item">Separated link</NavLink>
                                     </div>
                                 </li>
                             </ul>
@@ -95,15 +95,17 @@ const Sidebar = () => {
 
 
             {/* offcanvas  */}
-            <div className="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Toggle top offcanvas</button>
+
+                <div className="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
                 <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+                    <h5 className="offcanvas-title" id="offcanvasTopLabel">Offcanvas top</h5>
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
                     ...
                 </div>
-            </div>
+                </div>
         </div>
 
     );
