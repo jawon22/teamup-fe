@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { levelState, userState } from '../recoil';
+import Emp from './emp';
 
 const Sidebar = () => {
     // const [user, setUser] = useState({});
@@ -79,7 +80,7 @@ const Sidebar = () => {
         
 
 
-                
+                <Emp/>
 
 
 
