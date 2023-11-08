@@ -5,12 +5,12 @@ import { atom } from "recoil";
 
 const userState = atom({
     key:'userState',
-    default:'testuser1'//향후 서버 연동 로그인이 구현되면 비워두고 로그인 성공시 설정하도록 구현
+    default:''//향후 서버 연동 로그인이 구현되면 비워두고 로그인 성공시 설정하도록 구현
 });
 
 const levelState = atom({
     key:'levelState',
-    default:'VIP'
+    default:''
 });
 
 const tokenState = atom({

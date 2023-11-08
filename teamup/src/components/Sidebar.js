@@ -12,6 +12,15 @@ const Sidebar = () => {
     const [user, setUser] = useRecoilState(userState);
     const [level, setLevel] = useRecoilState(levelState);
 
+    const login = ()=>{
+        setUser('testuser1');
+        setLevel('VIP');
+    };
+    const logout = ()=>{
+        setUser('');
+        setLevel('');
+    };
+
     return (
         <div>
 
@@ -30,6 +39,8 @@ const Sidebar = () => {
                         <div className="sidebar-menu  me-1">
                             <div className='text-end border  border-radius pe-3' >
                                 {user}
+                                <button onClick={login}>로그인</button>
+                                <button onClick={logout}>로그아웃</button>
                             </div>
                         </div>
                     </div>
