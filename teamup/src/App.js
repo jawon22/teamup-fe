@@ -11,7 +11,7 @@ function App() {
         <div className=' main-content container-fluid '>
         
         <Sidebar />
-
+        <Emp />
         </div>
   
   </>
