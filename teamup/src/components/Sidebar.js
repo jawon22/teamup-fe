@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { levelState, userState } from '../recoil';
 
 const Sidebar = () => {
+    // const [user, setUser] = useState({});
+    const [user, setUser] = useRecoilState(userState);
+    const [level, setLevel] = useRecoilState(levelState);
+
     return (
         <div>
 
@@ -19,7 +25,7 @@ const Sidebar = () => {
                     <div className='col'>
                         <div className="sidebar-menu  me-1">
                             <div className='text-end border  border-radius pe-3' >
-                            ?????????????
+                                {user}
                             </div>
                         </div>
                     </div>
@@ -70,7 +76,7 @@ const Sidebar = () => {
                 </nav>
                 {/* 본문 */}
 
-
+        
 
 
                 
