@@ -6,6 +6,15 @@ import Emp from './emp';
 import {CgProfile} from "react-icons/cg";
 import {BsFillBellFill} from "react-icons/bs";
 import {RiKakaoTalkFill} from "react-icons/ri";
+import {AiOutlineMenu, AiOutlineHome} from "react-icons/ai";
+import {BiMessageRoundedError} from "react-icons/bi";
+import {MdApproval} from "react-icons/md";
+import {BsFillPersonCheckFill} from "react-icons/bs";
+import {BiChalkboard} from "react-icons/bi";
+import {MdPayment} from "react-icons/md";
+import {BiLogOut} from "react-icons/bi";
+import {RiAdminLine} from "react-icons/ri";
+
 import TeamUpLogo from './images/TeamUpLogo.png';
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 임포트
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // 부트스트랩 JavaScript 파일 임포트
@@ -29,9 +38,36 @@ const Sidebar = () => {
         <div>
 
             <div className="side-bar">
-                <div className="icon">
-                    <div>▼</div>
-                    <div>▶</div>
+                <div className="icon mb-5">
+                    <div><AiOutlineMenu className="me-3 mt-1" size="45" /></div>
+                    <div><AiOutlineMenu className="me-3 mt-1" size="45" /></div>
+                </div>
+                
+                <div className="mb-3">
+                    <NavLink to="#"><AiOutlineHome className="text-white me-3 mt-1" size="45" /></NavLink> 
+                </div>
+                <div className="mb-3">
+                <NavLink to="#"><BiMessageRoundedError className="text-white me-3 mt-1" size="45" /></NavLink> 
+                </div>
+                <div className="mb-3">
+                <NavLink to="#"><MdApproval className="text-white me-3 mt-1" size="45" /></NavLink> 
+                </div>
+                <div className="mb-3">
+                <NavLink to="#"><BsFillPersonCheckFill className="text-white me-3 mt-1" size="45" /></NavLink>
+                </div> 
+                <div className="mb-3">
+                <NavLink to="#"><BiChalkboard className="text-white me-3 mt-1" size="45" /></NavLink> 
+                </div>
+                <div className="mb-3">
+                <NavLink to="#"><MdPayment className="text-white me-3 mt-1" size="45" /></NavLink> 
+                </div>
+                <div className="mb-3">
+                <NavLink to="#"><BiLogOut className="text-white me-3 mt-1" size="45" /></NavLink> 
+                </div>
+
+                {/* 관리자일 때만 나오기 */}
+                <div className="mb-3">
+                <NavLink to="#"><RiAdminLine className="text-white me-3 mt-1" size="45" /></NavLink> 
                 </div>
 
                 <div className='row'>
@@ -49,7 +85,7 @@ const Sidebar = () => {
 
             <div className="main-content container-fluid">
                 
-                <nav className="navbar navbar-expand-lg bg-white pe-5 ms-5" data-bs-theme="light">
+                <nav className="navbar navbar-expand-lg bg-white pe-5" data-bs-theme="light">
                     <div className="container-fluid ">
                         <NavLink className="navbar-brand"><img src={TeamUpLogo} alt="TemaUpLog" width={100}/></NavLink>                        
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,10 +98,21 @@ const Sidebar = () => {
 
 
                             </ul>
-                            <div className="d-flex">
-                                <RiKakaoTalkFill className="text-primary ms-2 mt-1"size="40"/>
-                                <BsFillBellFill className="text-primary ms-2 mt-1"size="40"/>
-                                <CgProfile className="text-primary ms-2"size="50"/>
+                            <div className="d-flex align-iteme-3enter">
+                                <RiKakaoTalkFill className="text-primary me-3 mt-1" size="45"/>
+                                <BsFillBellFill className="text-primary me-3 mt-1" size="40"/>
+
+                                <li className="nav-item dropdown me-4">
+                                    <NavLink className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <CgProfile className="text-primary me-3" size="50"/>
+                                    </NavLink>
+                                    <div className="dropdown-menu me-3 ">
+                                        <NavLink className="dropdown-item" to="#">mypage</NavLink>
+                                        <NavLink className="dropdown-item" to="#">logout</NavLink>
+
+                                    </div>
+                                </li>
+                                
                             </div>
                         </div>
                     </div>
@@ -85,7 +132,7 @@ const Sidebar = () => {
                     </div>
                 </div></div>
 
-                <div className='row'><div className='col ms-5'>
+                <div className='row'><div className='col'>
                     <Emp/>
                 </div></div>
             </div>
