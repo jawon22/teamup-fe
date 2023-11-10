@@ -8,6 +8,7 @@
     transition: left 1s;
     z-index: 100000;
     text-align: right;
+    padding-right: 0.1em;
 }
 /* 나중에 hover 빼고 hide 클래스 만들어서 버튼 누르면 들어가게 만들기 */
 .side-bar:hover {
@@ -18,7 +19,7 @@
 .side-bar > .icon > div {
     text-align: right;
     padding-top: 10px;
-    color: black;
+    color: white;
 }
 /* 이건 나중에 제거 아이콘으로 토글 */
 .side-bar:hover > .icon > div:last-child {
