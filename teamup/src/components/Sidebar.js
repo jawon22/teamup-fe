@@ -38,51 +38,51 @@ const Sidebar = (props) => {
     return (
         <div>
 
-            <div className="side-bar">
+            <div className="side-bar row">
                 <div className="icon mb-5">
-                    <div><AiOutlineMenu className="me-3 mt-1" size="45" /></div>
-                    <div><AiOutlineMenu className="me-3 mt-1" size="45" /></div>
+                    <div><AiOutlineMenu className="me-3 mt-1" size="30" /></div>
+                    <div><AiOutlineMenu className="me-3 mt-1" size="30" /></div>
                 </div>
                 
                 <div className="mb-3">
-                    <NavLink to="#">
-                        <label className="me-2">홈</label>
+                    <NavLink to="#" className="nav-link">
+                        <label className="me-4">홈</label>
                         <AiOutlineHome className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 nav-link">
                     <NavLink to="#">
-                        <label className="me-2">공지사항</label>
-                        <BiMessageRoundedError className="text-white me-3 mt-1" size="35" />
+                        <label className="me-4">공지사항</label>
+                        <BiMessageRoundedError className="text-white me-4 mt-1" size="35" />
                     </NavLink> 
                 </div>
                 <div className="mb-3">
                     <NavLink className={`nav-link ${location.pathname === '/approveList' ? 'active' : ''}`} to="/approveList">
-                        <label className="me-2">전자결재</label>
+                        <label className="me-4">전자결재</label>
                         <MdApproval className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
                 </div>
                 <div className="mb-3">
                     <NavLink to="#">
-                      <label className="me-2">주소록</label>
+                      <label className="me-4">주소록</label>
                         <BsFillPersonCheckFill className="text-white me-3 mt-1" size="35" />
                     </NavLink>
                 </div> 
                 <div className="mb-3">
                     <NavLink to="#">
-                        <label className="me-2">TV</label>
+                        <label className="me-4">TV</label>
                         <BiChalkboard className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
                 </div>
                 <div className="mb-3">
                     <NavLink to="#">
-                        <label className="me-2">카드</label>
+                        <label className="me-4">카드</label>
                         <MdPayment className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
                 </div>
                 <div className="mb-3">
                     <NavLink to="#">
-                        <label className="me-2">사직서</label>
+                        <label className="me-4">사직서</label>
                         <BiLogOut className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
                 </div>
@@ -90,7 +90,7 @@ const Sidebar = (props) => {
                 {/* 관리자일 때만 나오기 */}
                 <div className="mb-3">
                     <NavLink to="#">
-                        <label className="me-2">관리자</label>
+                        <label className="me-4">관리자</label>
                         <RiAdminLine className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
                 </div>
@@ -110,7 +110,7 @@ const Sidebar = (props) => {
 
             <div className="main-content container-fluid">
                 
-                <nav className="navbar navbar-expand-lg bg-white pe-5" data-bs-theme="light">
+                <nav className="navbar navbar-expand-lg bg-white pe-3 ps-4" data-bs-theme="light">
                     <div className="container-fluid ">
                         <NavLink className="navbar-brand"><img src={TeamUpLogo} alt="TemaUpLog" width={100}/></NavLink>                        
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
