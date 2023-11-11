@@ -7,7 +7,7 @@ const ApproveList = ()=>{
     const location = useLocation();
 
     return(
-        <div classNameName="container-fluid">
+        <div className="container-fluid">
             <div className="row">
                 <div className="col-md-8 offset-md-2">
                     <div className="text-end my-3" >
