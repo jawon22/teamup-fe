@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { levelState, userState } from '../recoil';
-import Emp from './emp';
 import {CgProfile} from "react-icons/cg";
 import {BsFillBellFill} from "react-icons/bs";
 import {RiKakaoTalkFill} from "react-icons/ri";
@@ -29,7 +28,7 @@ const Sidebar = (props) => {
 
     const login = ()=>{
         setUser('15');
-        setLevel('1');
+        setLevel('1'); // 이 레벨은 부서번호가 아니라 관리자 or 팀장 이런거 
     };
     const logout = ()=>{
         setUser('');
