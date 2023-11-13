@@ -5,8 +5,10 @@ import "./components/Sidebar";
 import "./components/styles.css";
 import ApproveList from "./components/ApproveList";
 import ApproveWrite from "./components/ApproveWrite";
-import Company from './components/Company';
-
+import Com from './components/com';
+import Search from './components/search';
+import Home from './components/home';
+import Login from './components/login';
 
 function App() {
   return (
@@ -20,8 +22,11 @@ function App() {
             {/* 결재라우터 */}
             <Route path="/approveList" element={<ApproveList/>}></Route> 
             <Route path="/approveWrite" element={<ApproveWrite/>}></Route>
-            <Route path="/company" elemet={<Company/>}></Route>
-          </Routes>
+            <Route path='/com' element={<Com/>} ></Route>
+            <Route path='/search' element={<Search/>}></Route>
+            <Route path='/home' element={<Home/>}></Route>
+            <Route path='/login' element={<Login/>}></Route>
+            </Routes>
 
         </div>
       

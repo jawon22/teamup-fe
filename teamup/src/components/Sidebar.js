@@ -46,7 +46,7 @@ const Sidebar = (props) => {
                 </div>
                 
                 <div className="mb-3">
-                    <NavLink to="#" className="nav-link">
+                    <NavLink to='/home' className="nav-link">
                         <label className="me-4">홈</label>
                         <AiOutlineHome className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
@@ -64,13 +64,13 @@ const Sidebar = (props) => {
                     </NavLink> 
                 </div>
                 <div className="mb-3">
-                    <NavLink  className={`nav-link ${location.pathname === '/company' ? 'active' : ''}`} to="/company">
+                    <NavLink   to="/search">
                       <label className="me-4">주소록</label>
                         <BsFillPersonCheckFill className="text-white me-3 mt-1" size="35" />
                     </NavLink>
                 </div> 
                 <div className="mb-3">
-                    <NavLink to="#">
+                    <NavLink to="/com">
                         <label className="me-4">TV</label>
                         <BiChalkboard className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
@@ -103,6 +103,9 @@ const Sidebar = (props) => {
                                 {user}
                                 <button onClick={login}>로그인</button>
                                 <button onClick={logout}>로그아웃</button>
+                                <NavLink to='/login' className="nav-link">
+                                    로그인 페이지로
+                                </NavLink>
                             </div>
                         </div>
                     </div>
