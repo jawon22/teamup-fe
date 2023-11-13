@@ -10,6 +10,8 @@ import Search from './components/search';
 import Home from './components/home';
 import Login from './components/login';
 import Mypage from './components/mypage';
+import DeptInsert from './components/detpInsert';
+import CompanyJoin from './components/companyJoin';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             <Route path='/home' element={<Home/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
             <Route path="/mypage" element={<Mypage/>}></Route>
+            <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+            <Route path='companyJoin' element={<CompanyJoin/>}></Route>
             </Routes>
 
         </div>
