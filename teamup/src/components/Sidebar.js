@@ -64,7 +64,7 @@ const Sidebar = (props) => {
                     </NavLink> 
                 </div>
                 <div className="mb-3">
-                    <NavLink to="#">
+                    <NavLink  className={`nav-link ${location.pathname === '/company' ? 'active' : ''}`} to="/company">
                       <label className="me-4">주소록</label>
                         <BsFillPersonCheckFill className="text-white me-3 mt-1" size="35" />
                     </NavLink>
