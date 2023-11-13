@@ -12,7 +12,7 @@ const Search = () => {
     const loadAddress = () => {
 
         axios({
-            url:`http://localhost:8080/addr/myAddrList/${login.set}`,
+            url:`http://localhost:8080/addr/myAddrList/`,
             method:"get"
 
         }).then(response=>{
