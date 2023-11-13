@@ -7,14 +7,15 @@ const DeptInsert = () => {
     const [comId] = useRecoilState(companyState);
     const [deptList, setDeptList] = useState([]);
 
-
+    const [newData, setNewData]= useState();
+///그냥 모달을 여는거로 합시다! 못해먹겠습니다!
     useEffect(() => {
         console.log(comId)
         loadDetpList();
     }, [])
 
     const [dept, setDept] = useState({
-        deptNo:"",
+        deptNo: "",
         deptName: "",
         comId: comId
     })
@@ -33,11 +34,13 @@ const DeptInsert = () => {
         axios({
             url: `http://localhost:8080/dept/`,
             method: 'post',
-            data:[dept.comId
-                , dept.deptName] 
-
+            data: {
+                deptName: dept.deptName,
+                comId: comId
+              }
         }).then(response => {
             console.log(response.data)
+            alert("성공!")
         }
         );
 
@@ -50,18 +53,16 @@ const DeptInsert = () => {
             method: "get"
 
 
-        }).then(response => {
-            console.log(response.data)
-            setDeptList(response.data)
+        }).then((response) => {
+            setDeptList(response.data);
         });
     };
 
-
-    const changeName=()=>{
+    const changeName = () => {
         axios({
-            url:"",
-            method:"",
-            data:[dept.deptName,dept.deptNo],
+            url: "",
+            method: "",
+            data: "",
 
         }).then();
 
@@ -112,22 +113,27 @@ const DeptInsert = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {deptList.map(dept => (
+                                {deptList.map((dept) => (
                                     <tr key={dept.deptNo}>
-                                        {status === false ? (
-                                            <>
-                                                <input type="text" value={dept.deptName} onChange={(e) =>setDept(e.target.value)}>???</input>
-
-                                            </>
-                                        ) : 
-                                        
-                                        
-                                        (
+                                        {dept.edit ? (
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    value={dept.deptName}
+                                                    onChange={(e) => setDept(e.target.value)}
+                                                />
+                                            </td>
+                                        ) : (
                                             <>
                                                 <td>{dept.deptName}</td>
                                                 <td>{dept.empCount}</td>
                                                 <td>
-                                                    <button className="btn btn-outline-primary me-2" onClick={changeStatus}>수정</button>
+                                                    <button
+                                                        className="btn btn-outline-primary me-2"
+                                                        onClick={changeStatus}
+                                                    >
+                                                        수정
+                                                    </button>
                                                     <button className="btn btn-outline-primary">삭제</button>
                                                 </td>
                                             </>
@@ -135,8 +141,6 @@ const DeptInsert = () => {
                                     </tr>
                                 ))}
                             </tbody>
-
-
                         </tabel>
                     </div>
                 </div>
