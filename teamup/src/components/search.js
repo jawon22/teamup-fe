@@ -5,13 +5,14 @@ import { NavLink } from 'react-router-dom';
 
 const Search = () => {
     const location = useLocation();
+
     const [searchList, setSearchList] = useState([]);
     const [addressList, setAddressList] = useState([]);
 
     const loadAddress = () => {
 
         axios({
-            url:"http://localhost:8080/addr/myAddrList/13",
+            url:`http://localhost:8080/addr/myAddrList/`,
             method:"get"
 
         }).then(response=>{
