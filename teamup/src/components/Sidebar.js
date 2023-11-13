@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { levelState, userState } from '../recoil';
+import { companyState, levelState, userState } from '../recoil';
 import Emp from './emp';
 import {CgProfile} from "react-icons/cg";
 import {BsFillBellFill} from "react-icons/bs";
@@ -23,6 +23,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // 부트스트랩 JavaScript �
 const Sidebar = (props) => {
     // const [user, setUser] = useState({});
     const [user, setUser] = useRecoilState(userState);
+    const [company, setCompany] = useRecoilState(companyState);
     const [level, setLevel] = useRecoilState(levelState);
 
     const location = useLocation();
@@ -46,7 +47,7 @@ const Sidebar = (props) => {
                 </div>
                 
                 <div className="mb-3">
-                    <NavLink to="#" className="nav-link">
+                    <NavLink to='/home' className="nav-link">
                         <label className="me-4">홈</label>
                         <AiOutlineHome className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
@@ -64,13 +65,13 @@ const Sidebar = (props) => {
                     </NavLink> 
                 </div>
                 <div className="mb-3">
-                    <NavLink to="#">
+                    <NavLink   to="/search">
                       <label className="me-4">주소록</label>
                         <BsFillPersonCheckFill className="text-white me-3 mt-1" size="35" />
                     </NavLink>
                 </div> 
                 <div className="mb-3">
-                    <NavLink to="#">
+                    <NavLink to="/com">
                         <label className="me-4">TV</label>
                         <BiChalkboard className="text-white me-3 mt-1" size="35" />
                     </NavLink> 
@@ -100,9 +101,12 @@ const Sidebar = (props) => {
                     <div className='col-6 offset-6'>
                         <div className="sidebar-menu  me-1">
                             <div className='text-end border  border-radius' >
-                                {user}
+                                {user}{company}
                                 <button onClick={login}>로그인</button>
                                 <button onClick={logout}>로그아웃</button>
+                                <NavLink to='/login' className="nav-link">
+                                    로그인 페이지로
+                                </NavLink>
                             </div>
                         </div>
                     </div>
@@ -144,6 +148,8 @@ const Sidebar = (props) => {
                     </div>
                 </nav>
                     {/* 본문 */}
+                    <NavLink to="/companyJoin">회사로그인</NavLink>
+                    <NavLink to="/deptInsert">부서등록</NavLink>
 
                 {/* offcanvas  */}
                 <div className='row'>

@@ -5,7 +5,13 @@ import "./components/Sidebar";
 import "./components/styles.css";
 import ApproveList from "./components/ApproveList";
 import ApproveWrite from "./components/ApproveWrite";
-
+import Com from './components/com';
+import Search from './components/search';
+import Home from './components/home';
+import Login from './components/login';
+import Mypage from './components/mypage';
+import DeptInsert from './components/detpInsert';
+import CompanyJoin from './components/companyJoin';
 
 function App() {
   return (
@@ -19,7 +25,14 @@ function App() {
             {/* 결재라우터 */}
             <Route path="/approveList" element={<ApproveList/>}></Route> 
             <Route path="/approveWrite" element={<ApproveWrite/>}></Route>
-          </Routes>
+            <Route path='/com' element={<Com/>} ></Route>
+            <Route path='/search' element={<Search/>}></Route>
+            <Route path='/home' element={<Home/>}></Route>
+            <Route path='/login' element={<Login/>}></Route>
+            <Route path="/mypage" element={<Mypage/>}></Route>
+            <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+            <Route path='companyJoin' element={<CompanyJoin/>}></Route>
+            </Routes>
 
         </div>
       

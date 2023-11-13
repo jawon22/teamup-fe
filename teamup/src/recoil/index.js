@@ -14,6 +14,10 @@ const levelState = atom({
     key:'levelState',
     default:''
 });
+const companyState = atom({
+    key:'companyState',
+    default:''
+});
 
 //토큰 저장소
 const tokenState = atom({
@@ -34,4 +38,4 @@ const referrerState  = atom({
 });
 
 
-export {userState, levelState, tokenState, receiverState, referrerState};
+export {userState, levelState, tokenState, receiverState, referrerState,companyState};
