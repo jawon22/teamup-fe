@@ -2,9 +2,11 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { postcodeScriptUrl } from 'react-daum-postcode/lib/loadPostcode';
+import { useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
 const Company = () => {
-
+    const location = useLocation();
     //리스트 불러오고 
     const [companyList, setCompanyList] = useState([]);
     //input 의 values

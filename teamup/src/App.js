@@ -5,6 +5,7 @@ import "./components/Sidebar";
 import "./components/styles.css";
 import ApproveList from "./components/ApproveList";
 import ApproveWrite from "./components/ApproveWrite";
+import Company from './components/Company';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             {/* 결재라우터 */}
             <Route path="/approveList" element={<ApproveList/>}></Route> 
             <Route path="/approveWrite" element={<ApproveWrite/>}></Route>
+            <Route path="/company" elemet={<Company/>}></Route>
           </Routes>
 
         </div>
