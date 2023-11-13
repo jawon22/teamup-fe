@@ -106,7 +106,7 @@ const Sidebar = (props) => {
             </div>
 
             <div className="main-content container-fluid">
-    
+
                 {/* <div className='row'><div className='col'>
                     <Emp/>
                 </div></div> */}
