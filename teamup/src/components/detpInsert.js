@@ -14,6 +14,7 @@ const DeptInsert = () => {
     }, [])
 
     const [dept, setDept] = useState({
+        deptNo:"",
         deptName: "",
         comId: comId
     })
@@ -32,7 +33,8 @@ const DeptInsert = () => {
         axios({
             url: `http://localhost:8080/dept/`,
             method: 'post',
-            data: dept
+            data:[dept.comId
+                , dept.deptName] 
 
         }).then(response => {
             console.log(response.data)
@@ -52,6 +54,26 @@ const DeptInsert = () => {
             console.log(response.data)
             setDeptList(response.data)
         });
+    };
+
+
+    const changeName=()=>{
+        axios({
+            url:"",
+            method:"",
+            data:[dept.deptName,dept.deptNo],
+
+        }).then();
+
+    };
+
+
+
+    const [status, setStatus] = useState(false);
+    //부서명 변경
+    const changeStatus = () => {
+        setStatus(true);
+        console.log(status)
     };
 
     //회사의 부서 인서트
@@ -78,7 +100,7 @@ const DeptInsert = () => {
                     </div>
                 </div>
 
-{/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 */}
+                {/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 */}
                 <div className="row mt-4">
                     <div className="col-6 offset-6">
                         <tabel className="table table-border">
@@ -86,13 +108,30 @@ const DeptInsert = () => {
                                 <tr>
                                     <th>부서명</th>
                                     <th>부서인원</th>
+                                    <th>관리</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {deptList.map(dept => (
                                     <tr key={dept.deptNo}>
-                                        <td>{dept.deptName}</td>
-                                        <td>{dept.empCount}</td>
+                                        {status === false ? (
+                                            <>
+                                                <input type="text" value={dept.deptName} onChange={(e) =>setDept(e.target.value)}>???</input>
+
+                                            </>
+                                        ) : 
+                                        
+                                        
+                                        (
+                                            <>
+                                                <td>{dept.deptName}</td>
+                                                <td>{dept.empCount}</td>
+                                                <td>
+                                                    <button className="btn btn-outline-primary me-2" onClick={changeStatus}>수정</button>
+                                                    <button className="btn btn-outline-primary">삭제</button>
+                                                </td>
+                                            </>
+                                        )}
                                     </tr>
                                 ))}
                             </tbody>
