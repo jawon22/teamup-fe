@@ -95,10 +95,14 @@ const ApproveWrite = (props)=>{
         }
     };
 
-    const removeReceiver = ()=>{
-
+    // 선택된 승인자 삭제
+    const removeReceiver = (e)=>{
+        const removeFilterList = savedValues2.filter(receiver=>receiver.empNo === parseInt(e.target.value));
+        
+        
     };
-    const removeReferer = ()=>{
+    // 선택된 참조자 삭제
+    const removeReferer = (e)=>{
 
     }
 
