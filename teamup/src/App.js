@@ -9,6 +9,7 @@ import Com from './components/com';
 import Search from './components/search';
 import Home from './components/home';
 import Login from './components/login';
+import Mypage from './components/mypage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path='/search' element={<Search/>}></Route>
             <Route path='/home' element={<Home/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
+            <Route path="/mypage" element={<Mypage/>}></Route>
             </Routes>
 
         </div>
