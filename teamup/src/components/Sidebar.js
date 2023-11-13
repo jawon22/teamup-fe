@@ -152,17 +152,20 @@ const Sidebar = (props) => {
                     <NavLink to="/deptInsert">부서등록</NavLink>
 
                 {/* offcanvas  */}
-                <div className='row'><div className='col-10 offset-1'>   
-                    <div className="offcanvas offcanvas-end" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div className="offcanvas-header">
-                            <h5 className="offcanvas-title" id="offcanvasRightLabel">조직도</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            조직도 자리 
+                <div className='row'>
+                    <div className='col-10 offset-1'>   
+                        <div className="offcanvas offcanvas-end" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                            <div className="offcanvas-header">
+                                <h5 className="offcanvas-title" id="offcanvasRightLabel">조직도</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div className="offcanvas-body">
+                                조직도 자리 
+                            </div>
+                            
                         </div>
                     </div>
-                </div></div>
+                </div>
 
                 {/* <div className='row'><div className='col'>
                     <Emp/>
