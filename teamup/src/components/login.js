@@ -10,7 +10,7 @@ const Login = () => {
 
     const [loginUser, setLoginUser] = useState({
         empId:"",
-        empPW:""
+        empPw:""
     });
 
     const login =()=>{
