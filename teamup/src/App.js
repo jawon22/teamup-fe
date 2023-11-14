@@ -21,6 +21,8 @@ import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import SalList from './components/SalList';
 
+import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
+
 function App() {
   const location = useLocation();
   return (
@@ -76,8 +78,13 @@ function App() {
                     <Route path='/login' element={<Login/>}></Route>
                     <Route path="/mypage" element={<Mypage/>}></Route>
                     <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+
+                    {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
+                    <Route path="/profileEdit" element={<ProfileEdit/>}></Route>
+
                     <Route path='companyJoin' element={<CompanyJoin/>}></Route>
                     <Route path="/salList" element={<SalList/>}></Route>
+
                   </Routes>
                 </div>
 
