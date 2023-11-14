@@ -20,6 +20,8 @@ import {RiKakaoTalkFill} from "react-icons/ri";
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
+import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
+
 function App() {
   return (
   <>
@@ -71,8 +73,9 @@ function App() {
                     <Route path='/login' element={<Login/>}></Route>
                     <Route path="/mypage" element={<Mypage/>}></Route>
                     <Route path="/deptInsert" element={<DeptInsert/>}></Route>
-                    <Route path='companyJoin' element={<CompanyJoin/>}></Route>
-                    </Routes>
+                    {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
+                    <Route path="/profileEdit" element={<ProfileEdit/>}></Route>
+                  </Routes>
                 </div>
 
 
