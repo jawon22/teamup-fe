@@ -20,6 +20,7 @@ const CompanyJoin = ()=>{
             ...companyInfo,
             [e.target.name]:e.target.value
         })
+        console.log(companyInfo.comId)
 
     };
 
@@ -32,13 +33,16 @@ const CompanyJoin = ()=>{
 
         }).then(response=>{
             console.log(response.data)
-            if(response.data===true){
+            if(response.data === true){
                 setCompany(companyInfo.comId)
+                console.log(company)
                 setTimeout(()=>{
                     navigate('/home');
                 },1000);
             }
-        });
+        }).catch(
+            alert("통신오류")
+        )
     };
 
 
