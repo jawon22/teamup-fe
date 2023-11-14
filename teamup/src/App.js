@@ -19,8 +19,10 @@ import {BsFillBellFill} from "react-icons/bs";
 import {RiKakaoTalkFill} from "react-icons/ri";
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import SalList from './components/SalList';
 
 function App() {
+  const location = useLocation();
   return (
   <>
         <div className=' main-content container-fluid '>
@@ -49,7 +51,10 @@ function App() {
                                 <Navbar expand="sm" className="bg-body-white ">
                                     <Nav className="bg-body-primary ">
                                         <NavDropdown style={{padding:0}} title={<CgProfile className="me-3" size={50}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
-                                            <NavDropdown.Item >마이페이지</NavDropdown.Item>                                                       
+                                            <NavDropdown.Item >마이페이지</NavDropdown.Item>              
+                                            <NavLink  className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} to='/salList'>
+                                            <NavDropdown.Item className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} href='/salList'>급여내역</NavDropdown.Item>
+                                            </NavLink>                                            
                                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                                         </NavDropdown>
                                     </Nav>
@@ -72,7 +77,8 @@ function App() {
                     <Route path="/mypage" element={<Mypage/>}></Route>
                     <Route path="/deptInsert" element={<DeptInsert/>}></Route>
                     <Route path='companyJoin' element={<CompanyJoin/>}></Route>
-                    </Routes>
+                    <Route path="/salList" element={<SalList/>}></Route>
+                  </Routes>
                 </div>
 
 
