@@ -17,9 +17,16 @@ const DeptInsert = () => {
         console.log(comId)
         loadDetpList();
     }, [])
+    const clearDept = () => {
+        setDept({
+            deptNo: "",
+            deptName: "",
+            comId: comId
+        })
+    }
 
     const [dept, setDept] = useState({
-        deptNo: "",
+        deptNo: 0,
         deptName: "",
         comId: comId
     })
@@ -120,6 +127,7 @@ const DeptInsert = () => {
     //------------인원 추가 이동(백부터 만들어야함)
     const addEmp = (target) => {
         setDept({ ...target })
+        console.log(target)
         openModal2();
     };
     //회사아이디는 세션에ㅐ 있는 값을 가져와서 하고 
@@ -128,10 +136,10 @@ const DeptInsert = () => {
 
 
     /////-------------직급 등록
-    const [positionData , setPositionData] =useState({
-            comId: comId,
-            empPositionName: "",
-            empPositionOrder: ''
+    const [positionData, setPositionData] = useState({
+        comId: comId,
+        empPositionName: "",
+        empPositionOrder: ''
     });
     const changePositionData = (e) => {
         setPositionData({
@@ -141,34 +149,122 @@ const DeptInsert = () => {
     };
 
 
-    const addPosition= ()=>{
+    const addPosition = () => {
 
         axios({
-            url:"http://localhost:8080/empPosition",
-            method:"post",
-            data:positionData
-        }).then(response=>{
-            if(response.data!= null){
-            alert("성공")}
+            url: "http://localhost:8080/empPosition",
+            method: "post",
+            data: positionData
+        }).then(response => {
+            if (response.data != null) {
+                alert("성공")
+            }
 
             setPositionData('')
         });
     };
     ///--사원 불러오기
+    const [empList, setEmpList] = useState([]);
 
-    const cellClick=(target)=>{
-        alert(`셀이 클릭되었습니다! 부서명: ${dept.deptName}`);
-        setDept({ ...target })
-
-
+    // const cellClick = (target) => {
+    //     setDept({ ...target })
+    //     loadEmpList();
+    // };
+    const cellClick = (target) => {
         axios({
-
-            
-        }).then();
-    
-
+            url: `http://localhost:8080/emp/empListByDeptCom`,
+            method: 'post',
+            data: {
+                deptNo: target.deptNo,
+                comId: comId
+            }
+        }).then(response => {
+            console.log(response.data);
+            setEmpList(response.data);
+        });
     };
 
+
+
+
+
+    const clearEmpList = () => {
+        setEmpList({
+            comId: "",
+            deptNo: '',
+            empEmail: '',
+            empId: '',
+            empName: "",
+            empPositionName: "",
+            empTel: ""
+        })
+    }
+
+
+    ///----사원 등록 
+    const [empData, setEmpData] = useState({
+        comId: comId,
+        deptNo: dept.deptNo,
+        empName: "",
+        empPw: "testpw",
+        empTel: "",
+        empPositionNo: 0,
+        empEmail: ""
+    });
+
+    const [salData, setSalData] = useState({
+        salAnnual: 0
+    });
+
+    const changeSalChange = (e) => {
+        console.log(dept.deptNo)
+        setSalData({
+            ...salData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+
+
+    const changeEmpChange = (e) => {
+        setEmpData({
+            ...empData,
+            [e.target.name]: e.target.value,
+            deptNo: dept.deptNo
+        });
+    };
+
+    const addEmployee = () => {
+        // 서버에 데이터 전송
+        axios({
+            url: "http://localhost:8080/emp/addEmp/", // 실제 API 엔드포인트로 변경
+            method: "post",
+            data: {
+                empDto: {
+                    comId: comId,
+                    deptNo: dept.deptNo,
+                    empName: empData.empName,
+                    empPw: empData.empPw,
+                    empTel: empData.empTel,
+                    empPositionNo: empData.empPositionNo,
+                    empEmail: empData.empEmail
+                },
+                salDto: {
+                    salAnnual: salData.salAnnual,
+                }
+            }
+        }).then(response => {
+            if (response.data != null) {
+                alert("성공");
+            }
+
+            // 성공 후에 상태 초기화 또는 필요한 작업 수행
+
+        }).catch(error => {
+            console.error("에러 발생:", error);
+            // 에러 처리 로직 작성 가능
+        });
+    };
 
 
     return (
@@ -189,7 +285,7 @@ const DeptInsert = () => {
                         <button className="btn btn-primary" onClick={deptInsert}>추가 </button>
                     </div>
                     <div className="col-1 ">
-                        정렬<input type="number" className="form-control" name="empPositionOrder" onChange={changePositionData}/>
+                        정렬<input type="number" className="form-control" name="empPositionOrder" onChange={changePositionData} />
                     </div>
                     <div className="col-3 ">
                         직급 <input className="form-control" name="empPositionName" onChange={changePositionData} />
@@ -216,7 +312,7 @@ const DeptInsert = () => {
                                     <tr key={dept.deptNo}>
 
 
-                                        <td onClick={e=>cellClick(dept)}>{dept.deptName}</td>
+                                        <td onClick={e => cellClick(dept)}>{dept.deptName}</td>
                                         <td>{dept.empCount}</td>
                                         <td>
                                             <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
@@ -231,6 +327,38 @@ const DeptInsert = () => {
                             </tbody>
                         </tabel>
                     </div>
+                    <div className="col ">
+                        <tabel className="table table-border">
+                            <thead>
+                                <tr>
+                                    <th>사원명</th>
+                                    <th>사원번호</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {empList.map((emp) => (
+                                    <tr key={dept.deptNo}>
+
+
+                                        <td onClick={e => cellClick(dept)}>{emp.empName}</td>
+                                        <td>{emp.empId}</td>
+                                        <td>
+                                            <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
+                                            <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
+                                            <button className="btn btn-outline-primary">삭제</button>
+                                        </td>
+
+
+                                    </tr>
+
+                                ))}
+                            </tbody>
+                        </tabel>
+                    </div>
+                </div>
+                <div className="row mt-4">
+
                 </div>
 
 
@@ -263,23 +391,28 @@ const DeptInsert = () => {
                             </div>
                             <div className="modal-body">
 
-                                이름<input className="form-control" />
-                                전화번호<input className="form-control" />
-                                pw<input className="form-control" />
-                                직급선택<select className="form-control">
-                                    {/* {deptList.map((dept) => (
+                                이름<input className="form-control" name="empName" value={empData.empName} onChange={changeEmpChange} />
+                                전화번호<input className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
+                                pw<input className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
+                                {/* 직급선택<select className="form-control">
+                                    {deptList.map((dept) => (
 
                                         // <option value={dept.deptName}>{dept.deptName}</option>
 
-                                    ))} */}
+                                    ))}
 
 
-                                </select>
-                                email<input className="form-control" />
+
+                                </select> */}
+                                <input name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange} />
+                                email<input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
+                                연봉<input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
+
+
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal2}>Close</button>
-                                <button type="button" className="btn btn-primary">Save changes</button>
+                                <button type="button" className="btn btn-primary" onClick={addEmployee}>Save changes</button>
                             </div>
                         </div>
                     </div>
