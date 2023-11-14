@@ -258,3 +258,8 @@ li {
     }
 
 }
+
+.mp-bg {
+    background-color: rgb(242, 248, 247);
+    border-radius: 10px;
+}
