@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 
@@ -10,12 +10,10 @@ const Attend = (props) => {
     
     const [attendList, setAttendList] = useState([]);
 
-    const loadAttend = ()=> {
-        
-        // axios({}).then({}).catch({});
-        axios({
-            url:`http://localhost:8080/attend/findSysdate`,
-            data: empNo,
+    useEffect(()=>{
+         // axios({}).then({}).catch({});
+         axios({
+            url:`http://localhost:8080/attend/findSysdate/${empNo}`,
             method:"post"
 
         }).then(response=>{
@@ -23,11 +21,7 @@ const Attend = (props) => {
 
         }).catch(err=>{
             window.alert("통신 오류가 발생했습니다.");
-        });
-    };
-
-    useEffect(()=>{
-        loadAttend();
+        })
     }, []);
 
     return (
@@ -58,6 +52,21 @@ const Attend = (props) => {
                     <div className="col-6">
                         <div>? 일</div>
                         <div> ? 시간</div>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col">
+                        {attendList.map(attendLists=>(
+                            <div key={attendLists.empNo}>
+                                DT:{attendLists.dt}
+                                근태번호:{attendLists.attendNo}
+                                사원번호:{attendLists.empNo}
+                                출근:{attendLists.attendStart}
+                                퇴근:{attendLists.attendEnd}
+                                근무시간:{attendLists.workingTimes}
+                            </div>
+                        ))}
                     </div>
                 </div>
 
