@@ -246,7 +246,7 @@ li {
 /* 반응형 스타일링 */
 @media (max-width: 1200px) {
     .side-bar {
-        width: 25%;
+        width: 15%;
     }
 
     .main-content.container-fluid {
@@ -257,4 +257,51 @@ li {
         margin-left: 0;
     }
 
+}
+
+@media (max-width: 1080px){
+    .side-bar{
+        font-size: 0;
+        min-width: 100px
+    }
+}
+
+@media (max-width: 970px){
+    .side-bar.row img {
+       display: none;
+    }
+    .home-link.nav-link {
+        padding-top: 70px; /* 조정할 값으로 변경하세요 */
+    }
+}
+
+@media (max-width: 970px){
+    .logo img{
+        display: block;
+    }
+}
+@media (min-width: 971px){
+    .logo img{
+        display: none;
+    }
+}
+
+
+
+.mp-bg {
+    background-color: rgb(242, 248, 247);
+    border-radius: 10px;
+}
+
+label{
+    color: white;
+    font-weight: bold;
+}
+
+.d-flex.icons-container {
+    display: flex;
+    margin-right: -10px; /* 아이콘들 간격 조절 */
+}
+.d-flex.icons-container > div {
+    margin-right: 10px; /* 각 아이콘 사이 간격 조절 */
 }

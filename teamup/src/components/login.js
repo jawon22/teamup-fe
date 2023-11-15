@@ -10,7 +10,7 @@ const Login = () => {
 
     const [loginUser, setLoginUser] = useState({
         empId:"",
-        empPW:""
+        empPw:""
     });
 
     const login =()=>{
@@ -19,9 +19,9 @@ const Login = () => {
             method:"post",
             data:loginUser
 
-        }).then(respones=>{
-            console.log(respones.data)
-            if(respones.data ===true){
+        }).then(response=>{
+            console.log(response.data)
+            if(response.data ===true){
                 setUser(loginUser.empId);
                 setTimeout(()=>{
                     navigate('/home');

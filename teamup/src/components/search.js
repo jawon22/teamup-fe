@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useLocation } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 import { Modal } from "bootstrap";
+import surf from "./images/profileImage.png";
 
 const Search = () => {
     const location = useLocation();
@@ -72,41 +73,60 @@ const Search = () => {
 
 
     
-    const [profile, setProfile] = useState({
-        profileNo:null,
-        empNo:null,
-        deptName:null,
-        empPositionName:null,
-        empName:null,
-        empTel:null,
-        empEmail:null,
-        empJoin:null
-    });
     
     //프로필 조회
     const loadProfile = (empNo) => {
+
         axios ({
             url:`http://localhost:8080/profile/${empNo}`,
-            method:"get"
+            method:"get",
         })
         .then(response =>{//성공
             console.log(response);
             setProfile(response.data);
         })
-        .catch(err=>{});//실패
+        .catch(err=>{
+            console.error(err);
+        });//실패
     };
 
     useEffect(()=>{
-        loadProfile();
+        loadProfile(profile.empNo);
     },[]);
 
-     // 프로필 버튼 클릭 시 처리
-     const handleProfileButtonClick = (empNo) => {
+    const [profile, setProfile] = useState({
+        attachNo:0,
+        empNo:0,
+        deptName:"",
+        empPositionName:"",
+        empName:"",
+        empTel:"",
+        empEmail:"",
+        empJoin:"",
+        profileTitle:"",
+        profileContent:""
+    });
+    const [profileone, setProfileone] =useState([]);
+    
+    
+    // 프로필 버튼 클릭 시 처리
+    const handleProfileButtonClick = (empNo) => {
+        const findProfile = profile.find(pro=>pro.empNo === parseInt(empNo));
+
         // 해당 직원의 프로필을 불러옴
-        loadProfile(empNo);
+        setProfileone(findProfile);
+
         // 모달 창 열기
         openModal();
     };
+
+    
+    // const changeProfile = (target)=>{
+    //     setProfile({
+    //         ...target
+    //     });
+    // };
+
 
     //모달 관련 처리
     const bsModal = useRef();
@@ -177,7 +197,7 @@ const Search = () => {
                                 <td>{list.empJoin}</td>
                                 <td>{list.empTel}</td>
                                 <td>
-                                    <button className="btn btn-sm btn-primary" onClick={openModal}>프로필</button>
+                                    <button className="btn btn-sm btn-primary" onClick={() => handleProfileButtonClick(list.empNo)}>프로필</button>
                                 </td>
                             </tr>
                         ))}
@@ -199,9 +219,36 @@ const Search = () => {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <div className="row">
-                                <div className="col">
-                                    <p>이름 : {profile.empName}</p>
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col">
+                                        <div className="row">
+                                            <div className="col-6">
+                                                {/* <p>일단이미지번호들어오나보자 : 
+                                                    {profileone.attachNo}
+                                                </p> */}
+                                                <img src ={surf} alt="profileImage"/>
+                                            </div>
+                                            <div className="col-6 mt-5">
+                                                <p>부서 : {profileone.deptName}</p>
+                                                <p>직위 : {profileone.empPositionName}</p>
+                                                <p>이름 : {profileone.empName}</p>
+                                            </div>
+                                        </div>
+                                            <div className="row">
+                                                <div className="col">
+                                                    <p>연락처 : {profileone.empTel}</p>
+                                                    <p>이메일 : {profileone.empEmail}</p>
+                                                    <p>입사일 : {profileone.empJoin}</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col">
+                                                    <p>소개 : {profileone.profileTitle}</p>
+                                                    <p>내용 : {profileone.profileContent}</p>
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -210,7 +257,6 @@ const Search = () => {
                         <div className="modal-footer">
                             <div className="row">
                                 <div className="col">
-                                    <button className="btn btn-success">수정</button>
                                     <button className="btn btn-secondary ms-1" onClick={closeModal}>닫기</button>
                                 </div>
                             </div>
