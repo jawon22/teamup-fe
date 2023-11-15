@@ -5,13 +5,37 @@ import axios from "axios";
 import { BsX } from "react-icons/bs";
 
 const ApproveWrite = (props)=>{
-    // const [user, setUser] = useRecoilState(userState);
+    const [user, setUser] = useRecoilState(userState);
     // const [receiver, setReceiver] = useRecoilState(receiverState);
     // const [referrer, setReferrer] = useRecoilState(referrerState);
 
     const [empList, setEmpList] = useState([]); //모든 사원 정보
     const [receiverList, setReceiverList] = useState([]); //결재자 처음 복제 리스트
     const [refererList, setRefererList] = useState([]); // 참조자 처음 복제
+
+    const empNo = parseInt(user.substring(6)); // 202302032
+
+    useEffect(()=>{
+        const emp = empList.find(em =>em.empNo === parseInt(empNo));
+        setAppr({
+            apprSender:empNo,
+            deptNo: emp ? emp.deptNo:"",
+            apprTitle:"",
+            apprContent:"",
+            apprDateStart:"",
+            apprDateEnd:"",
+            apprDivision:"결재"
+        })
+    },[empList])
+
+    const [appr, setAppr] = useState({});
+
+    const changeappr = (e) =>{
+        setAppr({
+            ...appr,
+            [e.target.name] : e.target.value
+        });
+    };
 
     // // 결재 초기설정
     // const [approve, setApprove] = useState({
@@ -42,6 +66,21 @@ const ApproveWrite = (props)=>{
             setReceiverList(response.data);
             setRefererList(response.data);
         })
+    };
+
+    //기안 등록(최종)
+    const saveAppr = async()=>{
+        const dataAll = {
+            approveDto:appr,
+            receiversDto:savedValues.map(receiver => ({receiversReceiver : receiver.empNo})),
+            referrersDto:savedValues2.map(referer => ({referrersReferrer : referer.empNo}))
+        };
+        const response = await axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
+            method:"post",
+            data: dataAll
+        });
+        // 등록 완료 알림?? 코드 작성하면 좋을듯  or  결재리스트로 이동?
     };
 
     //처음 페이지에서만 사원 정보 불어오기
@@ -96,28 +135,85 @@ const ApproveWrite = (props)=>{
     };
 
     // 선택된 승인자 삭제
-    const removeReceiver = (e)=>{
-        const removeFilterList = savedValues2.filter(receiver=>receiver.empNo === parseInt(e.target.value));
+    const removeReceiver = (empNo)=>{
+        // 클릭한 승인자 리스트 찾은 후 담기
+        const removeFilterList = savedValues.filter(receiver=>receiver.empNo === parseInt(empNo));
         
-        
-    };
-    // 선택된 참조자 삭제
-    const removeReferer = (e)=>{
+        // 클릭한 승인자를 savedValues에서 제거
+        // 제거한 승인자 리스트를 다시 savedValues에 설정
+        const reUpdateReceiver = savedValues.filter(receiver => receiver.empNo !== {...removeFilterList[0]}.empNo );
+        setSavedValues(reUpdateReceiver);
 
+        //클릭한 승인자를 receiverList와 refererList에 담아야함
+        setReceiverList([...receiverList, {...removeFilterList[0]}]);
+        setRefererList([...refererList, {...removeFilterList[0]}]);
+
+    };
+    // 선택된 참조자 삭제 (위에랑 같음)
+    const removeReferer = (empNo)=>{
+        const removeFilterList = savedValues2.filter(referer=>referer.empNo === parseInt(empNo));
+
+        const reUpdateReferer = savedValues2.filter(referer => referer.empNo !== {...removeFilterList[0]}.empNo);
+        setSavedValues2(reUpdateReferer);
+
+        setReceiverList([...receiverList,{...removeFilterList[0]}]);
+        setRefererList([...refererList,{...removeFilterList[0]}]);
     }
 
 
     return(
         <div className="container-fluid">
             <div className="row">
-                <div className="col-md-8 offset-md-2">
+                <div className="col-md-10 offset-md-1">
 
                     <h2 className="text-start">기안 상신</h2>
 
                     <div className="row">
 
                         <div className="border border-light col-8">
-                            
+                            <table className="table">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">제목</th>
+                                    <td>
+                                        <input type="text" className="form-control" name="apprTitle"
+                                            value={appr.apprTitle} onChange={changeappr}/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">종류</th>
+                                    <td>
+                                        <select className="form-select" name="apprDivision"
+                                            value={appr.apprDivision} onChange={changeappr}>
+                                            <option value="결재">결재</option>
+                                            <option value="연차">연차</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">작성일</th>
+                                    <td>
+                                        <input type="date" className="form-control" name="apprDateStart"
+                                            value={appr.apprDateStart} onChange={changeappr}/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">마감</th>
+                                    <td>
+                                        <input type="date" className="form-control" name="apprDateEnd"
+                                            value={appr.apprDateEnd} onChange={changeappr}/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">내용</th>
+                                    <td>
+                                        <textarea type="text" className="form-control" name="apprContent"
+                                            value={appr.apprContent} onChange={changeappr}/>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
                         </div>
 
                         <div className="border border-light col-4">
@@ -130,14 +226,14 @@ const ApproveWrite = (props)=>{
                                         {/* map 함수를 이용해 option 태그 반복 생성 */}
                                             {receiverList.map(emp => (
                                                 <option key={emp.empNo} value={emp.empNo}>
-                                                    부서:{emp.deptNo} 사원번호:{emp.empNo} 직급:{emp.empPositionNo}
+                                                    부서:{emp.deptNo} 직급:{emp.empPositionNo} 사원번호:{emp.empNo}
                                                 </option>
                                             ))}
                                         </select>
                                     </div>
 
                                     <div className="col-4">
-                                        <button className="btn btn-primary" onClick={saveReceiver}>
+                                        <button className="btn btn-primary w-100" onClick={saveReceiver}>
                                             저장
                                         </button>
                                     </div>
@@ -147,7 +243,7 @@ const ApproveWrite = (props)=>{
                                     {savedValues.map((receiver,index)=>(
                                         <div key={receiver.empNo}>
                                             {receiver.empNo} 
-                                            <BsX onClick={removeReceiver}/>
+                                            <BsX onClick={()=>removeReceiver(receiver.empNo)}/>
                                         </div>
                                     ))}
                                 </div>
@@ -162,14 +258,14 @@ const ApproveWrite = (props)=>{
                                         {/* map 함수를 이용해 option 태그 반복 생성 */}
                                             {refererList.map(emp => (
                                                 <option key={emp.empNo} value={emp.empNo}>
-                                                    부서:{emp.deptNo} 사원번호:{emp.empNo} 직급:{emp.empPositionNo}
+                                                    부서:{emp.deptNo} 직급:{emp.empPositionNo} 사원번호:{emp.empNo}
                                                 </option>
                                             ))}
                                         </select>
                                     </div>
 
                                     <div className="col-4">
-                                        <button className="btn btn-primary" onClick={saveReferer}>
+                                        <button className="btn btn-primary w-100" onClick={saveReferer}>
                                             저장
                                         </button>
                                     </div>
@@ -179,18 +275,21 @@ const ApproveWrite = (props)=>{
                                     {savedValues2.map((referer,index)=>(
                                         <div key={referer.empNo}>
                                             {referer.empNo}
-                                            <BsX onClick={removeReferer}/>
+                                            <BsX onClick={()=>removeReferer(referer.empNo)}/>
                                         </div>
                                     ))}
                                 </div>
 
                             </div>
                         </div>
+
+                        <div className="col text-end">
+                            <button className="btn btn-primary" onClick={saveAppr}>
+                                기안등록
+                            </button>
+                        </div>
+                        
                     </div>
-
-
-
-
                 </div>
             </div>
         </div>

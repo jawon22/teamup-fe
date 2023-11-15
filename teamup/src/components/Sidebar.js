@@ -30,8 +30,7 @@ const Sidebar = (props) => {
     const location = useLocation();
 
     const login = ()=>{
-
-        setUser('202332093');
+        setUser('202302032');
         setLevel('1');
     };
     const logout = ()=>{
