@@ -19,7 +19,7 @@
 
 
 .main-content.container-fluid{
-    margin-left: 20px;
+    /* margin-left: 20px; */
     transition: margin-left 1s;
 }
 
@@ -271,7 +271,7 @@ li {
        display: none;
     }
     .home-link.nav-link {
-        padding-top: 70px; /* 조정할 값으로 변경하세요 */
+        margin-top: 70px; /* 조정할 값으로 변경하세요 */
     }
 }
 
@@ -293,15 +293,11 @@ li {
     border-radius: 10px;
 }
 
-label{
+.nav-link span{
     color: white;
     font-weight: bold;
+    text-decoration: none;
 }
 
-.d-flex.icons-container {
-    display: flex;
-    margin-right: -10px; /* 아이콘들 간격 조절 */
-}
-.d-flex.icons-container > div {
-    margin-right: 10px; /* 각 아이콘 사이 간격 조절 */
-}
+
+
