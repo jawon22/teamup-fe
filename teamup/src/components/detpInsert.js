@@ -6,6 +6,7 @@ import { Modal } from "bootstrap";
 
 const DeptInsert = () => {
     //세션스토리지 아이디만 저장
+    ///****전체적으로 모달 닫을때 초기화 시키기
 
     const [comId] = useRecoilState(companyState);
     const [deptList, setDeptList] = useState([]);
@@ -16,6 +17,7 @@ const DeptInsert = () => {
     useEffect(() => {
         console.log(comId)
         loadDetpList();
+        loadPosition();
     }, [])
     const clearDept = () => {
         setDept({
@@ -92,6 +94,7 @@ const DeptInsert = () => {
     //--------------모달 열고 닫기 
     const bsModal = useRef();
     const bsModal2 = useRef();
+    const deletModal =useRef();
     const openModal = () => {
         const modal = new Modal(bsModal.current);
         modal.show();
@@ -108,6 +111,16 @@ const DeptInsert = () => {
     };
     const closeModal2 = () => {
         const modal = Modal.getInstance(bsModal2.current);
+        modal.hide();
+
+        // clearProfile();
+    };
+    const openDeletModal = () => {
+        const modal = new Modal(deletModal.current);
+        modal.show();
+    };
+    const closeDeletModal = () => {
+        const modal = Modal.getInstance(deletModal.current);
         modal.hide();
 
         // clearProfile();
@@ -132,7 +145,25 @@ const DeptInsert = () => {
     };
     //회사아이디는 세션에ㅐ 있는 값을 가져와서 하고 
     //dept는 클릭했을때 번호가 생성이 되고 
+    const deptDelete = (target) => {
+        setDept({...target})
+        openDeletModal();
+    }
+    const removeDept =()=>{
+        axios({
+            url:`http://localhost:8080/dept/deleteDept/${dept.deptNo}`,
+            method:'delete'
+        }).then(response=>{
+            if(response.data ==null){alert("실패")}
+            else{alert("삭제되었습니다")}
+            closeDeletModal();
+            setDept('');
 
+            loadDetpList();
+        }
+
+        );
+    };
 
 
     /////-------------직급 등록
@@ -183,6 +214,13 @@ const DeptInsert = () => {
             setEmpList(response.data);
         });
     };
+
+
+    
+
+
+    
+
 
 
 
@@ -256,6 +294,7 @@ const DeptInsert = () => {
         }).then(response => {
             if (response.data != null) {
                 alert("성공");
+                closeModal2()
             }
 
             // 성공 후에 상태 초기화 또는 필요한 작업 수행
@@ -265,6 +304,108 @@ const DeptInsert = () => {
             // 에러 처리 로직 작성 가능
         });
     };
+
+    //--부서 불러오기
+
+    const [positionList, setPositionList] = useState([]);
+    const loadPosition = () => {
+        axios({
+            url: `http://localhost:8080/empPosition/position/${comId}`,
+            method: "get"
+        }).then(response => {
+            console.log(response.data)
+            setPositionList(response.data);
+        });
+    }
+
+
+
+
+    //부서 삭제 부서인원이 0 명이면 삭제 가능하게
+
+
+    ///부서 이동 update dept
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const [empInfo, setEmpInfo] = useState({
+        empId: "",
+        deptNo: '',
+        empExit: '',
+
+    });
+
+    const changeEmpDept = (target) => {
+        setEmpInfo({ ...target })
+        setIsDropdownOpen((prevId) => (prevId === target.empId ? null : target.empId));
+
+    };
+
+    const changeEmp = (e) => {
+        setEmpInfo({
+            ...empInfo,
+            [e.target.name]: e.target.value
+        })
+        console.log("emp={}", empInfo)
+
+    };
+
+    const transDept = () => {
+        axios({
+            url: `http://localhost:8080/emp/updateDept/${empInfo.empId}`,
+            method: 'put',
+            data: {
+                deptNo: empInfo.deptNo
+            }
+        }).then(response => {
+            console.log(response.data)
+            if(response.data === null){alert("실패했습니다")}
+            else{alert("성공")}
+            loadDetpList();
+           
+        });
+    };
+    const [isEmpLeave, setIsEmpLeave] = useState(false);
+
+    const opneDateInput = (target) => {
+        setEmpInfo(target)
+        setIsEmpLeave((prevId) => (prevId === target.empId ? null : target.empId));
+
+    }
+
+    const [leaveData, setLeaveData] = useState({
+        empId: '',
+        empExit: '',
+    });
+
+    const dateChange = (e) => {
+        // 인풋값이 변경될 때마다 leaveData 상태 업데이트
+        setLeaveData({
+            ...leaveData,
+            empExit: e.target.value,
+            empId: empInfo.empId
+        });
+        console.log("emp={}", empInfo)
+
+    };
+
+    const empLeave = () => {
+        //empId알려주고 퇴사일 쏴주고
+        axios({
+            url: `http://localhost:8080/emp/updateExit/${leaveData.empId}`,
+            method: "put",
+            data: { empExit: leaveData.empExit }
+        }).then(response => {
+            console.log(response.data)
+            setLeaveData("")
+        });
+    }
+
+
+
+
+
+
+
 
 
     return (
@@ -317,7 +458,7 @@ const DeptInsert = () => {
                                         <td>
                                             <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
                                             <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
-                                            <button className="btn btn-outline-primary">삭제</button>
+                                            <button className="btn btn-outline-primary" onClick={e=>deptDelete(dept)}>삭제</button>
                                         </td>
 
 
@@ -333,26 +474,49 @@ const DeptInsert = () => {
                                 <tr>
                                     <th>사원명</th>
                                     <th>사원번호</th>
+                                    <th>Email</th>
                                     <th>관리</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {empList.map((emp) => (
-                                    <tr key={dept.deptNo}>
+                                {empList
+                                    .filter((emp) => emp.empExit === null)
+                                    .map((emp) => (
+                                        <tr key={emp.empId}>
+                                            <td>{emp.empName}</td>
+                                            <td>{emp.empId}</td>
+                                            <td>{emp.empEmail}</td>
+                                            <td>
+                                                <button className="btn btn-outline-primary me-2" onClick={e => changeEmpDept(emp)}>부서이동</button>
+                                                <button className="btn btn-outline-primary" onClick={e => opneDateInput(emp)}>퇴사처리</button>
+                                                {isEmpLeave === emp.empId && (
+                                                    <div className="row">
+                                                        <div className="col-7">
+                                                            <input type="date" className="form-control" onChange={dateChange} value={leaveData.empExit} />
+                                                        </div>
+                                                        <div className="col-4">
+                                                            <button className="btn btn-sm btn-outline-success" onClick={empLeave} >저장</button>
+                                                        </div>
+                                                    </div>
+                                                )}
 
-
-                                        <td onClick={e => cellClick(dept)}>{emp.empName}</td>
-                                        <td>{emp.empId}</td>
-                                        <td>
-                                            <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
-                                            <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
-                                            <button className="btn btn-outline-primary">삭제</button>
-                                        </td>
-
-
-                                    </tr>
-
-                                ))}
+                                                {isDropdownOpen === emp.empId && (
+                                                    <div className="row">
+                                                        <div className="col-7">
+                                                            <select className="mt-2 form-control" name="deptNo" value={empInfo.deptNo} onChange={changeEmp}>
+                                                                {deptList.map((dept, index) => (
+                                                                    <option key={dept.deptNo} value={dept.deptNo}>{index + 1}.{dept.deptName}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <div className="col-4">
+                                                            <button className="mt-2 me-2 btn btn-sm btn-outline-primary" onClick={transDept}>변경</button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </tabel>
                     </div>
@@ -392,19 +556,18 @@ const DeptInsert = () => {
                             <div className="modal-body">
 
                                 이름<input className="form-control" name="empName" value={empData.empName} onChange={changeEmpChange} />
-                                전화번호<input className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
-                                pw<input className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
-                                {/* 직급선택<select className="form-control">
-                                    {deptList.map((dept) => (
+                                전화번호<input type="hidden" className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
+                                <input className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
+                                직급선택<select className="form-control" name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange}>
+                                    {positionList.map((position) => (
 
-                                        // <option value={dept.deptName}>{dept.deptName}</option>
+                                        <option key={position.empPositionNo} value={position.empPositionNo}>{position.empPositionName}</option>
 
                                     ))}
 
 
 
-                                </select> */}
-                                <input name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange} />
+                                </select>
                                 email<input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
                                 연봉<input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
 
@@ -418,6 +581,28 @@ const DeptInsert = () => {
                     </div>
                 </div>
 
+
+
+         
+
+                <div className="modal fade" ref={deletModal} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 className="modal-title fs-5" id="staticBackdropLabel">부서 삭제</h1>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                               {dept.empCount}{dept.deptNo}{dept.deptName}삭제하시겠습니까?
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeDeletModal}>Close</button>
+                                
+                                <button type="button" className={` btn btn-danger ${dept.empCount !==0? 'disabled': ''}`} onClick={removeDept}>확인</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
