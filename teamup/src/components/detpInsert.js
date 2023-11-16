@@ -557,8 +557,10 @@ const DeptInsert = () => {
                             <div className="modal-body">
 
                                 이름<input className="form-control" name="empName" value={empData.empName} onChange={changeEmpChange} />
-                                전화번호<input className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
-                                <input  type="hidden" className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
+
+                                전화번호<input  className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
+                                <input type="hidden" className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
+
                                 직급선택<select className="form-control" name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange}>
                                     {positionList.map((position) => (
 
