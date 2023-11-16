@@ -84,14 +84,16 @@ useEffect(() => {
 
   return (
     <div className="container-fluid">
-      <div className="row ms-3">
-        <div className="col">
-          <h1>홈페이지</h1>
-          <NavLink to="/myPage">마이페이지</NavLink> <br />
-          <NavLink to="/profileEdit">프로필 수정(마이페이지에 넣을껍니당)</NavLink>{" "}
-          <br />
-          <NavLink to="/calendar">일정</NavLink>
-          <br/>
+        <div className="row ms-3">
+            <div className="col">
+                <h1 >홈페이지</h1>
+
+        <NavLink to="/myPage">마이페이지</NavLink> <br/>
+        <NavLink to="/profileEdit">프로필 수정(마이페이지에 넣을껍니당)</NavLink> <br/>
+        <NavLink to="/calendar">일정</NavLink><br></br>
+        <NavLink to="/deptCalendar">부서일정</NavLink>
+
+
           <div className="d-flex">
             <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
             <button className="btn btn-primary" onClick={attendStartClick} disabled={isAttendClicked}>
