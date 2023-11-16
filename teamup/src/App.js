@@ -83,6 +83,8 @@ function App() {
                     <Route path="/mypage" element={<Mypage/>}></Route>
                     <Route path="/deptInsert" element={<DeptInsert/>}></Route>
                     <Route path="/calendar" element={<Calendar/>}></Route>
+                    <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
+                    <Route path='/salList' element={<SalList/>}></Route>
 
                     {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                     <Route path="/profileEdit" element={<ProfileEdit/>}></Route>
