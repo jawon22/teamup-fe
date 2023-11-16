@@ -107,7 +107,7 @@ const SalList=(prop)=>{
                         <div className='col-4 mt-2 ms-2 ps-4'>
                             <div className='text-primary h2 d-flex'>
                                 <span className=''onClick={salListBefore}><IoIosArrowBack /></span>
-                                <span>{`${new Date(salList.salListDate).getFullYear()} . ${String(new Date(salList.salListDate).getMonth() + 1).padStart(2, '0')}`}</span>
+                                <span className='h3 mt-1'>{`${new Date(salList.salListDate).getFullYear()} . ${String(new Date(salList.salListDate).getMonth() + 1).padStart(2, '0')}`}</span>
                                 <div><span onClick={salListNext}> <IoIosArrowForward /></span></div>
                             </div>
                         </div>

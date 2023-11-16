@@ -3,6 +3,9 @@ import { useRecoilState } from "recoil";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { userState } from "../recoil";
+import {CgProfile} from "react-icons/cg";//임시프로필사진
+import Calendar from "./calendar";
+import './homeStyle.css';
 
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -45,26 +48,43 @@ const Home = () => {
     return (
     <div className="container-fluid">
         <div className="row ms-3">
-            <div className="col">
-                <h1 >홈페이지</h1>
 
-        <NavLink to="/myPage">마이페이지</NavLink> <br/>
-        <NavLink to="/profileEdit">프로필 수정(마이페이지에 넣을껍니당)</NavLink> <br/>
-        <NavLink to="/calendar">일정</NavLink>
-          <div className="d-flex">
-          <div>{attendList.attendStart}</div>
-          <button className="btn btn-primary" onClick={attendClick}>
-          출근하기
-        </button>
-      </div>
-      <div className="d-flex">
-        <div>시간</div>
-        <button className="btn btn-primary">퇴근하기</button>
-      </div>
-         
-  
+            <div className="col-3">
+
+              <div className="row border border-primary h-100">
+                    <h1 >홈페이지</h1>
+                    <CgProfile className="me-3" size={150}style={{color:'#218C74'}} />
+                  <div className="d-flex">
+                  <div>{attendList.attendStart}</div>
+                  <button className="btn btn-primary" onClick={attendClick}>출근하기</button>
+                  </div>
+                  <div className="d-flex">
+                    <div>시간</div>
+                    <button className="btn btn-primary">퇴근하기</button>
+                  </div>
+              </div>
+              <div className="row border border-primary h-50 h1">
+                TodoList
+              </div>
 
             </div>
+
+            <div className="col-5">
+                <div className="row border border-primary h-50">
+                  공지사항
+                </div>
+                <div className="row border border-primary h-50">
+                  전자 결재
+                </div>
+                <div className="row border border-primary h-50">
+                  전체 일정
+                </div>
+            </div>
+
+            <div className="col-4 border border-primary h-100">
+            <Calendar/>
+            </div>
+
         </div>
   
   

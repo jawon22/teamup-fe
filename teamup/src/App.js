@@ -46,8 +46,10 @@ function App() {
               <Navbar.Brand href="#home" className='logo'>
                 <img src={TeamUpLogo} alt="TemaUpLog" width={100}/>
                 <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
+                <NavLink to="/com" className="ms-1">회사회원가입</NavLink>
                 <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
-                <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
+                <Button onClick={handleShow} className=" btn btn-primary ms-1">조직도</Button>
+                <NavLink to="/profileEdit"className="ms-1">프로필 수정</NavLink> <br/>
               </Navbar.Brand>
             </div>
             <div className='col-4'>
@@ -63,7 +65,7 @@ function App() {
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
                           <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
-                            <NavDropdown.Item >마이페이지</NavDropdown.Item>                                                  
+                            <NavDropdown.Item href="#myPage">마이페이지</NavDropdown.Item>                                                  
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
                         </Nav>
