@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import "./components/Sidebar";
@@ -14,21 +15,28 @@ import Mypage from './components/mypage';
 import DeptInsert from './components/detpInsert';
 import CompanyJoin from './components/companyJoin';
 import TeamUpLogo from './components/images/TeamUpLogo.png';
-import {CgProfile} from "react-icons/cg";
-import {BsFillBellFill} from "react-icons/bs";
-import {RiKakaoTalkFill} from "react-icons/ri";
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import {CgProfile} from "react-icons/cg";//임시프로필사진
+import {BsFillBellFill} from "react-icons/bs";//알람
+import {RiKakaoTalkFill} from "react-icons/ri";//채팅방
+import { Button, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import SalList from './components/SalList';
-
+import SalList from './components/SalList';//급여내역
+import Offcanvas from 'react-bootstrap/Offcanvas';//조직도
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
+import Calendar from './components/calendar';
+import DeptCalendar from './components/deptCalendar';
 
 function App() {
   const location = useLocation();
+  // 조직도 관련 const 모음--------------------
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+ //------------------------------조직도 끝---
   return (
   <>
-        <div className=' main-content container-fluid '>
-        <Sidebar />
+    <div className='main-content container-fluid'>
+      <Sidebar/>
 
         <div className='row ms-5 mt-3'>
           <div className='col-md-10 offset-md-1 me-5'>
@@ -38,8 +46,10 @@ function App() {
               <Navbar.Brand href="#home" className='logo'>
                 <img src={TeamUpLogo} alt="TemaUpLog" width={100}/>
                 <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
+                <NavLink to="/com" className="ms-1">회사회원가입</NavLink>
                 <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
-                <button className="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">조직도</button>
+                <Button onClick={handleShow} className=" btn btn-primary ms-1">조직도</Button>
+                <NavLink to="/profileEdit"className="ms-1">프로필 수정</NavLink> <br/>
               </Navbar.Brand>
             </div>
             <div className='col-4'>
@@ -55,10 +65,7 @@ function App() {
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
                           <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
-                            <NavDropdown.Item >마이페이지</NavDropdown.Item>              
-                            <NavLink  className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} to='/salList'>
-                              <NavDropdown.Item className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} href='/salList'>급여내역</NavDropdown.Item>
-                            </NavLink>                                            
+                            <NavDropdown.Item href="#myPage">마이페이지</NavDropdown.Item>                                                  
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
                         </Nav>
@@ -81,39 +88,35 @@ function App() {
                     <Route path='/login' element={<Login/>}></Route>
                     <Route path="/mypage" element={<Mypage/>}></Route>
                     <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+                    <Route path="/calendar" element={<Calendar/>}></Route>
+                    <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
+                    <Route path='/salList' element={<SalList/>}></Route>
+                    <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
 
                     {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                     <Route path="/profileEdit" element={<ProfileEdit/>}></Route>
+         
+              </Routes>
+            </div>
 
-                    <Route path='companyJoin' element={<CompanyJoin/>}></Route>
-                    <Route path="/salList" element={<SalList/>}></Route>
-
-                  </Routes>
-                </div>
-
-
-                {/* 조직도  */}
-                <div className='row'><div className='col-10 offset-1'>   
-                    <div className="offcanvas offcanvas-end" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div className="offcanvas-header">
-                            <h5 className="offcanvas-title" id="offcanvasRightLabel">조직도</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            조직도 자리 
-                        </div>
-                    </div>
-                </div></div>
-
-
-
+            {/* 조직도  */}
+            <>                       
+              <Offcanvas show={show} onHide={handleClose} placement='end'>
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>조직도</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                  조직도 자리 
+                </Offcanvas.Body>
+              </Offcanvas>
+            </>
+            {/* 조직도  */}
 
          
-        </div> </div>
-
-      
-       
+          </div> 
         </div>
+       
+    </div>
   
   </>
   );

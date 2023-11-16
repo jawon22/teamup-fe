@@ -1,0 +1,77 @@
+/* MyCalendar.css */
+
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+    color: red;
+}
+  
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+    color: blue;
+}
+.fc-day-mon a{
+    color: black;
+}
+.fc-day-tue a{
+    color: black;
+}
+.fc-day-wed a{
+    color: black;
+}
+.fc-day-thu a{
+    color: black;
+}
+.fc-day-fri a{
+    color: black;
+}
+body.modal-open .modal {
+    pointer-events: none; /* 모달 바깥 클릭 무시 */
+  }
+  
+  body.modal-open .modal.fade.show {
+    display: block; /* 모달 바깥을 클릭해도 모달이 숨겨지지 않도록 */
+  }
+  
+  body.modal-open .modal-backdrop {
+    opacity: 0; /* 백드롭 투명화 */
+  }
+  
+  body.modal-open .modal.show .modal-backdrop {
+    opacity: 0.5; /* 모달이 열릴 때만 백드롭을 조금 투명하게 만들어 사용자에게 시각적 피드백 제공 */
+  }
+  
+  body.modal-open .modal.show {
+    background: rgba(0, 0, 0, 0.5); /* 모달이 열릴 때만 배경 어둡게 만들어 사용자에게 시각적 피드백 제공 */
+  }
+
+
+ /* 이전 버튼 */
+.fc-prev-button {
+  background-color: #218C74;
+}
+
+/* 다음 버튼 */
+.fc-next-button {
+  background-color: #218C74;
+}
+
+/* 오늘 버튼 */
+.fc-today-button {
+  background-color: #218C74;
+}
+
+/* 월간 보기 버튼 */
+.fc-month-button {
+  background-color: #218C74;
+}
+
+/* 주간 보기 버튼 */
+.fc-week-button {
+  background-color: #218C74;
+}
+
+/* 일간 보기 버튼 */
+.fc-day-button {
+  background-color: #218C74;
+}
+
