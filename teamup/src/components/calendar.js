@@ -43,7 +43,10 @@ const Calendar = () => {
 
     const clickedEvent = e.event;
     const clickedEventId = clickedEvent.id;
-    console.log("=", isEventClicked);
+    console.log("=", clickedEvent);
+
+
+    console.log("???",schedule)
 
 
     // 이벤트의 정보를 setSchedule 함수로 저장
@@ -54,8 +57,8 @@ const Calendar = () => {
       calStartDate: moment(clickedEvent.start).format('YYYY-MM-DD'), // moment.js를 사용하여 날짜 포맷 변경
       calEndDate: moment(clickedEvent.end).format('YYYY-MM-DD'),
       calTitle: clickedEvent.title,
-      calContent: clickedEvent.title, // 예시로 title을 사용했습니다. 실제로 사용하는 데이터에 따라 수정하세요.
-      calColor: clickedEvent.color
+      calContent: clickedEvent.extendedProps.content , 
+      calColor: clickedEvent.borderColor
     });
 
     // setSchedule이 비동기적으로 동작하므로 업데이트된 schedule을 확인하기 위해 로그를 찍어보세요.
@@ -376,8 +379,8 @@ const Calendar = () => {
                       Color <select type="text" name="calColor" onChange={changeSchedule} className="form-control" value={schedule.calColor} >
                         <option>----선택----</option>
                         <option value={"#E0FFFF"}>1</option>
-                        <option value={"#E6E6FA"}>1</option>
-                        <option value={"#FFF0F5"}>1</option>
+                        <option value={"#E6E6FA"}>2</option>
+                        <option value={"#FFF0F5"}>3</option>
                       </select>
                     </div>
                   </div>

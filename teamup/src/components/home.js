@@ -50,7 +50,9 @@ const Home = () => {
 
         <NavLink to="/myPage">마이페이지</NavLink> <br/>
         <NavLink to="/profileEdit">프로필 수정(마이페이지에 넣을껍니당)</NavLink> <br/>
-        <NavLink to="/calendar">일정</NavLink>
+        <NavLink to="/calendar">일정</NavLink><br></br>
+        <NavLink to="/deptCalendar">부서일정</NavLink>
+
           <div className="d-flex">
           <div>{attendList.attendStart}</div>
           <button className="btn btn-primary" onClick={attendClick}>
