@@ -84,13 +84,7 @@ const Sidebar = (props) => {
                     </NavLink>
                 </div> 
                 <div className="ms-4">
-                    <NavLink to="/com" className="nav-link d-flex align-items-center">
-                        <MdOutlineWorkHistory className="text-white me-3" size="30"/>
-                        <span>근태관리</span>
-                    </NavLink> 
-                </div>
-                <div className="ms-4">
-                    <NavLink to="#" className="nav-link d-flex align-items-center">
+                    <NavLink to="/salList" className="nav-link d-flex align-items-center">
                         <GiReceiveMoney className="text-white me-3" size="30"/>
                         <span>급여내역</span>
                     </NavLink> 
