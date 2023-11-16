@@ -33,6 +33,7 @@ const CompanyJoin = ()=>{
 
         }).then(response=>{
             console.log(response.data)
+            if(response.data ===false)return;
             if(response.data === true){
                 setCompany(companyInfo.comId)
                 console.log(company)
@@ -40,9 +41,7 @@ const CompanyJoin = ()=>{
                     navigate('/home');
                 },1000);
             }
-        }).catch(
-            alert("통신오류")
-        )
+        })
     };
 
 

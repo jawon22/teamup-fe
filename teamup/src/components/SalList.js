@@ -24,6 +24,11 @@ const SalList=(prop)=>{
         salListDate:""
     });
 
+    useEffect(()=>{
+        salDetail();
+    },[]);
+
+    //화면 실행시 최신 급여내역을 출력 
     const salDetail =()=>{
         //서버에서 급여내역 list 불러와서 state에 설정하는 코드 
         axios({
@@ -31,28 +36,67 @@ const SalList=(prop)=>{
             method:"get"
         })
         .then(response=>{
-            console.log(response.data);
-            setSalList(response.data);
-        })
-        .catch(err=>{ window.alert("통신 오류 발생"); });   
+            // if(response === null)
+                // console.log(response.data);
+                setSalList(response.data);
+        });
     };
 
-    useEffect(()=>{
-        salDetail();
-    },[]);
+    //이전 버튼 - 현재 급여내역 바로 전달의 내역을 출력
+    const salListBefore = ()=>{
+        // 현재 날짜를 가져와서 한 달을 빼기
+        const currentDate = new Date(salList.salListDate);
+        currentDate.setMonth(currentDate.getMonth() - 1);
 
+        // 새로운 날짜를 문자열로 변환하여 함수 호출
+        const newDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+
+        axios({
+            url:`http://localhost:8080/salList/salListDate/empNo/${empNo}/salListDate/${newDate}`,
+            method:"get"
+        })
+        .then(response=>{
+            if (!response.data) {
+                alert("급여내역이 없습니다.");
+            } else {
+                // console.log(response.data);
+                setSalList(response.data);
+            }
+        });
+    };
+
+    //다음 버튼 - 현재 급여내역 바로 다음 달의 내역을 출력
+    const salListNext = ()=>{
+        // 현재 날짜를 가져와서 한 달을 더하기
+        const currentDate = new Date(salList.salListDate);
+        currentDate.setMonth(currentDate.getMonth() + 1);
+
+        // 새로운 날짜를 문자열로 변환하여 함수 호출
+        const newDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
+
+        axios({
+            url:`http://localhost:8080/salList/salListDate/empNo/${empNo}/salListDate/${newDate}`,
+            method:"get"
+        })
+        .then(response=>{
+            if (!response.data) {
+                alert("급여내역이 없습니다.");
+            } else {
+                // console.log(response.data);
+                setSalList(response.data);
+            }
+        });
+    };
+
+    //실지급액
     const totalSal = parseFloat(salList.salListTotal) - parseFloat(salList.salListHealth)
         - parseFloat(salList.salListLocal) - parseFloat(salList.salListLtcare)
         - parseFloat(salList.salListNational) - parseFloat(salList.salListWork);
 
+    //총공제액
     const totalTax = parseFloat(salList.salListHealth)
     + parseFloat(salList.salListLocal) + parseFloat(salList.salListLtcare)
     + parseFloat(salList.salListNational) + parseFloat(salList.salListWork);
-
-    console.log("salList:", salList);
-
-
-
 
     return(
 
@@ -61,13 +105,11 @@ const SalList=(prop)=>{
 
                     <div className='row'> 
                         <div className='col-4 mt-2 ms-2 ps-4'>
-                            <div className='text-primary h2'>
-
-                                <span><IoIosArrowBack /></span>
-                                {salList.salListDate}
-                                <span> <IoIosArrowForward /></span>
-
-                                </div>
+                            <div className='text-primary h2 d-flex'>
+                                <span className=''onClick={salListBefore}><IoIosArrowBack /></span>
+                                <span className='h3 mt-1'>{`${new Date(salList.salListDate).getFullYear()} . ${String(new Date(salList.salListDate).getMonth() + 1).padStart(2, '0')}`}</span>
+                                <div><span onClick={salListNext}> <IoIosArrowForward /></span></div>
+                            </div>
                         </div>
                     <div className='col-7'>
                         <h1 className='text-primary'>급여 명세서</h1>         
@@ -76,14 +118,14 @@ const SalList=(prop)=>{
 
                     <hr className='border border-primary border-2'/>
 
-                <div className='row ms-2 ps-5'>
-                    <div className='col-2'>
+                <div className='row ps-5 ms-2 mb-2 mt-4'>
+                    <div className='col-2 h4'>
                         실수령액                        
                     </div>
                     <div className='col-7'>    
                     <hr className='text-primary'/>
                     </div>
-                    <div className='col-3'>
+                    <div className='col-3 h4'>
                     {totalSal.toLocaleString()}원                      
                     </div>
                 </div>
@@ -92,11 +134,11 @@ const SalList=(prop)=>{
 
                     <div className="row ms-5">
                         <div className="col-5">
-                            <div className='row mt-3'>
-                                <div className='col-5 offset-1 text-start'>
-                                <div>총 지급액</div>
+                            <div className='row mt-3 h5'>
+                                <div className='col-5 offset-1 ms-3 text-start'>
+                                <div className=''>총 지급액</div>
                                 </div>
-                                <div className='col-5 text-end'>
+                                <div className='col-6 text-end'>
                                 <div>{salList.salListTotal.toLocaleString()}원</div>                       
                                 </div>
                             </div>
@@ -107,7 +149,7 @@ const SalList=(prop)=>{
                         <div className='col-1'>
                         </div>
                         <div className='col-5'>
-                        <div className='row mt-3'>
+                        <div className='row mt-3 h5'>
                             <div className='col-5 offset-1 text-start'>
                                 <div>총 공제액</div>
                             </div>

@@ -8,10 +8,15 @@ import { Modal } from "bootstrap";
 import { useRecoilState } from "recoil";
 import { companyState, userState } from "../recoil";
 import moment from 'moment';
-const Calendar = () => {
+const DeptCalendar = () => {
 
-  const [user] = useRecoilState(userState);
-  const empNo = user.substring(6);
+
+    const [user] = useRecoilState(userState);
+    const empNo = user.substring(6);
+    const deptNo =user.substring(4,6)
+
+
+
   const [comId] = useRecoilState(companyState);
 
   // const eventClick = (e) => {
@@ -52,7 +57,7 @@ const Calendar = () => {
     // 이벤트의 정보를 setSchedule 함수로 저장
 
     setSchedule({
-      empNo: empNo,
+      deptNo: deptNo,
       calNo: clickedEventId,
       calStartDate: moment(clickedEvent.start).format('YYYY-MM-DD'), // moment.js를 사용하여 날짜 포맷 변경
       calEndDate: moment(clickedEvent.end).format('YYYY-MM-DD'),
@@ -78,7 +83,7 @@ const Calendar = () => {
 
   const [schedule, setSchedule] = useState({
     calNo: "",
-    empNo: empNo,
+    deptNo: deptNo,
     calStartDate: "",
     calEndDate: "",
     calTitle: "",
@@ -88,7 +93,7 @@ const Calendar = () => {
 
   const clearSchedule = () => {
     setSchedule({
-      empNo: empNo,
+        deptNo: deptNo,
       calStartDate: "",
       calEndDate: "",
       calTitle: "",
@@ -115,7 +120,7 @@ const Calendar = () => {
 
   const addSchedule = () => {
     axios({
-      url: "http://localhost:8080/cal_emp/",
+      url: "http://localhost:8080/cal_emp/dpetadd/",
       method: "post",
       data: schedule
 
@@ -128,7 +133,7 @@ const Calendar = () => {
   };
   const editSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/updateCal/${schedule.calNo}`,
+      url: `http://localhost:8080/cal_emp/updateDeptCal/${schedule.calNo}`,
       method: "put",
       data: schedule
     })
@@ -175,7 +180,7 @@ const Calendar = () => {
   // 일정 불러오기
   const loadSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/list/${empNo}`,
+      url: `http://localhost:8080/cal_emp/deptList/${deptNo}`,
       method: "get"
     }).then(response => {
       console.log(response);
@@ -269,7 +274,7 @@ const Calendar = () => {
   ///삭제 
   const deleteSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/delete/${schedule.calNo}`,
+      url: `http://localhost:8080/cal_emp/deleteDeptCal/${schedule.calNo}`,
       method: "delete",
 
 
@@ -431,4 +436,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default DeptCalendar; 
