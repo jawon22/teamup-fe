@@ -98,6 +98,7 @@ useEffect(() => {
                   <div className="d-flex">
                   <div>{attendList.attendStart}</div>
                   <button className="btn btn-primary" >출근하기</button>
+
                   </div>
                   <div className="d-flex">
                     <div>시간</div>
@@ -130,6 +131,7 @@ useEffect(() => {
   
   
     </div>);
+
 
 
 
