@@ -58,14 +58,23 @@ const ProfileEdit = ()=>{
 
   //프로필 수정 처리
   const updateProfile = ()=>{
-    console.log("Updating Profile:", profile);
-    const copyProfile = {...profile};
+    const {
+      empTel, 
+      empEmail, 
+      profileTitle, 
+      profileContent} = profile;
+
     // delete copyProfile.profileNo;
 
     axios({
       url:`http://localhost:8080/profile/${loggedInEmpNo}`,
       method:"put",
-      data:copyProfile
+      data:{
+        empTel:empTel, 
+        empEmail:empEmail, 
+        profileTitle:profileTitle, 
+        profileContent:profileContent
+      }
     })
     .then(response=>{
       loadProfile(loggedInEmpNo);
@@ -73,7 +82,6 @@ const ProfileEdit = ()=>{
     })
     .catch(err=>{})
   };
-
 
 
 
