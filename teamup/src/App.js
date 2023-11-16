@@ -15,13 +15,13 @@ import Mypage from './components/mypage';
 import DeptInsert from './components/detpInsert';
 import CompanyJoin from './components/companyJoin';
 import TeamUpLogo from './components/images/TeamUpLogo.png';
-import {CgProfile} from "react-icons/cg";
-import {BsFillBellFill} from "react-icons/bs";
-import {RiKakaoTalkFill} from "react-icons/ri";
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import {CgProfile} from "react-icons/cg";//임시프로필사진
+import {BsFillBellFill} from "react-icons/bs";//알람
+import {RiKakaoTalkFill} from "react-icons/ri";//채팅방
+import { Button, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import SalList from './components/SalList';
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import SalList from './components/SalList';//급여내역
+import Offcanvas from 'react-bootstrap/Offcanvas';//조직도
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
@@ -63,10 +63,7 @@ function App() {
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
                           <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
-                            <NavDropdown.Item >마이페이지</NavDropdown.Item>              
-                            <NavLink  className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} to='/salList'>
-                              <NavDropdown.Item className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} href='/salList'>급여내역</NavDropdown.Item>
-                            </NavLink>                                            
+                            <NavDropdown.Item >마이페이지</NavDropdown.Item>                                                  
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
                         </Nav>
