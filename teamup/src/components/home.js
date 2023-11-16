@@ -97,7 +97,8 @@ useEffect(() => {
                     <CgProfile className="me-3" size={150}style={{color:'#218C74'}} />
                   <div className="d-flex">
                   <div>{attendList.attendStart}</div>
-                  <button className="btn btn-primary" >출근하기</button>
+
+                  <button className="btn btn-primary">출근하기</button>
                   </div>
                   <div className="d-flex">
                     <div>시간</div>

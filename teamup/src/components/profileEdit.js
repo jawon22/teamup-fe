@@ -6,18 +6,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 
 const ProfileEdit = ()=>{
-  const [profile, setProfile] = useState({
-    attachNo:0,
-    empNo:0,
-    deptName:"",
-    empPositionName:"",
-    empName:"",
-    empTel:"",
-    empEmail:"",
-    empJoin:"",
-    profileTitle:"",
-    profileContent:""
-  });
+  const [profile, setProfile] = useState({});
 
   const [user, setUser] = useRecoilState(userState);
   const loggedInEmpNo = parseInt(user.substring(6));
@@ -27,14 +16,15 @@ const ProfileEdit = ()=>{
     axios ({
       url:`http://localhost:8080/profile/${empNo}`,
       method:"get",
-  })
-  .then(response =>{//성공
-      console.log(response);
-      setProfile(response.data);
-  })
-  .catch(err=>{//실패
-      console.error(err);
-  });
+    })
+    .then(response =>{//성공
+        console.log(response);
+        setProfile(response.data);
+        openModal(); // 프로필 로드가 완료된 후에 모달 열기
+    })
+    .catch(err=>{//실패
+        console.error(err);
+    });
   };
   
 
@@ -43,22 +33,24 @@ const ProfileEdit = ()=>{
   },[loggedInEmpNo]);
   
 
-  const [profileone, setProfileone] =useState({});
-
   // 프로필 수정창 열기
-  const editProfile = () =>{
-    // console.log(empNo);
-    const findProfile = profile.find(pro=>pro.empNo === loggedInEmpNo);
+  const editProfile = (loggedInEmpNo) =>{
+    console.log(loggedInEmpNo);
     // 해당 직원의 프로필을 불러옴
-    setProfileone(findProfile);
-    openModal();
+    loadProfile(loggedInEmpNo);
+    // const findProfile = profile;//현재의 profile 상태를 가져옴
+    // console.log(findProfile);
+    // // 해당 직원의 프로필을 불러옴
+    // setProfile(findProfile);
+    // openModal();
   };
 
 
   //수정한 값 처리
   const changeProfile = (e)=>{
-    setProfileone({
-      ...profileone,
+    // console.log("Changing Profile:", e.target.name, e.target.value);
+    setProfile({
+      ...profile,
       [e.target.name] : e.target.value
     });
   };
@@ -66,13 +58,23 @@ const ProfileEdit = ()=>{
 
   //프로필 수정 처리
   const updateProfile = ()=>{
-    const copyProfile = {...profileone};
+    const {
+      empTel, 
+      empEmail, 
+      profileTitle, 
+      profileContent} = profile;
+
     // delete copyProfile.profileNo;
 
     axios({
       url:`http://localhost:8080/profile/${loggedInEmpNo}`,
       method:"put",
-      data:copyProfile
+      data:{
+        empTel:empTel, 
+        empEmail:empEmail, 
+        profileTitle:profileTitle, 
+        profileContent:profileContent
+      }
     })
     .then(response=>{
       loadProfile(loggedInEmpNo);
@@ -80,7 +82,6 @@ const ProfileEdit = ()=>{
     })
     .catch(err=>{})
   };
-
 
 
 
@@ -124,15 +125,15 @@ const ProfileEdit = ()=>{
                     <div className="row">
                       <div className="col-6">
                         {/* <p>일단이미지번호들어오나보자 : 
-                            {profileone.attachNo}
+                            {profile.attachNo}
                         </p> */}
                         <img src ={surf} alt="profileImage"/>
                       </div>
                       <div className="col-6 mt-5">
-                        <p>부서 : {profileone.deptName}</p>
-                        <p>직위 : {profileone.empPositionName}</p>
-                        <p>이름 : {profileone.empName}</p>
-                        <p>입사일 : {profileone.empJoin}</p>
+                        <p>부서 : {profile.deptName}</p>
+                        <p>직위 : {profile.empPositionName}</p>
+                        <p>이름 : {profile.empName}</p>
+                        <p>입사일 : {profile.empJoin}</p>
                       </div>
                     </div>
 
@@ -143,28 +144,28 @@ const ProfileEdit = ()=>{
                         </div>
                         <div className="col-10">
                           <input type="tel" name="empTel" className="form-control" 
-                              value={profileone.empTel} onChange={changeProfile}/>
+                              value={profile.empTel} onChange={changeProfile}/>
                         </div>
                         <div className="col-2">
                           <p>이메일</p>
                         </div>
                         <div className="col-10">
                           <input type="email" name="empEmail" className="form-control" 
-                              value={profileone.empEmail} onChange={changeProfile}/>
+                              value={profile.empEmail} onChange={changeProfile}/>
                         </div>
                         <div className="col-2">
                           <p>소개</p>
                         </div>
                         <div className="col-10">
                           <input type="text" name="profileTitle" className="form-control" 
-                              value={profileone.profileTitle} onChange={changeProfile}/>
+                              value={profile.profileTitle} onChange={changeProfile}/>
                         </div>
                         <div className="col-2">
                           <p>내용</p>
                         </div>
                         <div className="col-10">
                           <textarea name="profileContent" className="form-control" rows="4"
-                              value={profileone.profileContent} onChange={changeProfile}/>
+                              value={profile.profileContent} onChange={changeProfile}/>
                         </div>
                       </div>
                     </div> 

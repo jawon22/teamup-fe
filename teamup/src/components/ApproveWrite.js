@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { receiverState, referrerState, userState } from "../recoil";
 import { useRecoilState } from "recoil";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { BsX } from "react-icons/bs";
 
 const ApproveWrite = (props)=>{
@@ -14,6 +15,7 @@ const ApproveWrite = (props)=>{
     const [refererList, setRefererList] = useState([]); // 참조자 처음 복제
 
     const empNo = parseInt(user.substring(6)); // 202302032
+    const navigate = useNavigate(); // 리다이렉트용
 
     useEffect(()=>{
         const emp = empList.find(em =>em.empNo === parseInt(empNo));
@@ -72,8 +74,8 @@ const ApproveWrite = (props)=>{
     const saveAppr = async()=>{
         const dataAll = {
             approveDto:appr,
-            receiversDto:savedValues.map(receiver => ({receiversReceiver : receiver.empNo})),
-            referrersDto:savedValues2.map(referer => ({referrersReferrer : referer.empNo}))
+            receiversDtoList:savedValues.map(receiver => ({receiversReceiver : receiver.empNo})),
+            referrersDtoList:savedValues2.map(referer => ({referrersReferrer : referer.empNo}))
         };
         const response = await axios({
             url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
@@ -81,6 +83,7 @@ const ApproveWrite = (props)=>{
             data: dataAll
         });
         // 등록 완료 알림?? 코드 작성하면 좋을듯  or  결재리스트로 이동?
+        navigate("/approveList");
     };
 
     //처음 페이지에서만 사원 정보 불어오기

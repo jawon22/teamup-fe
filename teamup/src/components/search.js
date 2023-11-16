@@ -72,50 +72,45 @@ const Search = () => {
     }, []);
 
 
-    
+    const [profileList, setProfileList] = useState([]);
+
     
     //프로필 조회
-    const loadProfile = (empNo) => {
+    const loadProfile = () => {
 
         axios ({
-            url:`http://localhost:8080/profile/${empNo}`,
+            url:"http://localhost:8080/profile/",
             method:"get",
         })
         .then(response =>{//성공
             console.log(response);
-            setProfile(response.data);
+            setProfileList(response.data);
         })
         .catch(err=>{
             console.error(err);
         });//실패
     };
+    console.log(setProfileList);
 
     useEffect(()=>{
-        loadProfile(profile.empNo);
+        loadProfile();
     },[]);
 
-    const [profile, setProfile] = useState({
-        attachNo:0,
-        empNo:0,
-        deptName:"",
-        empPositionName:"",
-        empName:"",
-        empTel:"",
-        empEmail:"",
-        empJoin:"",
-        profileTitle:"",
-        profileContent:""
-    });
-    const [profileone, setProfileone] =useState([]);
+    //모달과 연결된 state
+    const[profile, setProfile] = useState({});
+    
     
     
     // 프로필 버튼 클릭 시 처리
-    const handleProfileButtonClick = (empNo) => {
-        const findProfile = profile.find(pro=>pro.empNo === parseInt(empNo));
+    const handleProfileButtonClick = (emp) => {
+        //console.log(emp);
 
-        // 해당 직원의 프로필을 불러옴
-        setProfileone(findProfile);
+        const result = profileList.filter(prof=>prof.empNo === emp.empNo);
 
+        //검색결과가 없으면 stop
+        if(result.length === 0) return;
+
+        setProfile({...result[0]});
         // 모달 창 열기
         openModal();
     };
@@ -197,7 +192,7 @@ const Search = () => {
                                 <td>{list.empJoin}</td>
                                 <td>{list.empTel}</td>
                                 <td>
-                                    <button className="btn btn-sm btn-primary" onClick={() => handleProfileButtonClick(list.empNo)}>프로필</button>
+                                    <button className="btn btn-sm btn-primary" onClick={e=>handleProfileButtonClick(list)}>프로필</button>
                                 </td>
                             </tr>
                         ))}
@@ -225,27 +220,27 @@ const Search = () => {
                                         <div className="row">
                                             <div className="col-6">
                                                 {/* <p>일단이미지번호들어오나보자 : 
-                                                    {profileone.attachNo}
+                                                    {profile.attachNo}
                                                 </p> */}
                                                 <img src ={surf} alt="profileImage"/>
                                             </div>
                                             <div className="col-6 mt-5">
-                                                <p>부서 : {profileone.deptName}</p>
-                                                <p>직위 : {profileone.empPositionName}</p>
-                                                <p>이름 : {profileone.empName}</p>
+                                                <p>부서 : {profile.deptName}</p>
+                                                <p>직위 : {profile.empPositionName}</p>
+                                                <p>이름 : {profile.empName}</p>
                                             </div>
                                         </div>
                                             <div className="row">
                                                 <div className="col">
-                                                    <p>연락처 : {profileone.empTel}</p>
-                                                    <p>이메일 : {profileone.empEmail}</p>
-                                                    <p>입사일 : {profileone.empJoin}</p>
+                                                    <p>연락처 : {profile.empTel}</p>
+                                                    <p>이메일 : {profile.empEmail}</p>
+                                                    <p>입사일 : {profile.empJoin}</p>
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col">
-                                                    <p>소개 : {profileone.profileTitle}</p>
-                                                    <p>내용 : {profileone.profileContent}</p>
+                                                    <p>소개 : {profile.profileTitle}</p>
+                                                    <p>내용 : {profile.profileContent}</p>
                                                 </div>
                                             </div>
                                     </div>
