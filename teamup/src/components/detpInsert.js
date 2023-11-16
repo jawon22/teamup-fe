@@ -295,6 +295,7 @@ const DeptInsert = () => {
             if (response.data != null) {
                 alert("성공");
                 closeModal2()
+                loadDetpList();
             }
 
             // 성공 후에 상태 초기화 또는 필요한 작업 수행
@@ -556,8 +557,8 @@ const DeptInsert = () => {
                             <div className="modal-body">
 
                                 이름<input className="form-control" name="empName" value={empData.empName} onChange={changeEmpChange} />
-                                전화번호<input type="hidden" className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
-                                <input className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
+                                전화번호<input className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
+                                <input  type="hidden" className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
                                 직급선택<select className="form-control" name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange}>
                                     {positionList.map((position) => (
 
