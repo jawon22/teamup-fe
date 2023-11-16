@@ -13,7 +13,7 @@ const DeptCalendar = () => {
 
     const [user] = useRecoilState(userState);
     const empNo = user.substring(6);
-    const deptNo =user.substring(4,5)
+    const deptNo =user.substring(4,6)
 
 
 
@@ -48,19 +48,22 @@ const DeptCalendar = () => {
 
     const clickedEvent = e.event;
     const clickedEventId = clickedEvent.id;
-    console.log("=", isEventClicked);
+    console.log("=", clickedEvent);
+
+
+    console.log("???",schedule)
 
 
     // 이벤트의 정보를 setSchedule 함수로 저장
 
     setSchedule({
-      empNo: empNo,
+      deptNo: deptNo,
       calNo: clickedEventId,
       calStartDate: moment(clickedEvent.start).format('YYYY-MM-DD'), // moment.js를 사용하여 날짜 포맷 변경
       calEndDate: moment(clickedEvent.end).format('YYYY-MM-DD'),
       calTitle: clickedEvent.title,
-      calContent: clickedEvent.title, // 예시로 title을 사용했습니다. 실제로 사용하는 데이터에 따라 수정하세요.
-      calColor: clickedEvent.color
+      calContent: clickedEvent.extendedProps.content , 
+      calColor: clickedEvent.borderColor
     });
 
     // setSchedule이 비동기적으로 동작하므로 업데이트된 schedule을 확인하기 위해 로그를 찍어보세요.
@@ -80,7 +83,7 @@ const DeptCalendar = () => {
 
   const [schedule, setSchedule] = useState({
     calNo: "",
-    empNo: empNo,
+    deptNo: deptNo,
     calStartDate: "",
     calEndDate: "",
     calTitle: "",
@@ -90,7 +93,7 @@ const DeptCalendar = () => {
 
   const clearSchedule = () => {
     setSchedule({
-      empNo: empNo,
+        deptNo: deptNo,
       calStartDate: "",
       calEndDate: "",
       calTitle: "",
@@ -117,7 +120,7 @@ const DeptCalendar = () => {
 
   const addSchedule = () => {
     axios({
-      url: "http://localhost:8080/cal_emp/",
+      url: "http://localhost:8080/cal_emp/dpetadd/",
       method: "post",
       data: schedule
 
@@ -130,13 +133,16 @@ const DeptCalendar = () => {
   };
   const editSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/updateCal/${schedule.calNo}`,
+      url: `http://localhost:8080/cal_emp/updateDeptCal/${schedule.calNo}`,
       method: "put",
       data: schedule
     })
       .then(response => {
         console.log(response);
         console.log(schedule.calNo);
+        closeModal();
+        clearSchedule();
+        loadSchedule()
       })
       .catch(error => {
         console.error("Edit Schedule Error:", schedule.calNo);
@@ -174,7 +180,7 @@ const DeptCalendar = () => {
   // 일정 불러오기
   const loadSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/list/${empNo}`,
+      url: `http://localhost:8080/cal_emp/deptList/${deptNo}`,
       method: "get"
     }).then(response => {
       console.log(response);
@@ -268,16 +274,13 @@ const DeptCalendar = () => {
   ///삭제 
   const deleteSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/delete/${schedule.calNo}`,
+      url: `http://localhost:8080/cal_emp/deleteDeptCal/${schedule.calNo}`,
       method: "delete",
 
 
 
     }).then(response => {
       if (response.data !== null) alert("삭제되었습니다")
-
-
-   
     });
 
   };
@@ -381,8 +384,8 @@ const DeptCalendar = () => {
                       Color <select type="text" name="calColor" onChange={changeSchedule} className="form-control" value={schedule.calColor} >
                         <option>----선택----</option>
                         <option value={"#E0FFFF"}>1</option>
-                        <option value={"#E6E6FA"}>1</option>
-                        <option value={"#FFF0F5"}>1</option>
+                        <option value={"#E6E6FA"}>2</option>
+                        <option value={"#FFF0F5"}>3</option>
                       </select>
                     </div>
                   </div>
