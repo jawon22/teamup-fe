@@ -305,3 +305,16 @@ label{
 .d-flex.icons-container > div {
     margin-right: 10px; /* 각 아이콘 사이 간격 조절 */
 }
+
+.text-green {
+    color:#165849;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.t-border {
+    border-width: 1px;
+    border-color: #218C74;
+}

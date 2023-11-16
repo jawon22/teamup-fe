@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { userState } from "../recoil";
 import axios from "axios";
 import Attend from './attend';
+import AttendDetail from './attendDetail';
 
 const Mypage = () => {
     const [empInfo, setEmpInfo] = useState({
@@ -35,47 +36,72 @@ const Mypage = () => {
 
     return (
         <>
-            <div className="container">
+            <div className="container m-5">
 
-                <div className="row mt-4">
-                    <div className="col-8 offset-4">
-                        <h1>마이페이지</h1>
+                {/* 마이페이지 상세 */}
+                <div className="row mt-4 mp-bg text-green">
+                    <div className="col-4 offset-4">
+
+                        <div className="row mt-3">
+                            <div className="col-6 text-bold">부서번호</div>
+                            <div className="col-6">{empInfo.deptNo}</div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-6 text-bold">사원번호</div>
+                            <div className="col-6">{empInfo.empId}</div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-6 text-bold">이름</div>
+                            <div className="col-6">{empInfo.empName}</div>
+                        </div> 
+                        <div className="row mt-2">
+                            <div className="col-6 text-bold">연락처</div>
+                            <div className="col-6">{empInfo.empTel}</div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-6 text-bold">이메일</div>
+                            <div className="col-6">{empInfo.empEmail}</div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-6 text-bold">직급</div>
+                            <div className="col-6">{empInfo.empPositionNo}</div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-6 text-bold">가입일</div>
+                            <div className="col-6">{empInfo.empJoin}</div>
+                        </div>
+                        <div className="row mt-2 mb-3">
+                            <div className="col-6 text-bold">회사아이디</div>
+                            <div className="col-6">{empInfo.comId}</div>
+                        </div>
+
                     </div>
                 </div>
-
-                <div className="row mt-4 mp-bg">
-                    <div className="col-8 offset-4">
-                        {empNo}
-                        이름: {empInfo.empName} <br />
-                        부서번호: {empInfo.deptNo} <br />
-                        사원번호: {empInfo.empId} <br />
-                        회사아이디: {empInfo.comId} <br />
-                        이메일: {empInfo.empEmail} <br />
-                        직급: {empInfo.empPositionNo} <br />
-                        이름: {empInfo.empTel} <br />
-                        이름: {empInfo.empJoin} <br />
-                    </div>
-                </div>
-
-                <div className="row mt-4">
-
+                        
+                <div className="row mt-4 text-green">
+                    {/* 연차 관리 */}
                     <div className="col-6 text-center">
-                        {/* 연차 관리 */}
-                        <div className="row mp-bg m-3">
+                        <div className="row mp-bg mb-4 me-1">
                             <div className="col-12">
                                 연차 관리
                             </div>
                         </div>
                     </div>
 
-                    <div className="col-6 text-center">
-                        {/* 근태 관리 */}
-                        <div className="row mp-bg m-3">
+                    {/* 근태 관리 */}
+                    <div className="col-6 text-center text-green text-bold">
+                        <div className="row mp-bg mb-4 ms-1">
                             <div className="col-12">
-                            <Attend />
-                                
+                            <Attend/>   
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                {/* 근태 관리 상세 */}
+                <div className="row p-5 text-center green-color mp-bg">
+                    <div className="col-12">
+                        <AttendDetail/>
                     </div>
                 </div>
 
