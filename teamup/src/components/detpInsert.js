@@ -473,6 +473,7 @@ const DeptInsert = () => {
                         <tabel className="table table-border">
                             <thead>
                                 <tr>
+                                    <th>직급</th>
                                     <th>사원명</th>
                                     <th>사원번호</th>
                                     <th>Email</th>
@@ -484,6 +485,7 @@ const DeptInsert = () => {
                                     .filter((emp) => emp.empExit === null)
                                     .map((emp) => (
                                         <tr key={emp.empId}>
+                                            <td>{emp.empPositionName}</td>
                                             <td>{emp.empName}</td>
                                             <td>{emp.empId}</td>
                                             <td>{emp.empEmail}</td>
