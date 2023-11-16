@@ -10,7 +10,6 @@ const ApproveList = (props)=>{
     const location = useLocation();
     const [user,setUser] = useRecoilState(userState);
     const [apprList,setApprList] = useState([]); //결재 계층형 데이터(처음에 오는 것)
-    const [copyApprList, setCopyApprList] = useState([]);
     const [approveDto, setApproveDto] = useState([]); //결재 appr + apprPath번호 + 이름 + 전화번호 저장
     const [receiver, setReceiver] = useState([]); //승인자만 저장
     const [referer, setReferer] = useState([]);; //참조자만 저장
@@ -43,17 +42,6 @@ const ApproveList = (props)=>{
         setReferer(referersList);
     }
     
-    const loadAppr = ()=>{
-        axios({
-            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
-            method:"get"
-        })
-        .then(response=>{
-            setApprList(response.data);
-            setCopyApprList(response.data);
-        })
-    };
-
     console.log(apprList);
     // console.log(approveDto);
     // console.log(receiver);
@@ -62,47 +50,64 @@ const ApproveList = (props)=>{
     // 수신버튼을 눌렀을때 (페이지 기본)
     // 로그인한 사람이 결재의 승인자로 지정 되어있는 기안만
     const susinButton = ()=>{
-        const updateApprList = copyApprList.filter((appr)=> 
-            appr.receiversDtoList.some((receiver)=> receiver.receiversReceiver === empNo));
-        setApprList(updateApprList);
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
+            method:"get"
+        })
+        .then(response=>{
+            const updateApprList = response.data.filter((appr)=> 
+                appr.receiversDtoList.some((receiver)=> receiver.receiversReceiver === empNo));
+            setApprList(updateApprList);
+        });
     };
     
     // 발신버튼을 눌렀을때
     // 로그인한 사람이 작성한 기안만 + 진행상태가 진행중
     const barsinButton = ()=>{
-        const updateApprList = copyApprList.filter((appr) => 
-        appr.approveDto.apprSender === empNo &&
-        appr.status ==='진행');
-        setApprList(updateApprList);
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
+            method:"get"
+        })
+        .then(response=>{
+            const updateApprList = response.data.filter((appr) => 
+            appr.approveDto.apprSender === empNo &&
+                appr.status ==='진행');
+            setApprList(updateApprList);
+        });
     }
 
     // 완료버튼을 눌렀을때
     // 로그인한 사람이 작성한 기안 + 진행상태가 반료or완료
     const checkButton = ()=>{
-        const updateApprList = copyApprList.filter((appr) => 
-            appr.approveDto.apprSender === empNo &&
-            appr.status !== '진행');
-        setApprList(updateApprList);
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
+            method:"get"
+        })
+        .then(response=>{
+            const updateApprList = response.data.filter((appr) => 
+                appr.approveDto.apprSender === empNo &&
+                appr.status !== '진행');
+            setApprList(updateApprList);
+        });
     }
 
     // 참조버튼을 눌렀을때
     // 로그인한 사람이 결재의 참조자로 지정 되어있는 기안만
     const chamjoButton = ()=>{
-        const updateApprList = copyApprList.filter((appr)=> 
-            appr.referrersDtoList.some((referer)=> referer.referrersReferrer === empNo));
-        setApprList(updateApprList);
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
+            method:"get"
+        })
+        .then(response=>{
+            const updateApprList = response.data.filter((appr)=> 
+                appr.referrersDtoList.some((referer)=> referer.referrersReferrer === empNo));
+            setApprList(updateApprList);
+        });
     };
-
     
     useEffect(()=>{
-        loadAppr();
+        susinButton();
     },[]);
-
-    // useEffect(()=>{
-    //     divideApproveDto();
-    //     divideReceiversDto();
-    //     divideReferersDto();
-    // },[apprList]);
 
     return(
         <div className="container-fluid">
@@ -139,8 +144,6 @@ const ApproveList = (props)=>{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* {apprList[0].approveDto.apprNo} */}
-                                    
                                     {apprList.map((appr,index)=>(
                                         <tr key={index}>
                                             <td className='text-start'>{appr.approveDto.apprTitle}</td>
