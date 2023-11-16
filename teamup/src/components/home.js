@@ -90,14 +90,14 @@ useEffect(() => {
         <div className="row ms-3">
 
 
-            <div className="col-3">
+            <div className="home-profile col-3">
 
               <div className="row border border-primary h-100">
                     <h1 >홈페이지</h1>
                     <CgProfile className="me-3" size={150}style={{color:'#218C74'}} />
                   <div className="d-flex">
                   <div>{attendList.attendStart}</div>
-                  <button className="btn btn-primary" onClick={attendClick}>출근하기</button>
+                  <button className="btn btn-primary" >출근하기</button>
                   </div>
                   <div className="d-flex">
                     <div>시간</div>
@@ -110,7 +110,7 @@ useEffect(() => {
 
             </div>
 
-            <div className="col-5">
+            <div className="home-center col-5">
                 <div className="row border border-primary h-50">
                   공지사항
                 </div>
@@ -122,7 +122,7 @@ useEffect(() => {
                 </div>
             </div>
 
-            <div className="col-4 border border-primary h-100">
+            <div className="home-calendar col-4 border border-primary h-100">
             <Calendar/>
             </div>
 
@@ -132,20 +132,6 @@ useEffect(() => {
     </div>);
 
 
-          <div className="d-flex">
-            <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-            <button className="btn btn-primary" onClick={attendStartClick} disabled={isAttendClicked}>
-              출근하기
-            </button>
-          </div>
-          <div className="d-flex">
-            <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-            <button className="btn btn-primary" onClick={attendEndClick}>퇴근하기</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 };
 
 export default Home;
