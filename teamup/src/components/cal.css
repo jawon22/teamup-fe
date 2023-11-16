@@ -43,3 +43,35 @@ body.modal-open .modal {
   body.modal-open .modal.show {
     background: rgba(0, 0, 0, 0.5); /* 모달이 열릴 때만 배경 어둡게 만들어 사용자에게 시각적 피드백 제공 */
   }
+
+
+ /* 이전 버튼 */
+.fc-prev-button {
+  background-color: #218C74;
+}
+
+/* 다음 버튼 */
+.fc-next-button {
+  background-color: #218C74;
+}
+
+/* 오늘 버튼 */
+.fc-today-button {
+  background-color: #218C74;
+}
+
+/* 월간 보기 버튼 */
+.fc-month-button {
+  background-color: #218C74;
+}
+
+/* 주간 보기 버튼 */
+.fc-week-button {
+  background-color: #218C74;
+}
+
+/* 일간 보기 버튼 */
+.fc-day-button {
+  background-color: #218C74;
+}
+

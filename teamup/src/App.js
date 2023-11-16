@@ -23,6 +23,7 @@ import SalList from './components/SalList';
 
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
+import DeptCalendar from './components/deptCalendar';
 
 function App() {
   const location = useLocation();
@@ -85,6 +86,7 @@ function App() {
                     <Route path="/calendar" element={<Calendar/>}></Route>
                     <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
                     <Route path='/salList' element={<SalList/>}></Route>
+                    <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
 
                     {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                     <Route path="/profileEdit" element={<ProfileEdit/>}></Route>

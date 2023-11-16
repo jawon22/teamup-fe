@@ -8,10 +8,15 @@ import { Modal } from "bootstrap";
 import { useRecoilState } from "recoil";
 import { companyState, userState } from "../recoil";
 import moment from 'moment';
-const Calendar = () => {
+const DeptCalendar = () => {
 
-  const [user] = useRecoilState(userState);
-  const empNo = user.substring(6);
+
+    const [user] = useRecoilState(userState);
+    const empNo = user.substring(6);
+    const deptNo =user.substring(4,5)
+
+
+
   const [comId] = useRecoilState(companyState);
 
   // const eventClick = (e) => {
@@ -132,9 +137,6 @@ const Calendar = () => {
       .then(response => {
         console.log(response);
         console.log(schedule.calNo);
-        closeModal();
-        clearSchedule();
-        loadSchedule()
       })
       .catch(error => {
         console.error("Edit Schedule Error:", schedule.calNo);
@@ -273,6 +275,9 @@ const Calendar = () => {
 
     }).then(response => {
       if (response.data !== null) alert("삭제되었습니다")
+
+
+   
     });
 
   };
@@ -428,4 +433,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default DeptCalendar; 
