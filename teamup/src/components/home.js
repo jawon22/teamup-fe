@@ -42,16 +42,18 @@ const Home = () => {
     attendClick();
   }, []);
 
-  return (
-    <>
-      <h1>홈페이지</h1>
+    return (
+    <div className="container-fluid">
+        <div className="row ms-3">
+            <div className="col">
+                <h1 >홈페이지</h1>
 
-      <NavLink to="/myPage">마이페이지</NavLink> <br />
-      <NavLink to="/profileEdit">프로필 수정(마이페이지에 넣을껍니당)</NavLink>
-
-      <div className="d-flex">
-        <div>{attendList.attendStart}</div>
-        <button className="btn btn-primary" onClick={attendClick}>
+        <NavLink to="/myPage">마이페이지</NavLink> <br/>
+        <NavLink to="/profileEdit">프로필 수정(마이페이지에 넣을껍니당)</NavLink> <br/>
+        <NavLink to="/calendar">일정</NavLink>
+          <div className="d-flex">
+          <div>{attendList.attendStart}</div>
+          <button className="btn btn-primary" onClick={attendClick}>
           출근하기
         </button>
       </div>
@@ -59,8 +61,15 @@ const Home = () => {
         <div>시간</div>
         <button className="btn btn-primary">퇴근하기</button>
       </div>
-    </>
-  );
+         
+  
+
+            </div>
+        </div>
+  
+  
+    </div>);
+
 };
 
 export default Home;

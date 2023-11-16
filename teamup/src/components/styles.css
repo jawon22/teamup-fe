@@ -19,7 +19,7 @@
 
 
 .main-content.container-fluid{
-    margin-left: 20px;
+    /* margin-left: 20px; */
     transition: margin-left 1s;
 }
 
@@ -271,7 +271,7 @@ li {
        display: none;
     }
     .home-link.nav-link {
-        padding-top: 70px; /* 조정할 값으로 변경하세요 */
+        margin-top: 70px; /* 조정할 값으로 변경하세요 */
     }
 }
 
@@ -293,9 +293,10 @@ li {
     border-radius: 10px;
 }
 
-label{
+.nav-link span{
     color: white;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .d-flex.icons-container {

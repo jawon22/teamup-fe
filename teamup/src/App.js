@@ -22,13 +22,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import SalList from './components/SalList';
 
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
+import Calendar from './components/calendar';
 
 function App() {
   const location = useLocation();
   return (
   <>
-        <div className=' main-content container-fluid '>
-        <Sidebar />
+    <div className='main-content container-fluid'>
+      <Sidebar/>
 
         <div className='row ms-5 mt-3'>
           <div className='col-md-10 offset-md-1 me-5'>
@@ -81,39 +82,35 @@ function App() {
                     <Route path='/login' element={<Login/>}></Route>
                     <Route path="/mypage" element={<Mypage/>}></Route>
                     <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+                    <Route path="/calendar" element={<Calendar/>}></Route>
+                    <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
+                    <Route path='/salList' element={<SalList/>}></Route>
 
                     {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                     <Route path="/profileEdit" element={<ProfileEdit/>}></Route>
-
-                    <Route path='companyJoin' element={<CompanyJoin/>}></Route>
-                    <Route path="/salList" element={<SalList/>}></Route>
-
-                  </Routes>
-                </div>
-
-
-                {/* 조직도  */}
-                <div className='row'><div className='col-10 offset-1'>   
-                    <div className="offcanvas offcanvas-end" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                    <div className="offcanvas-header">
-                            <h5 className="offcanvas-title" id="offcanvasRightLabel">조직도</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div className="offcanvas-body">
-                            조직도 자리 
-                        </div>
-                    </div>
-                </div></div>
-
-
-
-
          
-        </div> </div>
+              </Routes>
+            </div>
 
-      
-       
+            {/* 조직도  */}
+            <div className='row'>
+              <div className='col-10 offset-1'>   
+                <div className="offcanvas offcanvas-end" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                  <div className="offcanvas-header">
+                      <h5 className="offcanvas-title" id="offcanvasRightLabel">조직도</h5>
+                      <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                  <div className="offcanvas-body">
+                    조직도 자리 
+                  </div>
+                </div>
+              </div>
+            </div>
+         
+          </div> 
         </div>
+       
+    </div>
   
   </>
   );
