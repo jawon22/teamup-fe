@@ -34,8 +34,12 @@ const Attend = (props) => {
     ).length;
 
     // - 총 근무 시간 계산
+    // - 총 근무 시간 계산
     const totalWorkingHours = attendList.reduce((total, attend) => {
-        return total + attend.workingTimes;
+        if (attend.attendStart !== null && attend.attendEnd !== null) {
+            return total + attend.workingTimes;
+        }
+        return total;
     }, 0);
 
     // - attendList에서 최신 날짜의 년도와 월을 가져오는 함수
