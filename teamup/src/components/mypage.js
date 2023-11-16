@@ -48,7 +48,7 @@ const Mypage = () => {
                         </div>
                         <div className="row mt-2">
                             <div className="col-6 text-bold">사원번호</div>
-                            <div className="col-6">{empInfo.empId}</div>
+                            <div className="col-6">{empInfo.empNo}</div>
                         </div>
                         <div className="row mt-2">
                             <div className="col-6 text-bold">이름</div>

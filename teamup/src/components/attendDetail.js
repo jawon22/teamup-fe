@@ -76,9 +76,9 @@ const Attend = (props) => {
                         {attendList.map(attendLists=>(
                         <tr key={attendLists.empNo}>
                             <td>{attendLists.dt}</td>
-                            <td>{formatTime(attendLists.attendStart)}</td>
-                            <td>{formatTime(attendLists.attendEnd)}</td>
-                            <td>{attendLists.workingTimes} 시간</td>
+                            <td>{attendLists.attendStart ? formatTime(attendLists.attendStart) : "-"}</td>
+                            <td>{attendLists.attendEnd ? formatTime(attendLists.attendEnd) : "-"}</td>
+                            <td>{attendLists.attendEnd ? attendLists.workingTimes + " 시간": "-"}</td>
                             <td>?</td>
                         </tr>
                         ))}
