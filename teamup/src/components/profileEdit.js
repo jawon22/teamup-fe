@@ -6,7 +6,13 @@ import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 
 const ProfileEdit = ()=>{
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState({
+    profileImage:null,
+    empTel:"",
+    empEmail:"",
+    profileTitle:"",
+    profileContent:""
+  });
 
   const [user, setUser] = useRecoilState(userState);
   const loggedInEmpNo = parseInt(user.substring(6));
@@ -30,7 +36,7 @@ const ProfileEdit = ()=>{
 
   useEffect(()=>{
     loadProfile(loggedInEmpNo);
-  },[loggedInEmpNo]);
+  },[]);
   
 
   // 프로필 수정창 열기
@@ -57,24 +63,51 @@ const ProfileEdit = ()=>{
 
 
   //프로필 수정 처리
-  const updateProfile = ()=>{
-    const {
-      empTel, 
-      empEmail, 
-      profileTitle, 
-      profileContent} = profile;
+  const updateProfile = async()=>{
 
-    // delete copyProfile.profileNo;
+    const copyProfile = {...profile};
+    // delete copyProfile.attachNo;// 불필요한 attachNo 삭제
 
+    //이미지 파일 가져가기(input[type="file"]을 사용한다고 가정)
+    const changeImage = document.getElementById("changeImage");
+    const profileImage = changeImage.files[0];
+    
+    // try{
+    //프로필 데이터를 FormData로 만듦
+    const formData = new FormData();
+    formData.append("attachNo", copyProfile.attachNo);
+    formData.append("empTel", copyProfile.empTel);
+    formData.append("empEmail", copyProfile.empEmail);
+    formData.append("profileTitle", copyProfile.profileTitle);
+    formData.append("profileContent", copyProfile.profileContent);
+    formData.append("profileImage", profileImage);
+    // console.log(profileImage);
+
+  //   const response = await axios.put(
+  //     `http://localhost:8080/profile/${loggedInEmpNo}`,
+  //     formData,
+  //     {
+  //       headers:{"Content-Type" : "multipart/form-data"},
+  //     }
+  //   );
+
+  //     // 등록 후 목록을 다시 불러오기
+  //     loadProfile(loggedInEmpNo);
+  //     closeModal();
+  //   }
+  //   catch(error){
+  //     console.error("이미지등록 실패");
+  //   }
+  // };
+  
+      
     axios({
       url:`http://localhost:8080/profile/${loggedInEmpNo}`,
       method:"put",
-      data:{
-        empTel:empTel, 
-        empEmail:empEmail, 
-        profileTitle:profileTitle, 
-        profileContent:profileContent
-      }
+      data:formData,
+      headers:{
+        "Content-Type" : "multipart/form-data",
+      },
     })
     .then(response=>{
       loadProfile(loggedInEmpNo);
@@ -84,18 +117,35 @@ const ProfileEdit = ()=>{
   };
 
 
+  //이미지 미리보기 업데이트
+  const updateImagePreview = ()=>{
+    const changeImage = document.getElementById("changeImage");
+    const previewImage = document.getElementById("previewImage");
+
+    if(changeImage.files && changeImage.files[0]){
+      const reader = new FileReader();
+
+      reader.onload = (e) =>{
+        previewImage.src = e.target.result;
+      };
+
+      reader.readAsDataURL(changeImage.files[0]);
+    }
+  };
+
 
 
   //모달 관련 처리
   const bsModal = useRef();
   const openModal = () =>{
-      const modal = new Modal(bsModal.current);
-      modal.show();
+    updateImagePreview();
+    const modal = new Modal(bsModal.current);
+    modal.show();
   };
   const closeModal = () =>{
-      const modal = Modal.getInstance(bsModal.current);
-      modal.hide();
-      // clearProfile();
+    const modal = Modal.getInstance(bsModal.current);
+    modal.hide();
+    // clearProfile();
   };
 
 
@@ -109,7 +159,7 @@ const ProfileEdit = ()=>{
 
       {/* Modal */}
       <div className="modal fade" ref={bsModal} 
-              data-bs-backdrop="static" tabIndex="-1" role="dialog" aria-hidden="true">
+              data-bs-backdrop="static" tabIndex={1} role="dialog" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -120,14 +170,15 @@ const ProfileEdit = ()=>{
             </div>
             <div className="modal-body">
               <div className="container-fluid">
-                <div className="row">
-                  <div className="col">
+
                     <div className="row">
-                      <div className="col-6">
+                      <div className="col-6 mt-4 text-center">
                         {/* <p>일단이미지번호들어오나보자 : 
                             {profile.attachNo}
                         </p> */}
-                        <img src ={surf} alt="profileImage"/>
+                        <img src ={surf} alt="profileImage" id="previewImage" className="rounded-circle" 
+                                style={{width:"180px", height:"180px", objectFit:"cover"}}/>
+                        <input type="file" name="profileImage" id="changeImage" onChange={updateImagePreview}/>
                       </div>
                       <div className="col-6 mt-5">
                         <p>부서 : {profile.deptName}</p>
@@ -146,6 +197,8 @@ const ProfileEdit = ()=>{
                           <input type="tel" name="empTel" className="form-control" 
                               value={profile.empTel} onChange={changeProfile}/>
                         </div>
+                      </div>  
+                      <div className="row">  
                         <div className="col-2">
                           <p>이메일</p>
                         </div>
@@ -153,6 +206,8 @@ const ProfileEdit = ()=>{
                           <input type="email" name="empEmail" className="form-control" 
                               value={profile.empEmail} onChange={changeProfile}/>
                         </div>
+                      </div>  
+                      <div className="row">
                         <div className="col-2">
                           <p>소개</p>
                         </div>
@@ -160,6 +215,8 @@ const ProfileEdit = ()=>{
                           <input type="text" name="profileTitle" className="form-control" 
                               value={profile.profileTitle} onChange={changeProfile}/>
                         </div>
+                      </div>
+                      <div className="row">
                         <div className="col-2">
                           <p>내용</p>
                         </div>
@@ -167,11 +224,10 @@ const ProfileEdit = ()=>{
                           <textarea name="profileContent" className="form-control" rows="4"
                               value={profile.profileContent} onChange={changeProfile}/>
                         </div>
+
                       </div>
                     </div> 
 
-                  </div>
-                </div>
               </div>
             </div>
             <div className="modal-footer">

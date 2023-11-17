@@ -63,6 +63,7 @@ function App() {
                 <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
                 <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
                 <button className="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">조직도</button>
+                <NavLink to="/profileEdit"className="ms-1">프로필</NavLink>
               </Navbar.Brand>
             </div>
             <div className='col-4'>

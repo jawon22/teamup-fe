@@ -178,12 +178,11 @@ const Search = () => {
                             <th>email</th>
                             <th>입사일</th>
                             <th>전화번호</th>
-                            <th>프로필</th>
                         </tr>
                     </thead>
                     <tbody >
                         {searchList.map(list => (
-                            <tr key={list.empNo}>
+                            <tr key={list.empNo} onClick={e=>handleProfileButtonClick(list)}>
                                 <td>{list.empId}</td>
                                 <td>{list.deptName}</td>
                                 <td>{list.empPositionName}</td>
@@ -191,9 +190,9 @@ const Search = () => {
                                 <td>{list.empEmail}</td>
                                 <td>{list.empJoin}</td>
                                 <td>{list.empTel}</td>
-                                <td>
+                                {/* <td>
                                     <button className="btn btn-sm btn-primary" onClick={e=>handleProfileButtonClick(list)}>프로필</button>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                     </tbody>
