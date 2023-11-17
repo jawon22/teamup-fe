@@ -16,7 +16,6 @@ const DeptCalendar = () => {
     const deptNo =user.substring(4,6)
 
 
-
   const [comId] = useRecoilState(companyState);
 
   // const eventClick = (e) => {
@@ -367,7 +366,7 @@ const DeptCalendar = () => {
 
       <div>
 
-        <div className="modal fade" ref={bsModal} keyboard={false} backdrop="static" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" ref={bsModal} keyboard={'false'} backdrop="static" id="exampleModal" tabindex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">

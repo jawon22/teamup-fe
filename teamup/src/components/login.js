@@ -24,20 +24,17 @@ const Login = () => {
             data: loginUser
 
         }).then(response => {
-            console.log(response.data)
             if (response.data !== null) {
-                Cookies.set('userId',response.data);
-               const decode = jwtDecode(response.data); 
+                console.log(response.data)
+                Cookies.set('userId', response.data);
 
-
-                const userId = decode.sub;
 
                 
 
 
 
                 // 리코일에 저장
-                setUser(userId);
+          
                 setTimeout(() => {
                     navigate('/home');
                 }, 500);
