@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { userState } from '../recoil';
 import axios from "axios";
 import { useLocation } from 'react-router-dom'
@@ -89,14 +89,19 @@ const SalList=(prop)=>{
     };
 
     //실지급액
-    const totalSal = parseFloat(salList.salListTotal) - parseFloat(salList.salListHealth)
-        - parseFloat(salList.salListLocal) - parseFloat(salList.salListLtcare)
-        - parseFloat(salList.salListNational) - parseFloat(salList.salListWork);
+    //- useMemo : 특정 값이 변할 때에만 계산하도록 처리
+    const totalSal = useMemo(()=>{
+        return parseFloat(salList.salListTotal || 0) - parseFloat(salList.salListHealth || 0)
+        - parseFloat(salList.salListLocal || 0) - parseFloat(salList.salListLtcare || 0)
+        - parseFloat(salList.salListNational || 0) - parseFloat(salList.salListWork || 0)
+    }, [salList]);
 
     //총공제액
-    const totalTax = parseFloat(salList.salListHealth)
-    + parseFloat(salList.salListLocal) + parseFloat(salList.salListLtcare)
-    + parseFloat(salList.salListNational) + parseFloat(salList.salListWork);
+    const totalTax = useMemo(()=>{
+        return parseFloat(salList.salListHealth || 0)
+        + parseFloat(salList.salListLocal || 0) + parseFloat(salList.salListLtcare || 0)
+        + parseFloat(salList.salListNational || 0) + parseFloat(salList.salListWork || 0)
+    },[salList]);
 
     return(
 
@@ -126,7 +131,7 @@ const SalList=(prop)=>{
                     <hr className='text-primary'/>
                     </div>
                     <div className='col-3 h4'>
-                    {totalSal.toLocaleString()}원                      
+                    {totalSal}원                      
                     </div>
                 </div>
 
@@ -139,7 +144,7 @@ const SalList=(prop)=>{
                                 <div className=''>총 지급액</div>
                                 </div>
                                 <div className='col-6 text-end'>
-                                <div>{salList.salListTotal.toLocaleString()}원</div>                       
+                                <div>{salList.salListTotal}원</div>                       
                                 </div>
                             </div>
                             <div>
@@ -154,7 +159,7 @@ const SalList=(prop)=>{
                                 <div>총 공제액</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{totalTax.toLocaleString()}원</div>                                             
+                                <div>{totalTax}원</div>                                             
                             </div>
                             <div>
                                 <hr className='border border-primary border-2'/>
@@ -165,7 +170,7 @@ const SalList=(prop)=>{
                                 <div>건강보험료</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListHealth.toLocaleString()}원</div>                                             
+                                <div>{salList.salListHealth}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -176,7 +181,7 @@ const SalList=(prop)=>{
                                 <div>지방소득세</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListLocal.toLocaleString()}원</div>                                             
+                                <div>{salList.salListLocal}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -187,7 +192,7 @@ const SalList=(prop)=>{
                                 <div>장기요양보험료</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListLtcare.toLocaleString()}원</div>                                             
+                                <div>{salList.salListLtcare}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -198,7 +203,7 @@ const SalList=(prop)=>{
                                 <div>근로소득세</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListWork.toLocaleString()}원</div>                                             
+                                <div>{salList.salListWork}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -209,7 +214,7 @@ const SalList=(prop)=>{
                                 <div>국민연금</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListNational.toLocaleString()}원</div>                                             
+                                <div>{salList.salListNational}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
