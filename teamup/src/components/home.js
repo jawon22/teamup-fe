@@ -90,7 +90,7 @@ useEffect(() => {
         <div className="row ms-3">
 
 
-            <div className="col-3">
+            <div className="home-profile col-3">
 
               <div className="row border border-primary h-100">
                     <h1 >홈페이지</h1>
@@ -98,6 +98,7 @@ useEffect(() => {
                   <div className="d-flex">
                   <div>{attendList.attendStart}</div>
                   <button className="btn btn-primary" >출근하기</button>
+
 
                   </div>
                   <div className="d-flex">
@@ -111,7 +112,7 @@ useEffect(() => {
 
             </div>
 
-            <div className="col-5">
+            <div className="home-center col-5">
                 <div className="row border border-primary h-50">
                   공지사항
                 </div>
@@ -123,7 +124,7 @@ useEffect(() => {
                 </div>
             </div>
 
-            <div className="col-4 border border-primary h-100">
+            <div className="home-calendar col-4 border border-primary h-100">
             <Calendar/>
             </div>
 
