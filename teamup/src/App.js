@@ -24,9 +24,30 @@ import SalList from './components/SalList';
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
+import { useRecoilState } from 'recoil';
+import { userState } from './recoil';
 
 function App() {
   const location = useLocation();
+  const [user, setUser] = useRecoilState(userState);
+
+  //axios로 사용자 정보를 찾아서 이사람이 관리자인지 여부에따라 보여주고 말고를 결정하고 
+  //만약에  user가 null이 아니면 로그인 버튼 활성화 로그인이 되어있다면 비활성화
+  useEffect(()=>{
+    const savedToken = Cookies.get('userId');
+    if(savedToken){
+      const userId = jwtDecode(savedToken);
+
+      setUser(userId.sub);
+
+    }
+
+  },[])
+
+
   return (
   <>
     <div className='main-content container-fluid'>
@@ -71,6 +92,18 @@ function App() {
             </div>
           </div>
                 {/* 본문 */}
+                {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
+
+
+                {/* 회사 로그인 */}
+
+
+
+              
+
+
+
+
                 
                 <div className='mt-3'>
                   <Routes>
