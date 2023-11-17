@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import './App.css';
@@ -16,9 +16,10 @@ import DeptInsert from './components/detpInsert';
 import CompanyJoin from './components/companyJoin';
 import TeamUpLogo from './components/images/TeamUpLogo.png';
 
-import {CgProfile} from "react-icons/cg";
-import {BsFillBellFill} from "react-icons/bs";
-import {RiKakaoTalkFill} from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
+import { BsFillBellFill } from "react-icons/bs";
+import { RiKakaoTalkFill } from "react-icons/ri";
+
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import SalList from './components/SalList';
@@ -26,44 +27,120 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
+
 import { userState } from './recoil';
 import Todo from './components/todo';
+
+import { companyState, userState } from './recoil';
+import axios from 'axios';
+
 
 
 function App() {
   const location = useLocation();
   const [user, setUser] = useRecoilState(userState);
+
     // 조직도 관련 const 모음--------------------
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
    //------------------------------조직도 끝---
 
-  //axios로 사용자 정보를 찾아서 이사람이 관리자인지 여부에따라 보여주고 말고를 결정하고 
-  //만약에  user가 null이 아니면 로그인 버튼 활성화 로그인이 되어있다면 비활성화
-  useEffect(()=>{
-    const savedToken = Cookies.get('userId');
-    if(savedToken){
-      const userId = jwtDecode(savedToken);
+  const [company, setCompany] = useRecoilState(companyState);
+  const navigate = useNavigate();
 
-      setUser(userId.sub);
+
+  const savedToken = Cookies.get('userId');
+
+
+
+
+  const loadInfo = () => {
+
+    console.log("????",savedToken)
+    axios({
+      url: `http://localhost:8080/emp/findtoken/${savedToken}`,
+      method: 'get',
+    }).then(res => {
+      console.log("?", res.data.token)
+      console.log("sav", savedToken)
+      console.log("compare", savedToken && savedToken === res.data.token)
+
+      if (savedToken && savedToken === res.data.token) {
+        const decode = jwtDecode(savedToken)
+        console.log(savedToken)
+        console.log(decode)
+        const userId = decode.sub
+        console.log(userId);
+        console.log(user);
+        setUser(userId);
+        console.log(userId)
+        let userNo = userId.substring(6);
+
+
+        axios({
+          url: `http://localhost:8080/emp/mypage/${userNo}`,
+          method: 'get'
+        }).then(response => {
+          console.log(response.data)
+          setCompany(response.data.comId)
+          navigate("/home")
+
+
+        });
+
+      }
+
 
     }
 
-  },[])
+
+    )
+
+
+
+
+
+  }
+
+
+
+  //axios로 사용자 정보를 찾아서 이사람이 관리자인지 여부에따라 보여주고 말고를 결정하고 
+  //만약에  user가 null이 아니면 로그인 버튼 활성화 로그인이 되어있다면 비활성화
+  useEffect(() => {
+    console.log("시작")
+    loadInfo()
+    console.log("완료")
+
+  }, []);
+
+
+
+  const logout = () => {
+    console.log("logout function called");
+    Cookies.remove('userId', { path: '/' });
+    alert("로그아웃 되었습니다.")
+    window.location.reload();
+
+  };
+
+
+
+
 
 
   return (
-  <>
-    <div className='main-content container-fluid'>
-      <Sidebar/>
+    <>
+      <div className='main-content container-fluid'>
+        <Sidebar />
 
         <div className='row ms-5 mt-3'>
           <div className='col-md-10 offset-md-1 me-5'>
+
         {/* 헤더 */}
         <div className='row '>
             <div className='col-8 me-auto'>
@@ -75,37 +152,42 @@ function App() {
               </Navbar.Brand>
             </div>
             <div className='col-4'>
+
                 <div className='row'>
                   <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
                     <div className='col-2 offset-6 mt-1 me-1'>
-                      <RiKakaoTalkFill className="me-2" size="45"style={{color:'#218C74'}}/>
+                      <RiKakaoTalkFill className="me-2" size="45" style={{ color: '#218C74' }} />
                     </div>
                     <div className='col-2 mt-1'>
-                      <BsFillBellFill className="me-2" size="40"style={{color:'#218C74'}}/>
+                      <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
                     </div>
                     <div className='col-2'>
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
+
                           <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
                             <NavDropdown.Item >마이페이지</NavDropdown.Item>                                                        
+
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
                         </Nav>
                       </Navbar>
                     </div>
                   </div>
-                </div>                     
+                </div>
+              </div>
             </div>
-          </div>
-                {/* 본문 */}
-                {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
+            {/* 본문 */}
+            {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
 
 
-                {/* 회사 로그인 */}
+            {/* 회사 로그인 */}
 
 
 
-              
+
+
+
 
 
 
@@ -128,15 +210,16 @@ function App() {
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
                     <Route path="/todo" element={<Todo/>} ></Route>
 
+                {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
+                <Route path="/profileEdit" element={<ProfileEdit />}></Route>
 
-                    {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
-                    <Route path="/profileEdit" element={<ProfileEdit/>}></Route>
-         
+
               </Routes>
             </div>
 
             {/* 조직도  */}
             <div className='row'>
+
                   <div className='col-10 offset-1'>   
                   <Offcanvas show={show} onHide={handleClose} placement='end'>
                     <Offcanvas.Header closeButton>
@@ -146,15 +229,16 @@ function App() {
                       조직도 자리 
                     </Offcanvas.Body>
                   </Offcanvas>
+
               </div>
             </div>
-         
-          </div> 
+
+          </div>
         </div>
-       
-    </div>
-  
-  </>
+
+      </div>
+
+    </>
   );
 }
 
