@@ -28,7 +28,7 @@ const SalList=(prop)=>{
         salDetail();
     },[]);
 
-    //화면 실행시 최신 급여내역을 출력 
+    //화면 실행시 최신 급여내역을 출력 //
     const salDetail =()=>{
         //서버에서 급여내역 list 불러와서 state에 설정하는 코드 
         axios({
