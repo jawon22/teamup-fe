@@ -5,7 +5,12 @@ import axios from "axios";
 import { userState } from "../recoil";
 import {CgProfile} from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
+
+
 import './homeStyle.css';
+import Todo from "./todo";
+
+
 
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -75,23 +80,28 @@ const Home = () => {
 
             <div className="home-profile col-3">
 
-              <div className="row border border-primary h-100">
+              <div className="row border border-primary h-50 mb-5 pb-5">
                     <h1 >홈페이지</h1>
-                    <CgProfile className="me-3" size={150}style={{color:'#218C74'}} />
+                    <CgProfile className="me-3" size={100}style={{color:'#218C74'}} />
 
-              <div className="d-flex">
-            <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-            <button className="btn btn-primary" onClick={attendStartClick} disabled={isAttendClicked}>
-              출근하기
-            </button>
-          </div>
-                  <div className="d-flex">
-            <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-            <button className="btn btn-primary" onClick={attendEndClick}>퇴근하기</button>
-          </div>
+              <div className="row">
+                    <div className="col-6">
+                      {attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}
+                      <button className="btn btn-primary" onClick={attendStartClick} disabled={isAttendClicked}>
+                        출근하기
+                      </button>
+                    </div>
+                    <div className="col-6">
+                      {attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}
+                      <button className="btn btn-primary" onClick={attendEndClick}>퇴근하기</button>
+                    </div>
               </div>
+
+
+              </div>
+
               <div className="row border border-primary h-50 h1">
-                TodoList
+                <Todo/>
               </div>
 
             </div>
