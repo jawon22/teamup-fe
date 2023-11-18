@@ -27,7 +27,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
@@ -35,7 +35,7 @@ import { useRecoilState } from 'recoil';
 import { userState } from './recoil';
 import Todo from './components/todo';
 
-import { companyState, userState } from './recoil';
+import { companyState } from './recoil';
 import axios from 'axios';
 
 
@@ -100,10 +100,6 @@ function App() {
 
 
     )
-
-
-
-
 
   }
 

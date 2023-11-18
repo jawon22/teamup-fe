@@ -4,10 +4,11 @@ import { Modal } from "bootstrap";
 import surf from "./images/profileImage.png";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
+import { FaEdit } from "react-icons/fa";
 
 const ProfileEdit = ()=>{
   const [profile, setProfile] = useState({
-    profileImage:null,
+    attach:"",
     empTel:"",
     empEmail:"",
     profileTitle:"",
@@ -24,9 +25,22 @@ const ProfileEdit = ()=>{
       method:"get",
     })
     .then(response =>{//성공
-        console.log(response);
+        // console.log(response);
         setProfile(response.data);
-        openModal(); // 프로필 로드가 완료된 후에 모달 열기
+        // 이미지 정보 업데이트
+        updateImagePreview();
+
+        // 프로필 로드가 완료된 후에 모달 열기
+        openModal();
+
+        // 서버에서 가져온 데이터가 있을 때만 로컬 스토리지에서 이미지 데이터 가져오기
+        const savedImage = localStorage.getItem("profileImage");
+        if (savedImage && response.data.attach) {
+          setProfile({
+            ...response.data,
+            attach: savedImage,
+          });
+        }
     })
     .catch(err=>{//실패
         console.error(err);
@@ -41,7 +55,7 @@ const ProfileEdit = ()=>{
 
   // 프로필 수정창 열기
   const editProfile = (loggedInEmpNo) =>{
-    console.log(loggedInEmpNo);
+    
     // 해당 직원의 프로필을 불러옴
     loadProfile(loggedInEmpNo);
     // const findProfile = profile;//현재의 profile 상태를 가져옴
@@ -57,9 +71,10 @@ const ProfileEdit = ()=>{
     // console.log("Changing Profile:", e.target.name, e.target.value);
     setProfile({
       ...profile,
-      [e.target.name] : e.target.value
+      [e.target.name] : e.target.value,
     });
   };
+
 
 
   //프로필 수정 처리
@@ -70,37 +85,22 @@ const ProfileEdit = ()=>{
 
     //이미지 파일 가져가기(input[type="file"]을 사용한다고 가정)
     const changeImage = document.getElementById("changeImage");
-    const profileImage = changeImage.files[0];
+    // console.log(changeImage);
+    const attach = changeImage.files[0];
+    // console.log(attach);
     
-    // try{
     //프로필 데이터를 FormData로 만듦
     const formData = new FormData();
-    formData.append("attachNo", copyProfile.attachNo);
+    // formData.append("attachNo", copyProfile.attachNo);
     formData.append("empTel", copyProfile.empTel);
     formData.append("empEmail", copyProfile.empEmail);
     formData.append("profileTitle", copyProfile.profileTitle);
     formData.append("profileContent", copyProfile.profileContent);
-    formData.append("profileImage", profileImage);
-    // console.log(profileImage);
+    formData.append("attach", attach);
+    // console.log(formData);
 
-  //   const response = await axios.put(
-  //     `http://localhost:8080/profile/${loggedInEmpNo}`,
-  //     formData,
-  //     {
-  //       headers:{"Content-Type" : "multipart/form-data"},
-  //     }
-  //   );
 
-  //     // 등록 후 목록을 다시 불러오기
-  //     loadProfile(loggedInEmpNo);
-  //     closeModal();
-  //   }
-  //   catch(error){
-  //     console.error("이미지등록 실패");
-  //   }
-  // };
-  
-      
+    //프로필 데이터 및 이미지 업데이트
     axios({
       url:`http://localhost:8080/profile/${loggedInEmpNo}`,
       method:"put",
@@ -111,9 +111,10 @@ const ProfileEdit = ()=>{
     })
     .then(response=>{
       loadProfile(loggedInEmpNo);
-      closeModal();
+      // console.log(response);
     })
     .catch(err=>{})
+    closeModal();
   };
 
 
@@ -127,7 +128,20 @@ const ProfileEdit = ()=>{
 
       reader.onload = (e) =>{
         previewImage.src = e.target.result;
+        
+        // 상태 업데이트 시 이미지 데이터를 빼고 업데이트
+        setProfile({
+          ...profile,
+          attach: changeImage,
+        });
+
+        // LocalStorage에 이미지 데이터 저장
+        localStorage.setItem("profileImage", e.target.result);
+        
       };
+      // reader.onload = (e) =>{
+      //   previewImage.src = e.target.result;
+      // };
 
       reader.readAsDataURL(changeImage.files[0]);
     }
@@ -137,8 +151,9 @@ const ProfileEdit = ()=>{
 
   //모달 관련 처리
   const bsModal = useRef();
+
   const openModal = () =>{
-    updateImagePreview();
+    // updateImagePreview();
     const modal = new Modal(bsModal.current);
     modal.show();
   };
@@ -178,7 +193,8 @@ const ProfileEdit = ()=>{
                         </p> */}
                         <img src ={surf} alt="profileImage" id="previewImage" className="rounded-circle" 
                                 style={{width:"180px", height:"180px", objectFit:"cover"}}/>
-                        <input type="file" name="profileImage" id="changeImage" onChange={updateImagePreview}/>
+                        {/* <FaEdit type="file" name="attach" id="changeImage" onChange={updateImagePreview}/> */}
+                        <input type="file" name="attach" id="changeImage" onChange={updateImagePreview}/>
                       </div>
                       <div className="col-6 mt-5">
                         <p>부서 : {profile.deptName}</p>
