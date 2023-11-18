@@ -27,15 +27,14 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
 
-import { userState } from './recoil';
+import { companyState, userState } from './recoil';
 import Todo from './components/todo';
 
-import { companyState, userState } from './recoil';
 import axios from 'axios';
 
 
@@ -54,79 +53,24 @@ function App() {
   const navigate = useNavigate();
 
 
-  const savedToken = Cookies.get('userId');
 
 
+useEffect(()=>{
+  if(user!== ''){
 
-
-  const loadInfo = () => {
-
-    console.log("????",savedToken)
-    axios({
-      url: `http://localhost:8080/emp/findtoken/${savedToken}`,
-      method: 'get',
-    }).then(res => {
-      console.log("?", res.data.token)
-      console.log("sav", savedToken)
-      console.log("compare", savedToken && savedToken === res.data.token)
-
-      if (savedToken && savedToken === res.data.token) {
-        const decode = jwtDecode(savedToken)
-        console.log(savedToken)
-        console.log(decode)
-        const userId = decode.sub
-        console.log(userId);
-        console.log(user);
-        setUser(userId);
-        console.log(userId)
-        let userNo = userId.substring(6);
-
-
-        axios({
-          url: `http://localhost:8080/emp/mypage/${userNo}`,
-          method: 'get'
-        }).then(response => {
-          console.log(response.data)
-          setCompany(response.data.comId)
-          navigate("/home")
-
-
-        });
-
-      }
-
-
-    }
-
-
-    )
-
-
-
-
-
+    navigate('/home')
+    console.log("user=",user)
   }
+  else{
+    navigate('/login')
+  }
+},[])
 
+  
 
 
   //axios로 사용자 정보를 찾아서 이사람이 관리자인지 여부에따라 보여주고 말고를 결정하고 
   //만약에  user가 null이 아니면 로그인 버튼 활성화 로그인이 되어있다면 비활성화
-  useEffect(() => {
-    console.log("시작")
-    loadInfo()
-    console.log("완료")
-
-  }, []);
-
-
-
-  const logout = () => {
-    console.log("logout function called");
-    Cookies.remove('userId', { path: '/' });
-    alert("로그아웃 되었습니다.")
-    window.location.reload();
-
-  };
 
 
 

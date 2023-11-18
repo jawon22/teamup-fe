@@ -4,34 +4,94 @@ import { useLocation } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 import { Modal } from "bootstrap";
 import surf from "./images/profileImage.png";
+import { useRecoilState } from "recoil";
+import { companyState, userState } from "../recoil";
+import { Pagination } from "react-bootstrap";
 
 const Search = () => {
     const location = useLocation();
     const [searchList, setSearchList] = useState([]);
     const [addressList, setAddressList] = useState([]);
+    const [user, setUser] = useRecoilState(userState)
+    const [comId, setComId] = useRecoilState(companyState);
+    const [count, setCount] = useState();
+    const [size, setSize] = useState(10);
 
-    const loadAddress = () => {
+
+    const [active, setActive] = useState();
+
+
+    const userId = user.substring(6);
+
+    // const loadAddress = () => {
+
+    //     axios({
+    //         url:"http://localhost:8080/addr/myAddrList/13",
+    //         method:"get"
+
+    //     }).then(response=>{
+    //         setAddressList(response.data);
+    //     }
+
+    //     )
+
+    // };
+    //onclick으로 보내기
+    const pageClick = (selectedPage) => {
+        setActive(selectedPage);
+
 
         axios({
-            url:"http://localhost:8080/addr/myAddrList/13",
-            method:"get"
+            url: "http://localhost:8080/emp/search/",
+            method: "post",
+            data: {
+                ...data,
+                page: active
+            }
 
-        }).then(response=>{
-            setAddressList(response.data);
-        }
-            
-        )
 
+
+        }).then(response => {
+            console.log("Data  ", response.data)
+            console.log("page", active)
+            console.log("count", response.data.length)
+            console.log("보낸 데이터", data)
+            setSearchList(response.data)
+            setSearchList([])
+            loadForSearch()
+        }).catch();
+
+        console.log("data", data)
     };
 
+    useEffect(() => {
+        console.log('click', active);
+        console.log('count', count);
+    }, [active]);
+
+
+    let items = [];
+
+    let pages = count % size === 0 ? count / size : Math.floor(count / size) + 1;
+
+
+
+    for (let number = 1; number <= pages; number++) {
+        items.push(
+            <Pagination.Item key={number} active={number === active} onClick={() => loadForSearch(number)}>
+                {number}
+            </Pagination.Item>
+        );
+    }
+
     const [data, setData] = useState({
-        comId: null,
+        comId: comId,
         comName: null,
         deptNo: 0,
         empNo: 0,
         deptName: null,
         empName: null,
-        empId: null,
+        empId: userId,
         empPositionName: null,
         empPositionNo: 0,
         empEmail: null,
@@ -39,83 +99,92 @@ const Search = () => {
         joinEnd: null,
         empTel: null,
         salMax: 0,
-        salMin: 0
+        salMin: 0,
+        page: 0,
+        size: size
+
+
     });
     const dataChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value
         })
+        console.log("??=   ", user)
 
     };
 
-    const loadForSearch = () => {
-
+    const loadForSearch = (pageNumber) => {
         axios({
             url: "http://localhost:8080/emp/search/",
             method: "post",
-            data: data
-
-        }).then(response => {
-            console.log(response.data)
-            console.log(data.comId)
-            console.log(data.deptNo)
-            console.log("???", searchList.deptNo)
-            setSearchList(response.data)
-        }).catch();
+            data: {
+                ...data,
+                page: pageNumber
+            }
+        })
+            .then(response => {
+                console.log("보낸 데이터", data);
+                setSearchList(response.data);
+                console.log(response.data);
+            })
+            .catch();
     };
 
     useEffect(() => {
         loadForSearch();
-        loadAddress();
+        getCount();
+
+        //  loadAddress();
 
     }, []);
 
 
     const [profileList, setProfileList] = useState([]);
 
-    
+
     //프로필 조회
     const loadProfile = () => {
 
-        axios ({
-            url:"http://localhost:8080/profile/",
-            method:"get",
+        axios({
+            url: "http://localhost:8080/profile/",
+            method: "get",
         })
-        .then(response =>{//성공
-            console.log(response);
-            setProfileList(response.data);
-        })
-        .catch(err=>{
-            console.error(err);
-        });//실패
+            .then(response => {//성공
+                console.log(response);
+                setProfileList(response.data);
+
+            })
+            .catch(err => {
+                console.error(err);
+            });//실패
     };
     console.log(setProfileList);
 
-    useEffect(()=>{
+    useEffect(() => {
         loadProfile();
-    },[]);
+    }, []);
 
     //모달과 연결된 state
-    const[profile, setProfile] = useState({});
-    
-    
-    
+    const [profile, setProfile] = useState({});
+
+
+
     // 프로필 버튼 클릭 시 처리
     const handleProfileButtonClick = (emp) => {
         //console.log(emp);
 
-        const result = profileList.filter(prof=>prof.empNo === emp.empNo);
+        const result = profileList.filter(prof => prof.empNo === emp.empNo);
 
         //검색결과가 없으면 stop
-        if(result.length === 0) return;
+        if (result.length === 0) return;
 
-        setProfile({...result[0]});
+        setProfile({ ...result[0] });
         // 모달 창 열기
         openModal();
     };
 
-    
+
     // const changeProfile = (target)=>{
     //     setProfile({
     //         ...target
@@ -125,15 +194,37 @@ const Search = () => {
 
     //모달 관련 처리
     const bsModal = useRef();
-    const openModal = () =>{
+    const openModal = () => {
         const modal = new Modal(bsModal.current);
         modal.show();
     };
-    const closeModal = () =>{
+    const closeModal = () => {
         const modal = Modal.getInstance(bsModal.current);
         modal.hide();
         // clearProfile();
     };
+
+    // const getCount = ()=>{
+    //     axios({
+    //         url:
+    //     }).then();
+    // };
+    const getCount = () => {
+        axios({
+            url: `http://localhost:8080/emp/count/${comId}`,
+            method: 'get'
+        }).then(res => {
+
+            console.log(res.data)
+            setCount(res.data)
+        }
+        );
+    };
+
+
+
+
+
 
 
     return (
@@ -177,19 +268,21 @@ const Search = () => {
                             <th>이름</th>
                             <th>email</th>
                             <th>입사일</th>
+                            <th>퇴사일</th>
                             <th>전화번호</th>
                         </tr>
                     </thead>
                     <tbody >
                         {searchList.map(list => (
-                            <tr key={list.empNo} onClick={e=>handleProfileButtonClick(list)}>
-                                <td>{list.empId}</td>
-                                <td>{list.deptName}</td>
-                                <td>{list.empPositionName}</td>
-                                <td>{list.empName}</td>
-                                <td>{list.empEmail}</td>
-                                <td>{list.empJoin}</td>
-                                <td>{list.empTel}</td>
+                            <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)}>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empId}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.deptName}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empPositionName}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empName}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empEmail}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empJoin}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empExit}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empTel}</td>
                                 {/* <td>
                                     <button className="btn btn-sm btn-primary" onClick={e=>handleProfileButtonClick(list)}>프로필</button>
                                 </td> */}
@@ -197,13 +290,19 @@ const Search = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="row">
+                    <div className="col-6 offset-5">
+                        <Pagination >{items}</Pagination>
+                    </div>
+                </div>
+
 
             </div>
 
 
             {/* Modal */}
-            <div className="modal fade" ref={bsModal} 
-                      data-bs-backdrop="static" tabIndex="-1" role="dialog" aria-hidden="true">
+            <div className="modal fade" ref={bsModal}
+                data-bs-backdrop="static" tabIndex="-1" role="dialog" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -221,7 +320,7 @@ const Search = () => {
                                                 {/* <p>일단이미지번호들어오나보자 : 
                                                     {profile.attachNo}
                                                 </p> */}
-                                                <img src ={surf} alt="profileImage"/>
+                                                <img src={surf} alt="profileImage" />
                                             </div>
                                             <div className="col-6 mt-5">
                                                 <p>부서 : {profile.deptName}</p>
@@ -229,24 +328,26 @@ const Search = () => {
                                                 <p>이름 : {profile.empName}</p>
                                             </div>
                                         </div>
-                                            <div className="row">
-                                                <div className="col">
-                                                    <p>연락처 : {profile.empTel}</p>
-                                                    <p>이메일 : {profile.empEmail}</p>
-                                                    <p>입사일 : {profile.empJoin}</p>
-                                                </div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <p>연락처 : {profile.empTel}</p>
+                                                <p>이메일 : {profile.empEmail}</p>
+                                                <p>입사일 : {profile.empJoin}</p>
                                             </div>
-                                            <div className="row">
-                                                <div className="col">
-                                                    <p>소개 : {profile.profileTitle}</p>
-                                                    <p>내용 : {profile.profileContent}</p>
-                                                </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col">
+                                                <p>소개 : {profile.profileTitle}</p>
+                                                <p>내용 : {profile.profileContent}</p>
                                             </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
-          
+
+
+
+
                         </div>
                         <div className="modal-footer">
                             <div className="row">
@@ -254,7 +355,7 @@ const Search = () => {
                                     <button className="btn btn-secondary ms-1" onClick={closeModal}>닫기</button>
                                 </div>
                             </div>
-          
+
                         </div>
                     </div>
                 </div>

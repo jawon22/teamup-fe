@@ -16,6 +16,7 @@ import surf from "./images/TeamUpLogoW.png";
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 임포트
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // 부트스트랩 JavaScript 파일 임포트
+import Cookies from 'js-cookie';
 
 
 const Sidebar = (props) => {
@@ -30,10 +31,15 @@ const Sidebar = (props) => {
         setUser('202302034');
         setLevel('1');
     };
-    const logout = ()=>{
-        setUser('');
-        setLevel('');
-    };
+
+    const logout = () => {
+        console.log("logout function called");
+        Cookies.remove('userId', { path: '/' });
+        alert("로그아웃 되었습니다.")
+        window.location.reload();
+    
+      };
+    
 
     return (
         <div>
