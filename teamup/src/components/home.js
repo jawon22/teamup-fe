@@ -8,7 +8,11 @@ import Calendar from "./calendar";
 
 
 import './homeStyle.css';
-import Todo from "./todo";
+import Todo from "./TodoList/todo";
+import TodoTemplate from "./TodoList/TodoTemplate";
+import TodoHead from "./TodoList/TodoHead";
+import TodoList from "./TodoList/TodoList";
+import TodoCreate from "./TodoList/TodoCreate";
 
 
 
@@ -100,8 +104,12 @@ const Home = () => {
 
               </div>
 
-              <div className="row border border-primary h-50 h1">
-                <Todo/>
+              <div className="row h-50 me-1">
+                <TodoTemplate>
+                  <TodoHead/>
+                  <TodoList/>
+                  <TodoCreate/>
+                </TodoTemplate>
               </div>
 
             </div>

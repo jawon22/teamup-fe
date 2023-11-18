@@ -27,15 +27,15 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
 
 import { userState } from './recoil';
-import Todo from './components/todo';
+import Todo from './components/TodoList/todo';
 
-import { companyState, userState } from './recoil';
+import { companyState } from './recoil';
 import axios from 'axios';
 
 
@@ -147,9 +147,7 @@ function App() {
               <Navbar.Brand href="#home" className='logo'>
                 <img src={TeamUpLogo} alt="TemaUpLog" width={100}/>
                 <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
-                <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
-
-                <button className="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">조직도</button>
+                <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink> 
                 <NavLink to="/profileEdit"className="ms-1">프로필</NavLink>
 
                 <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>

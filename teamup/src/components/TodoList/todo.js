@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { userState } from '../recoil';
+import { userState } from '../../recoil';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {MdCancel} from "react-icons/md";
