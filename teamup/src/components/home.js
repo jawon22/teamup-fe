@@ -13,6 +13,7 @@ import TodoTemplate from "./TodoList/TodoTemplate";
 import TodoHead from "./TodoList/TodoHead";
 import TodoList from "./TodoList/TodoList";
 import TodoCreate from "./TodoList/TodoCreate";
+import { TodoProvider } from "../TodoContext";
 
 
 
@@ -105,11 +106,13 @@ const Home = () => {
               </div>
 
               <div className="row h-50 me-1">
-                <TodoTemplate>
-                  <TodoHead/>
-                  <TodoList/>
-                  <TodoCreate/>
-                </TodoTemplate>
+                <TodoProvider>
+                    <TodoTemplate>
+                      <TodoHead/>
+                      <TodoList/>
+                      <TodoCreate/>
+                    </TodoTemplate>                  
+                </TodoProvider>
               </div>
 
             </div>
