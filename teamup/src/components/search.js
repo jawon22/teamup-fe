@@ -259,7 +259,7 @@ const Search = () => {
                 </div>
 
 
-                <table className="table table-border">
+                <table className="table table-border mt-4">
                     <thead>
                         <tr>
                             <th>사번</th>

@@ -1,0 +1,63 @@
+.org-chart {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .org-chart ul {
+    list-style-type: disc;
+    padding: 0;
+    margin: 0;
+  }
+
+  .org-chart > ul > li {
+    position: relative;
+    margin: 0;
+    padding: 10px 10px 10px 40px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .org-chart > ul > li:before {
+    content: '└';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #333;
+    font-size: 1.5em;
+  }
+
+  .org-chart > ul > li:last-child:before {
+    content: '└';
+  }
+
+  .org-chart li ul {
+    margin-left: 20px;
+  }
+
+  .org-chart li ul li {
+    position: relative;
+    margin: 0;
+    padding: 10px 10px 10px 40px;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .org-chart li ul li:before {
+    content: '└-';
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    color: rgb(17, 15, 15);
+    font-size: 1em;
+  }
+
+  .org-chart li > span {
+    color: #009688;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+  }

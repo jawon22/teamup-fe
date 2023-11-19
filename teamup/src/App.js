@@ -36,6 +36,7 @@ import { companyState, userState } from './recoil';
 import Todo from './components/todo';
 
 import axios from 'axios';
+import Emp from './components/emp';
 
 
 
@@ -61,9 +62,7 @@ useEffect(()=>{
     navigate('/home')
     console.log("user=",user)
   }
-  else{
-    navigate('/login')
-  }
+
 },[])
 
   
@@ -92,6 +91,7 @@ useEffect(()=>{
                 <img src={TeamUpLogo} alt="TemaUpLog" width={100}/>
                 <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
                 <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
+                <NavLink to="/empTree"className={"ms-2"}>조직도</NavLink>
 
                 <button className="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">조직도</button>
                 <NavLink to="/profileEdit"className="ms-1">프로필</NavLink>
@@ -158,6 +158,7 @@ useEffect(()=>{
                     <Route path='/salList' element={<SalList/>}></Route>
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
                     <Route path="/todo" element={<Todo/>} ></Route>
+                    <Route path='/empTree' element={<Emp/>}/>
 
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                 <Route path="/profileEdit" element={<ProfileEdit />}></Route>
@@ -175,7 +176,7 @@ useEffect(()=>{
                       <Offcanvas.Title>조직도</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                      조직도 자리 
+                      <Emp/> 
                     </Offcanvas.Body>
                   </Offcanvas>
 
