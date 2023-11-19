@@ -130,9 +130,9 @@ const Emp = () => {
                         <>
 
                             {showModal && (
-                                <div className="modal-background" >
-                                    <div className="modal-content">
-                                        <button className="modal-close-button" onClick={closeModal}>
+                                <div className="chat-modal-background" >
+                                    <div className="chat-modal-content">
+                                        <button className="chat-modal-close-button" onClick={closeModal}>
                                             &times;
                                         </button>
                                         <div className="row">
