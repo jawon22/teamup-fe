@@ -37,5 +37,11 @@ const referrerState  = atom({
     default:''
 });
 
+//TodoList저장소
+ const todosState = atom({
+    key: 'todosState',
+    default: [],
+  });
 
-export {userState, levelState, tokenState, receiverState, referrerState,companyState};
+
+export {userState, levelState, tokenState, receiverState, referrerState,companyState, todosState};
