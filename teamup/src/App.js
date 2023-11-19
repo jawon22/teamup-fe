@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import "./components/Sidebar";
@@ -32,10 +31,16 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
 
+
 import { userState } from './recoil';
 
-import { companyState } from './recoil';
+
+import { companyState, userState } from './recoil';
+
+
+
 import axios from 'axios';
+import Emp from './components/Emp';
 
 
 
@@ -53,79 +58,22 @@ function App() {
   const navigate = useNavigate();
 
 
-  const savedToken = Cookies.get('userId');
 
 
+useEffect(()=>{
+  if(user!== ''){
 
-
-  const loadInfo = () => {
-
-    console.log("????",savedToken)
-    axios({
-      url: `http://localhost:8080/emp/findtoken/${savedToken}`,
-      method: 'get',
-    }).then(res => {
-      console.log("?", res.data.token)
-      console.log("sav", savedToken)
-      console.log("compare", savedToken && savedToken === res.data.token)
-
-      if (savedToken && savedToken === res.data.token) {
-        const decode = jwtDecode(savedToken)
-        console.log(savedToken)
-        console.log(decode)
-        const userId = decode.sub
-        console.log(userId);
-        console.log(user);
-        setUser(userId);
-        console.log(userId)
-        let userNo = userId.substring(6);
-
-
-        axios({
-          url: `http://localhost:8080/emp/mypage/${userNo}`,
-          method: 'get'
-        }).then(response => {
-          console.log(response.data)
-          setCompany(response.data.comId)
-          navigate("/home")
-
-
-        });
-
-      }
-
-
-    }
-
-
-    )
-
-
-
-
-
+    navigate('/home')
+    console.log("user=",user)
   }
 
+},[])
+
+  
 
 
   //axios로 사용자 정보를 찾아서 이사람이 관리자인지 여부에따라 보여주고 말고를 결정하고 
   //만약에  user가 null이 아니면 로그인 버튼 활성화 로그인이 되어있다면 비활성화
-  useEffect(() => {
-    console.log("시작")
-    loadInfo()
-    console.log("완료")
-
-  }, []);
-
-
-
-  const logout = () => {
-    console.log("logout function called");
-    Cookies.remove('userId', { path: '/' });
-    alert("로그아웃 되었습니다.")
-    window.location.reload();
-
-  };
 
 
 
@@ -146,7 +94,12 @@ function App() {
               <Navbar.Brand href="#home" className='logo'>
                 <img src={TeamUpLogo} alt="TemaUpLog" width={100}/>
                 <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
-                <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink> 
+
+                <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
+                <NavLink to="/empTree"className={"ms-2"}>조직도</NavLink>
+
+                <button className="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">조직도</button>
+
                 <NavLink to="/profileEdit"className="ms-1">프로필</NavLink>
 
                 <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
@@ -211,6 +164,9 @@ function App() {
                     <Route path='/salList' element={<SalList/>}></Route>
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
 
+                    <Route path='/empTree' element={<Emp/>}/>
+
+
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                 <Route path="/profileEdit" element={<ProfileEdit />}></Route>
 
@@ -227,7 +183,7 @@ function App() {
                       <Offcanvas.Title>조직도</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                      조직도 자리 
+                      <Emp/> 
                     </Offcanvas.Body>
                   </Offcanvas>
 

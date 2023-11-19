@@ -1,44 +1,59 @@
 import { useLocation } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 import axios from "axios";
-import { Modal } from "bootstrap";
+// import { Modal } from "bootstrap";
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+
 import { useRecoilState } from 'recoil';
 import { userState } from '../recoil';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { FaCheck } from "react-icons/fa";
 
 const ApproveList = (props)=>{
     const location = useLocation();
     const [user,setUser] = useRecoilState(userState);
     const [apprList,setApprList] = useState([]); //결재 계층형 데이터(처음에 오는 것)
-    const [approveDto, setApproveDto] = useState([]); //결재 appr + apprPath번호 + 이름 + 전화번호 저장
+    const [apprData, setApprData] = useState([]); // 클릭한 결재 정보
     const [receiver, setReceiver] = useState([]); //승인자만 저장
-    const [referer, setReferer] = useState([]);; //참조자만 저장
+    const [receiverInfo, setReceiverInfo] = useState([]); //승인자의 정보
+
+    const [referer, setReferer] = useState([]); //참조자만 저장
+    const [empList, setEmpList] = useState([]); // 회원에 대한 모든 정보 
+    const [emp, setEmp] = useState([]); //결재 하나의 정보
 
     const empNo = parseInt(user.substring(6)); //로그인한 사람의 사원번호
 
-    // 계층형 데이터 나누기 ( appr + apprPathNo)
-    const divideApproveDto = ()=>{
-        setApproveDto(apprList.map((appr) => ({
-            approveDto: appr.approveDto,
-            apprPathNo: appr.apprPathNo,
-            empName : appr.empName,
-            empTel : appr.empTel
-            }))
-          );
-        };
-        
     // receivers
     const divideReceiversDto = ()=>{
-        // 중첩된 map을 사용하여 데이터를 펼침
-        const receiversList = apprList.flatMap((appr) =>
-        appr.receiversDtoList.map((receiver) => receiver));
+        const receiversList = apprData.receiversDtoList ? apprData.receiversDtoList.map(receiver => receiver.receiversReceiver) : [];
         setReceiver(receiversList);
     }
+    console.log(receiver);
+    console.log(receiverInfo);
+
+    // receivers의 모든정보추출
+    const findReceiverInfo = ()=>{
+        const search = receiver.map(recNo => empList.find(emp => emp.empNo === recNo)); // 해당 승인자의 모든 정보 추출
+        setReceiverInfo(search);
+
+        // return receiver.map(recNo => { // 해당 승인자의 번호와 직급순서 추출
+        //     const foundEmp = empList.find(emp => emp.empNo === recNo);
+        //     return foundEmp ? {empNo: foundEmp.empNo, empPositionNo: foundEmp.empPositionNo} : null
+        // });
+    }
+    
+    useEffect(()=>{
+        findReceiverInfo();
+    },[receiver])
     
     // referers
     const divideReferersDto = ()=>{
-        const referersList = apprList.flatMap((appr) =>
-        appr.referrersDtoList.map((referer)=> referer));
+        const referersList = apprData.referrersDtoList ? apprData.referrersDtoList.map(referer => referer.referrersReferrer) : [];
         setReferer(referersList);
     }
     
@@ -89,7 +104,7 @@ const ApproveList = (props)=>{
                 appr.status !== '진행');
             setApprList(updateApprList);
         });
-    }
+    };
 
     // 참조버튼을 눌렀을때
     // 로그인한 사람이 결재의 참조자로 지정 되어있는 기안만
@@ -107,7 +122,60 @@ const ApproveList = (props)=>{
     
     useEffect(()=>{
         susinButton();
+        listEmp();
     },[]);
+    useEffect(()=>{
+        divideReceiversDto();
+        divideReferersDto();
+    },[apprData])
+
+    //전자결재 상세 모달처리
+    const approveOneClick = (target)=>{
+        const findTargetData = empList.find(em => em.empNo === target.approveDto.apprSender);
+        setEmp(findTargetData);
+
+        setApprData(target);
+
+        openModal();
+    }
+
+    //회원의 정보
+    const listEmp = ()=>{
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/emp/`,
+            method:"get"
+        })
+        .then(response =>{
+            setEmpList(response.data);
+        })
+    };
+    
+    console.log(empList);
+    console.log(emp);
+    console.log(apprData);
+
+    //자신이 올린 결재 삭제 처리
+    const deleteAppr = (apprNo) =>{
+        const choice = window.confirm("삭제하시나요?");
+        if(choice ===false) return;
+
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/${apprNo}`,
+            method:"delete"
+        })
+        .then(response=>{
+            barsinButton();
+            closeModal();
+        })
+        .catch(err=>{});
+    }
+
+    //승인자 결재 승인 처리
+
+    //모달 관련 처리
+    const [show, setShow] = useState(false);
+    const openModal = () => setShow(true);
+    const closeModal = () => setShow(false);
 
     return(
         <div className="container-fluid">
@@ -145,8 +213,10 @@ const ApproveList = (props)=>{
                                 </thead>
                                 <tbody>
                                     {apprList.map((appr,index)=>(
-                                        <tr key={index}>
-                                            <td className='text-start'>{appr.approveDto.apprTitle}</td>
+                                        <tr key={index} onClick={e=>approveOneClick(appr)}>
+                                            <td className='text-start'>
+                                                {appr.approveDto.apprTitle}
+                                            </td>
                                             <td>{appr.empName}</td>
                                             <td>{appr.approveDto.apprDateStart}</td>
                                             <td>{appr.approveDto.apprDateEnd}</td>
@@ -158,6 +228,178 @@ const ApproveList = (props)=>{
 
                         </div>
                     </div>
+
+                    {/* Modal */}
+                    <Modal
+                        show={show}
+                        onHide={closeModal}
+                        backdrop="static"
+                        keyboard={true}
+                        {...props}
+                        size="lg"
+                        aria-labelledby="approve-modal"
+                        centered>
+                        <Modal.Body border="dark" style={{ width: '50rem'}}>
+                            <Container>
+                                {/* {조건 ? 참 : 거짓}
+                                    {조건 && 참}
+                                    {조건 || 거짓} */}
+                                <Row>
+                                    <Col aria-labelledby='approve-modal' closeButton className='text-end'>
+                                        <Button type='button' variant="light"
+                                            className='border-0 bg-transparent' onClick={closeModal}>
+                                                <span aria-hidden="true">&times;</span>
+                                        </Button>
+                                    </Col>
+                                </Row>
+
+                                { apprData.length !==0 && 
+                                <Row>
+                                    <Col className='text-end'>
+                                        {/* {apprData.receiversDtoList.map((receiver,index)=>(
+                                            <span key={index} className='ms-2' style={{display:'inline'}}>
+                                                {receiver.receiversReceiver}
+                                            </span>
+                                        ))} */}
+                                        {receiverInfo.map((receiver)=>(
+                                            <span key={receiver.empPositionNo} className='ms-2' style={{display:'inline'}}>
+                                                {receiver.empName}
+                                            </span>
+                                        ))}
+                                        <div></div>
+                                        {apprData.receiversDtoList.map((receiver,index)=>(
+                                            <span key={index} className='ms-2' style={{display:'inline'}}>
+                                                {receiver.receiversStatus === 'Y' ? <FaCheck /> : ""}
+                                            </span> 
+                                        ))}
+                                    </Col>
+                                </Row>
+                                }
+
+                                <Row style={{border: '1px solid gray'}}>
+                                    <Col xs={12} md={2} style={{border: '1px solid gray', backgroundColor:'skyblue'}}>
+                                        부서
+                                    </Col>
+                                    <Col xs={6} md={4} style={{border: '1px solid gray'}}>
+                                        {apprData.deptName}
+                                    </Col>
+                                    <Col xs={12} md={2} style={{border: '1px solid gray', backgroundColor:'skyblue' }}>
+                                        직위
+                                    </Col>
+                                    <Col xs={6} md={4} style={{border: '1px solid gray'}}>
+                                        {emp.empPositionNo}
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col xs={12} md={2}>
+                                        사원번호
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        {emp.empId}
+                                    </Col>
+                                    <Col xs={12} md={2}>
+                                        이름
+                                    </Col>
+                                    <Col xs={6} md={4}>
+                                        {apprData.empName}
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col xs={6} md={2}>
+                                        연락처
+                                    </Col>
+                                    {apprData.length !==0 &&
+                                        <Col xs={6} md={10}>
+                                            {apprData.empTel.substring(0,3)}-{apprData.empTel.substring(3,7)}-{apprData.empTel.substring(7,11)}
+                                        </Col>
+                                    }
+                                </Row>
+
+                                <Row>
+                                    <Col xs={6} md={2}>
+                                        기간
+                                    </Col>
+                                    {apprData.length !==0 &&
+                                        <Col xs={6} md={10}>
+                                            {apprData.approveDto.apprDateStart} ~ {apprData.approveDto.apprDateEnd}
+                                        </Col>
+                                    }
+                                </Row>
+
+                                <Row>
+                                    <Col xs={6} md={2}>
+                                        사유
+                                    </Col>
+                                    {apprData.length !==0 &&
+                                        <Col xs={6} md={10}>
+                                            {apprData.approveDto.apprContent}
+                                        </Col>
+                                    }    
+                                </Row>
+
+                                <Row>
+                                    {apprData.length !==0 &&
+                                        <Col className='text-end'>
+                                            신청일:
+                                            {apprData.approveDto.apprDateStart.substring(0,4)}년
+                                            {apprData.approveDto.apprDateStart.substring(5,7)}월
+                                            {apprData.approveDto.apprDateStart.substring(8,10)}일
+                                        </Col>
+                                    } 
+                                </Row>
+
+                                <Row>
+                                    <Col className='text-end'>
+                                        신청자: {apprData.empName}
+                                    </Col>
+                                </Row>
+
+                            </Container>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            {(()=> {
+                                if(apprData.length !==0 ){
+                                    if(apprData.status === "진행" && apprData.approveDto.apprSender === empNo){ //발신일때
+                                        return (
+                                            <Button variant="danger" onClick={e=>deleteAppr(apprData.approveDto.apprNo)}>
+                                                삭제
+                                            </Button>
+                                        );
+                                    }
+                                    if(apprData.status !== "진행" && apprData.approveDto.apprSender === empNo){ //완료일때
+                                        return null;
+                                    }
+                                    if(receiver.includes(empNo)){ //수신일때
+                                        return (
+                                            <Container>
+                                                <Row>
+                                                    <Col xs={6} md={9}>
+                                                        <Form>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="반려 시 사유를 입력하세요"
+                                                                autoFocus
+                                                                />
+                                                        </Form>
+                                                    </Col>
+                                                    <Col xs={6} md={3} className='text-end'>
+                                                        <Button variant="info" className='me-1'>승인</Button>
+                                                        <Button variant='secondary'>반려</Button>
+                                                    </Col>
+                                                </Row>
+                                            </Container>
+                                        )
+                                    }
+                                    if(referer.includes(empNo)){ //참조일때
+                                        return null;
+                                    }
+                                }
+                            })()}
+                        </Modal.Footer>
+                    </Modal>
+
 
                 </div>
             </div>
