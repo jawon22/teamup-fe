@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { companyState, levelState, userState } from '../recoil';
-import Emp from './emp';
+import Emp from './Emp';
 import { AiOutlineHome} from "react-icons/ai";
 import { IoDocumentTextOutline } from "react-icons/io5";//전자결재
 import { AiOutlineNotification } from "react-icons/ai";//공지사항

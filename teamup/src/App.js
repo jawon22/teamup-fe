@@ -35,7 +35,7 @@ import { companyState, userState } from './recoil';
 import Todo from './components/todo';
 
 import axios from 'axios';
-import Emp from './components/emp';
+import Emp from './components/Emp';
 
 
 
