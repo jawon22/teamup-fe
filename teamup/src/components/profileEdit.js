@@ -8,15 +8,17 @@ import { FaEdit } from "react-icons/fa";
 
 const ProfileEdit = ()=>{
   const [profile, setProfile] = useState({
-    attachNo:0,
+    attach:"",
     empTel:"",
     empEmail:"",
     profileTitle:"",
     profileContent:""
   });
+  console.log(profile);
 
   const [user, setUser] = useRecoilState(userState);
   const loggedInEmpNo = parseInt(user.substring(6));
+  console.log(loggedInEmpNo);
 
   //프로필 조회
   const loadProfile = (empNo) => {
@@ -54,7 +56,7 @@ const ProfileEdit = ()=>{
   
 
   // 프로필 수정창 열기
-  const editProfile = (loggedInEmpNo) =>{
+  const editProfile = () =>{
     // console.log(loggedInEmpNo);
     // 해당 직원의 프로필을 불러옴
     loadProfile(loggedInEmpNo);
@@ -66,35 +68,80 @@ const ProfileEdit = ()=>{
   };
 
   //이미지 미리보기 업데이트
-  const updateImagePreview = ()=>{
+  const updateImagePreview = async ()=>{
     const changeImage = document.getElementById("changeImage");
     const previewImage = document.getElementById("previewImage");
     
     if(changeImage.files && changeImage.files[0]){
       const file = changeImage.files[0];
+      
+
+      // empNo를 사용하여 고유한 키 생성
+      const key = `profileImage_${loggedInEmpNo}`;
 
       //미리보기 업데이트
       const reader = new FileReader();
       reader.onload = (e) =>{
         previewImage.src = e.target.result;
+
+        // attach 속성을 포함한 profile 객체
+        const profileWithAttach = { ...profile, attach: e.target.result };
         
   
-        // LocalStorage에 이미지 데이터 저장
-        // localStorage.setItem("profileImage", e.target.result);
+        //LocalStorage에 이미지 데이터 저장
+        localStorage.setItem(key, JSON.stringify(profileWithAttach));
       };
 
       reader.readAsDataURL(file);
 
-      // FormData에 파일 추가
-      const formData = new FormData();
-      formData.append("attach", file);
+      // // FormData에 파일 추가
+      // const formData = new FormData();
+      // formData.append("attach", file);
 
-      // 프로필 상태 업데이트
-      setProfile({
-        ...profile,
-        attach: formData,
-      });
+      // // 프로필 상태 업데이트
+      // setProfile({
+      //   ...profile,
+      //   attach: formData,
+      // });
 
+    }
+    else{
+       // empNo를 사용하여 고유한 키 생성
+      const key = `profileImage_${loggedInEmpNo}`;
+      const savedData = localStorage.getItem(key);
+
+      if (savedData) {
+        const savedProfile = JSON.parse(savedData);
+        previewImage.src = savedProfile.attach;
+
+        // 프로필 데이터를 다시 설정
+        setProfile(savedProfile);
+      }
+      else {
+        try {
+          // 서버에서 프로필 이미지를 가져옴
+          const response = await axios.get(`http://localhost:8080/profile/image/${profile.empNo}`, {
+            responseType: "blob",
+          });
+          
+          // 미리보기 업데이트
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            
+            // attach 속성을 포함한 profile 객체
+            const profileWithAttach = { ...profile, attach: e.target.result };
+  
+            // LocalStorage에 프로필 데이터 저장
+            localStorage.setItem(key, JSON.stringify(profileWithAttach));
+          };
+  
+          reader.readAsDataURL(response.data);
+          
+        } catch (error) {
+          console.error("Error fetching profile image from server:", error);
+        }
+      }
     }
   };
 
