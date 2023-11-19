@@ -263,8 +263,8 @@ const ApproveList = (props)=>{
                                         ))} */}
                                         {receiverInfo.map((receiver)=>(
                                             <span key={receiver.empPositionNo} className='ms-2' style={{display:'inline'}}>
-                                            {receiver.empName}
-                                        </span>
+                                                {receiver.empName}
+                                            </span>
                                         ))}
                                         <div></div>
                                         {apprData.receiversDtoList.map((receiver,index)=>(
