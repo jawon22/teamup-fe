@@ -1,4 +1,4 @@
-.modal-background {
+.chat-modal-background {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
   }
   
   /* 모달 내부 스타일 */
-  .modal-content {
+  .chat-modal-content {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -22,7 +22,7 @@
   }
   
   /* 모달 닫기 버튼 스타일 */
-  .modal-close-button {
+  .chat-modal-close-button {
     cursor: pointer;
     position: absolute;
     top: 10px;
