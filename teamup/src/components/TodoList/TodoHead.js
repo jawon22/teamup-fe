@@ -1,35 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTodoState } from '../../TodoContext';
-
+import { RiTodoLine } from "react-icons/ri";
 
 const TodoHeadBlock = styled.div`
   padding-top: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
+
   padding-bottom: 10px;
   border-bottom: 1px solid #e9ecef;
   .todoHeadDate {
+    text-align : center;
     margin: 0;
-    color: #343a40;
-  }
-  .todoDay {
-    margin-top: 4px;
-    color: #868e96;
-    font-size: 17px;
+    color: #218C74;
+    font-weight: bold;
   }
   .tasks-left {
+    text-align : right;
     color: #218C74;
     font-size: 15px;
     margin-top: 15px;
-    font-weight: bold;
   }
 `;
 
 function TodoHead() {
     const todos = useTodoState();
     console.log(todos);
-    const undoneTasks = todos.filter(todo => !todo.done);
+    const undoneTasks = todos.filter(todo => !todo.todoDone);
 
     const today = new Date();
     const dateString = today.toLocaleDateString('ko-kr', {
@@ -41,8 +37,7 @@ function TodoHead() {
 
   return (
     <TodoHeadBlock>
-      <h5 className='todoHeadDate'>{dateString}</h5>
-      <div className="todoDay">{dayName}</div>
+      <h3 className='todoHeadDate'><RiTodoLine /> TodoList <RiTodoLine /></h3>
       <div className="tasks-left">할 일 {undoneTasks.length}개 남음</div>
     </TodoHeadBlock>
   );

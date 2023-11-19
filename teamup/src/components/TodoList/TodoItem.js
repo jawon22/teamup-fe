@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { MdDone, MdDelete } from 'react-icons/md';
-import { useTodoDispatch } from '../../TodoContext';
+import { useTodoDispatch, removeTodo } from '../../TodoContext';
+import { useRecoilState } from 'recoil';
+import { todosState, userState } from '../../recoil';
 
 const Remove = styled.div`
   display: flex;
@@ -59,9 +61,35 @@ const Text = styled.div`
 `;
 
 function TodoItem({ id, done, text }) {
+  const [user, setUser] = useRecoilState(userState);
+  const empNo = user.substring(6)
     const dispatch = useTodoDispatch();
-    const onToggle = () => dispatch({type: 'TOGGLE', id});
-    const onRemove = () => dispatch({type: 'REMOVE', id});
+    
+      // Recoil 상태
+    const [todos, setTodos] = useRecoilState(todosState);
+
+    console.log('Done value:', done);
+
+   const onToggle = () => {
+  console.log("toggleId",id);
+  dispatch({ type: 'TOGGLE', id });
+   // Recoil 상태 업데이트
+   setTodos(
+    todos.map((todo) =>
+      todo.todoNo === id ? { ...todo, todoDone: !todo.todoDone } : todo
+    )
+  );
+};
+    const onRemove = () => {
+      console.log("id",id);
+      removeTodo(dispatch, empNo, id);
+       // Recoil 상태 업데이트
+    setTodos(todos.filter((todo) => todo.todoNo !== id));
+    };
+      // useEffect를 TodoItem 컴포넌트 내에 추가
+  useEffect(() => {
+    console.log('Component re-rendered with done:', done);
+  }, [done]);
 
   return (
     <TodoItemBlock>

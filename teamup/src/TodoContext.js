@@ -1,4 +1,8 @@
-import React, { useReducer, createContext, useContext, useRef } from 'react';
+import React, { useReducer, createContext, useContext, useRef, useEffect } from 'react';
+import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { todosState, userState } from './recoil';
+
 
 const initialTodos = [];//초기 Todo 정보는 비어있는 배열로 설정
 
@@ -8,10 +12,13 @@ function todoReducer(state, action) {
       return state.concat(action.todo);
     case 'TOGGLE':
       return state.map(todo =>
-        todo.id === action.id ? { ...todo, done: !todo.done } : todo
+        todo.todoNo === action.id ? { ...todo, todoDone: !todo.todoDone } : todo
       );
     case 'REMOVE':
-      return state.filter(todo => todo.id !== action.id);
+      return state.filter(todo => todo.todoNo !== action.id);
+    case 'SET_TODOS':
+      return action.todos; // SET_TODOS에 대한 처리 추가
+
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
@@ -22,8 +29,30 @@ const TodoDispatchContext = createContext();
 const TodoNextIdContext = createContext();
 
 export function TodoProvider({ children }) {
-    const [state, dispatch] = useReducer(todoReducer, initialTodos);
-    const nextId = useRef(5);
+  const [user, setUser] = useRecoilState(userState);
+  const [todos, setTodos] = useRecoilState(todosState); // Recoil 상태 가져오기
+  const empNo = user.substring(6)
+  const [state, dispatch] = useReducer(todoReducer, initialTodos);
+  const nextId = useRef(5);
+
+  // Todo 불러오기
+  useEffect(() => {
+    const fetchTodos = () => {
+      axios
+        .get(`http://localhost:8080/todo/list/${empNo}`) // API endpoint에 맞게 수정
+        .then((response) => {
+          dispatch({ type: 'SET_TODOS', todos: response.data });
+          setTodos(response.data); // Recoil 상태 업데이트
+        })
+        .catch((error) => {
+          console.error('할 일 목록을 불러오는 중 에러 발생:', error);
+        });
+    };
+
+    fetchTodos();
+  }, [empNo, setTodos]);
+
+
   
     return (
       <TodoStateContext.Provider value={state}>
@@ -58,4 +87,39 @@ export function TodoProvider({ children }) {
       throw new Error('Cannot find TodoProvider');
     }
     return context;
+  }
+// TodoContext.js
+
+export function createTodo(dispatch, nextId, empNo, text) {
+  axios
+    .post(`http://localhost:8080/todo/save`, {
+      todoContent: text,
+      todoDone: false,
+      todoNo: nextId,
+      empNo: empNo, 
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      const newTodo = response.data;
+      dispatch({ type: 'CREATE', todo: newTodo });
+    })
+    .catch((error) => {
+      console.error('할 일을 생성하는 중 에러 발생:', error);
+    });
+}
+
+  
+  export function removeTodo(dispatch, empNo,  id) {
+    axios
+      .delete(`http://localhost:8080/todo/${id}`)
+      .then(() => {
+        console.log(id);
+        dispatch({ type: 'REMOVE', empNo, id });
+      })
+      .catch((error) => {
+        console.error('할 일을 삭제하는 중 에러 발생:', error);
+      });
   }

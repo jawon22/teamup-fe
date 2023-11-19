@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
 import { useTodoState } from '../../TodoContext';
+import { todosState } from '../../recoil';
+import { useRecoilValue } from 'recoil';
 
 const TodoListBlock = styled.div`
   flex: 1;
@@ -11,20 +13,21 @@ const TodoListBlock = styled.div`
 `;
 
 function TodoList() {
-    const todos = useTodoState();
+  // Recoil 상태 사용
+  const todos = useRecoilValue(todosState);
 
   return (
             <TodoListBlock>
                 {todos.map(todo => (
                     <TodoItem
-                        key={todo.id}
-                        id={todo.id}
-                        text={todo.text}
-                        done={todo.done}
+                        key={todo.todoNo}
+                        id={todo.todoNo}
+                        text={todo.todoContent}
+                        done={todo.todoDone}
                     />
                 ))}
             </TodoListBlock>
             );
 }
 
-export default TodoList;
+export default React.memo(TodoList);

@@ -8,7 +8,6 @@ import Calendar from "./calendar";
 
 
 import './homeStyle.css';
-import Todo from "./TodoList/todo";
 import TodoTemplate from "./TodoList/TodoTemplate";
 import TodoHead from "./TodoList/TodoHead";
 import TodoList from "./TodoList/TodoList";

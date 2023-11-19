@@ -33,7 +33,6 @@ import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
 
 import { userState } from './recoil';
-import Todo from './components/TodoList/todo';
 
 import { companyState } from './recoil';
 import axios from 'axios';
@@ -211,7 +210,6 @@ function App() {
                     <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
                     <Route path='/salList' element={<SalList/>}></Route>
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
-                    <Route path="/todo" element={<Todo/>} ></Route>
 
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
                 <Route path="/profileEdit" element={<ProfileEdit />}></Route>

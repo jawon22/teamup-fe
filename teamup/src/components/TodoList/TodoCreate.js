@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { MdAdd } from 'react-icons/md';
-import { useTodoDispatch, useTodoNextId } from '../../TodoContext';
+import { useTodoDispatch, useTodoNextId, createTodo } from '../../TodoContext';
+import { useRecoilState } from 'recoil';
+import { todosState, userState } from '../../recoil';
 
 
 const CircleButton = styled.button`
-  background: #38d9a9;
+  background: #2EC2A1;
   &:hover {
-    background: #63e6be;
+    background: #2EC2A1;
   }
   &:active {
-    background: #20c997;
+    background: #2EC2A1;
   }
 
   z-index: 5;
@@ -37,12 +39,12 @@ const CircleButton = styled.button`
   ${props =>
     props.open &&
     css`
-      background: #ff6b6b;
+      background: #ff7675;
       &:hover {
-        background: #ff8787;
+        background: #ff7675;
       }
       &:active {
-        background: #fa5252;
+        background:#ff7675;
       }
       transform: translate(-50%, 50%) rotate(45deg);
     `}
@@ -78,28 +80,28 @@ const Input = styled.input`
 `;
 
 function TodoCreate() {
+  const [user, setUser] = useRecoilState(userState);
+  const empNo = user.substring(6)
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
   
+      // Recoil 상태 및 디스패치
+    const [todos, setTodos] = useRecoilState(todosState);
     const dispatch = useTodoDispatch();
     const nextId = useTodoNextId();
   
     const onToggle = () => setOpen(!open);
     const onChange = e => setValue(e.target.value);
-    const onSubmit = e => {
-      e.preventDefault(); // 새로고침 방지
-      dispatch({
-        type: 'CREATE',
-        todo: {
-          id: nextId.current,
-          text: value,
-          done: false
-        }
-      });
-      setValue('');
-      setOpen(false);
-      nextId.current += 1;
+    const onSubmit = (e) => {
+      e.preventDefault();
+    // 로컬 상태 대신 Recoil 상태 업데이트
+    createTodo(dispatch, nextId.current, empNo, value);
+    setTodos([...todos, { todoNo: nextId.current, todoContent: value, todoDone: false }]);
+    setValue('');
+    setOpen(false);
+      
     };
+    
   
     return (
       <>
@@ -108,7 +110,7 @@ function TodoCreate() {
             <InsertForm onSubmit={onSubmit}>
               <Input
                 autoFocus
-                placeholder="할 일을 입력 후, Enter 를 누르세요"
+                placeholder="입력 후, Enter 를 누르세요"
                 onChange={onChange}
                 value={value}
               />
