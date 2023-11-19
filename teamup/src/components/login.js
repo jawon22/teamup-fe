@@ -1,41 +1,56 @@
 import axios from "axios";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { userState } from "../recoil";
-import {useNavigate} from 'react-router-dom'
+import { tokenState, userState } from "../recoil";
+import { useNavigate } from 'react-router-dom'
+import jwt_decode, { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
+
 
 const Login = () => {
     const navigate = useNavigate();
     const [user, setUser] = useRecoilState(userState);
+    const [token, setToken] = useRecoilState(tokenState);
 
     const [loginUser, setLoginUser] = useState({
-        empId:"",
-        empPw:""
+        empId: "",
+        empPw: ""
     });
 
-    const login =()=>{
+    const login = () => {
         axios({
-            url:"http://localhost:8080/emp/login/",
-            method:"post",
-            data:loginUser
+            url: "http://localhost:8080/emp/login/",
+            method: "post",
+            data: loginUser
 
-        }).then(response=>{
-            console.log(response.data)
-            if(response.data ===true){
-                setUser(loginUser.empId);
-                setTimeout(()=>{
-                    navigate('/home');
-                },1000);
+        }).then(response => {
+            if (response.data !== null) {
+                console.log(response.data)
+                Cookies.set('userId', response.data);
+
+
                 
 
+
+
+                // 리코일에 저장
+          
+                setTimeout(() => {
+                    navigate('/home');
+                }, 500);
+
+
+            }
+            else{
+                alert("실패")
             }
         })
     }
 
-    const inputChange =(e)=>{
+    const inputChange = (e) => {
         setLoginUser({
             ...loginUser,
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
 
     }
