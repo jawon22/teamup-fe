@@ -67,29 +67,30 @@ const ProfileEdit = ()=>{
     // openModal();
   };
 
+  
   //이미지 미리보기 업데이트
   const updateImagePreview = async ()=>{
     const changeImage = document.getElementById("changeImage");
     const previewImage = document.getElementById("previewImage");
     
     if(changeImage.files && changeImage.files[0]){
+      // 파일이 선택된 경우 미리보기를 업데이트하고 LocalStorage에 저장
       const file = changeImage.files[0];
       
-
-      // empNo를 사용하여 고유한 키 생성
-      const key = `profileImage_${loggedInEmpNo}`;
-
       //미리보기 업데이트
       const reader = new FileReader();
       reader.onload = (e) =>{
         previewImage.src = e.target.result;
-
-        // attach 속성을 포함한 profile 객체
-        const profileWithAttach = { ...profile, attach: e.target.result };
         
-  
-        //LocalStorage에 이미지 데이터 저장
-        localStorage.setItem(key, JSON.stringify(profileWithAttach));
+        // empNo를 사용하여 고유한 키 생성
+        const key = `profileImage_${loggedInEmpNo}`;
+
+        // 파일을 Blob 형태로 변환하여 로컬 스토리지에 저장
+        const arrayBuffer = e.target.result;
+        const blob = new Blob([arrayBuffer], { type: file.type });
+        const blobUrl = URL.createObjectURL(blob);
+        
+        localStorage.setItem(key, blobUrl);
       };
 
       reader.readAsDataURL(file);
@@ -106,40 +107,35 @@ const ProfileEdit = ()=>{
 
     }
     else{
-       // empNo를 사용하여 고유한 키 생성
+       // 파일이 선택되지 않은 경우 LocalStorage의 데이터가 Blob URL인지 확인
       const key = `profileImage_${loggedInEmpNo}`;
       const savedData = localStorage.getItem(key);
 
-      if (savedData) {
-        const savedProfile = JSON.parse(savedData);
-        previewImage.src = savedProfile.attach;
-
-        // 프로필 데이터를 다시 설정
-        setProfile(savedProfile);
+      if (savedData && savedData.startsWith("blob:")) {
+        // 데이터가 Blob URL인 경우 직접 src 속성으로 설정
+        previewImage.src = savedData;
       }
       else {
+        // 데이터가 Blob URL이 아닌 경우 서버에서 이미지를 가져옴
         try {
-          // 서버에서 프로필 이미지를 가져옴
           const response = await axios.get(`http://localhost:8080/profile/image/${profile.empNo}`, {
             responseType: "blob",
           });
-          
+
           // 미리보기 업데이트
           const reader = new FileReader();
           reader.onload = (e) => {
             previewImage.src = e.target.result;
             
-            // attach 속성을 포함한 profile 객체
-            const profileWithAttach = { ...profile, attach: e.target.result };
-  
-            // LocalStorage에 프로필 데이터 저장
-            localStorage.setItem(key, JSON.stringify(profileWithAttach));
+            const blob = new Blob([e.target.result], { type: response.data.type });
+            const blobUrl = URL.createObjectURL(blob);
+            localStorage.setItem(key, blobUrl);
           };
   
           reader.readAsDataURL(response.data);
           
         } catch (error) {
-          console.error("Error fetching profile image from server:", error);
+          console.error("서버에서 프로필 이미지 가져오기 오류:", error);
         }
       }
     }

@@ -151,7 +151,7 @@ const Search = () => {
             method: "get",
         })
             .then(response => {//성공
-                console.log(response);
+                // console.log(response);
                 setProfileList(response.data);
 
             })
@@ -159,7 +159,7 @@ const Search = () => {
                 console.error(err);
             });//실패
     };
-    console.log(setProfileList);
+    // console.log(setProfileList);
 
     useEffect(() => {
         loadProfile();
@@ -180,6 +180,18 @@ const Search = () => {
         if (result.length === 0) return;
 
         setProfile({ ...result[0] });
+
+        // 로컬 스토리지에서 이미지 경로 가져오기
+        const storedImagePath = localStorage.getItem(`profileImage_${emp.empNo}`);
+
+        // 이미지 경로가 존재하면 프로필 상태 업데이트
+        if (storedImagePath) {
+            setProfile({
+                ...result[0],
+                attach: storedImagePath,
+            });
+        }
+
         // 모달 창 열기
         openModal();
     };
@@ -320,7 +332,7 @@ const Search = () => {
                                                 {/* <p>일단이미지번호들어오나보자 : 
                                                     {profile.attachNo}
                                                 </p> */}
-                                                <img src={surf} alt="profileImage" />
+                                                <img src={profile.attach || surf} alt="profileImage" />
                                             </div>
                                             <div className="col-6 mt-5">
                                                 <p>부서 : {profile.deptName}</p>
