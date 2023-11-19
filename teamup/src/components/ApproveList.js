@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import axios from "axios";
 // import { Modal } from "bootstrap";
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -19,6 +20,8 @@ const ApproveList = (props)=>{
     const [apprList,setApprList] = useState([]); //결재 계층형 데이터(처음에 오는 것)
     const [apprData, setApprData] = useState([]); // 클릭한 결재 정보
     const [receiver, setReceiver] = useState([]); //승인자만 저장
+    const [receiverInfo, setReceiverInfo] = useState([]); //승인자의 정보
+
     const [referer, setReferer] = useState([]); //참조자만 저장
     const [empList, setEmpList] = useState([]); // 회원에 대한 모든 정보 
     const [emp, setEmp] = useState([]); //결재 하나의 정보
@@ -27,11 +30,26 @@ const ApproveList = (props)=>{
 
     // receivers
     const divideReceiversDto = ()=>{
-        // 중첩된 map을 사용하여 데이터를 펼침
         const receiversList = apprData.receiversDtoList ? apprData.receiversDtoList.map(receiver => receiver.receiversReceiver) : [];
         setReceiver(receiversList);
     }
     console.log(receiver);
+    console.log(receiverInfo);
+
+    // receivers의 모든정보추출
+    const findReceiverInfo = ()=>{
+        const search = receiver.map(recNo => empList.find(emp => emp.empNo === recNo)); // 해당 승인자의 모든 정보 추출
+        setReceiverInfo(search);
+
+        // return receiver.map(recNo => { // 해당 승인자의 번호와 직급순서 추출
+        //     const foundEmp = empList.find(emp => emp.empNo === recNo);
+        //     return foundEmp ? {empNo: foundEmp.empNo, empPositionNo: foundEmp.empPositionNo} : null
+        // });
+    }
+    
+    useEffect(()=>{
+        findReceiverInfo();
+    },[receiver])
     
     // referers
     const divideReferersDto = ()=>{
@@ -86,7 +104,7 @@ const ApproveList = (props)=>{
                 appr.status !== '진행');
             setApprList(updateApprList);
         });
-    }
+    };
 
     // 참조버튼을 눌렀을때
     // 로그인한 사람이 결재의 참조자로 지정 되어있는 기안만
@@ -151,6 +169,8 @@ const ApproveList = (props)=>{
         })
         .catch(err=>{});
     }
+
+    //승인자 결재 승인 처리
 
     //모달 관련 처리
     const [show, setShow] = useState(false);
@@ -219,24 +239,32 @@ const ApproveList = (props)=>{
                         size="lg"
                         aria-labelledby="approve-modal"
                         centered>
-                        <Modal.Header closeButton>
-                            <Modal.Title aria-labelledby='approve-modal'>
-                                결재
-                            </Modal.Title>
-                        </Modal.Header>
                         <Modal.Body border="dark" style={{ width: '50rem'}}>
                             <Container>
                                 {/* {조건 ? 참 : 거짓}
                                     {조건 && 참}
                                     {조건 || 거짓} */}
+                                <Row>
+                                    <Col aria-labelledby='approve-modal' closeButton className='text-end'>
+                                        <Button type='button' variant="light"
+                                            className='border-0 bg-transparent' onClick={closeModal}>
+                                                <span aria-hidden="true">&times;</span>
+                                        </Button>
+                                    </Col>
+                                </Row>
 
-                                { apprData === undefined && 
+                                { apprData.length !==0 && 
                                 <Row>
                                     <Col className='text-end'>
-                                        {apprData.receiversDtoList.map((receiver,index)=>(
+                                        {/* {apprData.receiversDtoList.map((receiver,index)=>(
                                             <span key={index} className='ms-2' style={{display:'inline'}}>
                                                 {receiver.receiversReceiver}
                                             </span>
+                                        ))} */}
+                                        {receiverInfo.map((receiver)=>(
+                                            <span key={receiver.empPositionNo} className='ms-2' style={{display:'inline'}}>
+                                            {receiver.empName}
+                                        </span>
                                         ))}
                                         <div></div>
                                         {apprData.receiversDtoList.map((receiver,index)=>(
@@ -282,7 +310,7 @@ const ApproveList = (props)=>{
                                     <Col xs={6} md={2}>
                                         연락처
                                     </Col>
-                                    {apprData === undefined &&
+                                    {apprData.length !==0 &&
                                         <Col xs={6} md={10}>
                                             {apprData.empTel.substring(0,3)}-{apprData.empTel.substring(3,7)}-{apprData.empTel.substring(7,11)}
                                         </Col>
@@ -293,7 +321,7 @@ const ApproveList = (props)=>{
                                     <Col xs={6} md={2}>
                                         기간
                                     </Col>
-                                    {apprData === undefined &&
+                                    {apprData.length !==0 &&
                                         <Col xs={6} md={10}>
                                             {apprData.approveDto.apprDateStart} ~ {apprData.approveDto.apprDateEnd}
                                         </Col>
@@ -304,7 +332,7 @@ const ApproveList = (props)=>{
                                     <Col xs={6} md={2}>
                                         사유
                                     </Col>
-                                    {apprData === undefined &&
+                                    {apprData.length !==0 &&
                                         <Col xs={6} md={10}>
                                             {apprData.approveDto.apprContent}
                                         </Col>
@@ -312,7 +340,7 @@ const ApproveList = (props)=>{
                                 </Row>
 
                                 <Row>
-                                    {apprData === undefined &&
+                                    {apprData.length !==0 &&
                                         <Col className='text-end'>
                                             신청일:
                                             {apprData.approveDto.apprDateStart.substring(0,4)}년
@@ -332,21 +360,43 @@ const ApproveList = (props)=>{
                         </Modal.Body>
                         <Modal.Footer>
                             {(()=> {
-                                if(apprData.status === "진행"){ //발신일때
-                                    return <Button variant="danger" onClick={e=>deleteAppr(apprData.approveDto.apprNo)}>
-                                            삭제
-                                        </Button>
+                                if(apprData.length !==0 ){
+                                    if(apprData.status === "진행" && apprData.approveDto.apprSender === empNo){ //발신일때
+                                        return (
+                                            <Button variant="danger" onClick={e=>deleteAppr(apprData.approveDto.apprNo)}>
+                                                삭제
+                                            </Button>
+                                        );
+                                    }
+                                    if(apprData.status !== "진행" && apprData.approveDto.apprSender === empNo){ //완료일때
+                                        return null;
+                                    }
+                                    if(receiver.includes(empNo)){ //수신일때
+                                        return (
+                                            <Container>
+                                                <Row>
+                                                    <Col xs={6} md={9}>
+                                                        <Form>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="반려 시 사유를 입력하세요"
+                                                                autoFocus
+                                                                />
+                                                        </Form>
+                                                    </Col>
+                                                    <Col xs={6} md={3} className='text-end'>
+                                                        <Button variant="info" className='me-1'>승인</Button>
+                                                        <Button variant='secondary'>반려</Button>
+                                                    </Col>
+                                                </Row>
+                                            </Container>
+                                        )
+                                    }
+                                    if(referer.includes(empNo)){ //참조일때
+                                        return null;
+                                    }
                                 }
-                                if(apprData.status !== "진행"){ //완료일때
-                                    return;
-                                }
-                                if(receiver.includes(user)){ //수신일때
-                                    return <Button variant="info"> 승인 </Button> 
-                                }
-                                if(referer.includes(user)){ //참조일때
-                                    return;
-                                }
-                            })}
+                            })()}
                         </Modal.Footer>
                     </Modal>
 
