@@ -28,7 +28,7 @@ const SalList=(prop)=>{
         salDetail();
     },[]);
 
-    //화면 실행시 최신 급여내역을 출력 //
+    //화면 실행시 최신 급여내역을 출력 
     const salDetail =()=>{
         //서버에서 급여내역 list 불러와서 state에 설정하는 코드 
         axios({
@@ -131,7 +131,7 @@ const SalList=(prop)=>{
                     <hr className='text-primary'/>
                     </div>
                     <div className='col-3 h4'>
-                    {totalSal}원                      
+                    {totalSal.toLocaleString()}원                      
                     </div>
                 </div>
 
@@ -144,7 +144,7 @@ const SalList=(prop)=>{
                                 <div className=''>총 지급액</div>
                                 </div>
                                 <div className='col-6 text-end'>
-                                <div>{salList.salListTotal}원</div>                       
+                                <div>{salList.salListTotal.toLocaleString()}원</div>                       
                                 </div>
                             </div>
                             <div>
@@ -159,7 +159,7 @@ const SalList=(prop)=>{
                                 <div>총 공제액</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{totalTax}원</div>                                             
+                                <div>{totalTax.toLocaleString()}원</div>                                             
                             </div>
                             <div>
                                 <hr className='border border-primary border-2'/>
@@ -170,7 +170,7 @@ const SalList=(prop)=>{
                                 <div>건강보험료</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListHealth}원</div>                                             
+                                <div>{salList.salListHealth.toLocaleString()}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -181,7 +181,7 @@ const SalList=(prop)=>{
                                 <div>지방소득세</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListLocal}원</div>                                             
+                                <div>{salList.salListLocal.toLocaleString()}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -192,7 +192,7 @@ const SalList=(prop)=>{
                                 <div>장기요양보험료</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListLtcare}원</div>                                             
+                                <div>{salList.salListLtcare.toLocaleString()}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -203,7 +203,7 @@ const SalList=(prop)=>{
                                 <div>근로소득세</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListWork}원</div>                                             
+                                <div>{salList.salListWork.toLocaleString()}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
@@ -214,7 +214,7 @@ const SalList=(prop)=>{
                                 <div>국민연금</div>
                             </div>
                             <div className='col-5 text-end'>
-                                <div>{salList.salListNational}원</div>                                             
+                                <div>{salList.salListNational.toLocaleString()}원</div>                                             
                             </div>
                             <div>
                                 <hr className='text-primary'/>
