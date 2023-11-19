@@ -12,10 +12,6 @@ const Search = () => {
     const location = useLocation();
     const [searchList, setSearchList] = useState([]);
     const [addressList, setAddressList] = useState([]);
-    const [user, setUser] = useRecoilState(userState)
-    const [comId, setComId] = useRecoilState(companyState);
-    const [count, setCount] = useState();
-    const [size, setSize] = useState(10);
 
 
     const [active, setActive] = useState();
