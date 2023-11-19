@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useState } from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import "./components/Sidebar";
@@ -32,7 +31,6 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useRecoilState } from 'recoil';
 
-import { userState } from './recoil';
 import Todo from './components/todo';
 
 import { companyState, userState } from './recoil';

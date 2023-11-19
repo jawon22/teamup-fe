@@ -341,7 +341,7 @@ const ApproveList = (props)=>{
                                     return;
                                 }
                                 if(receiver.includes(user)){ //수신일때
-                                    return <Button ariant="info"> 승인 </Button> 
+                                    return <Button variant="info"> 승인 </Button> 
                                 }
                                 if(referer.includes(user)){ //참조일때
                                     return;
