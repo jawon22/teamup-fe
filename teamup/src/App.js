@@ -117,8 +117,9 @@ useEffect(()=>{
                         <Nav className="bg-body-primary ">
 
                           <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
-                            <NavDropdown.Item >마이페이지</NavDropdown.Item>                                                        
 
+                            <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>              
+                                   
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
                         </Nav>
