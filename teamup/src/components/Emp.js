@@ -48,23 +48,7 @@ const Emp = () => {
         setOpenDept((prevDept) => (prevDept === deptNo ? null : deptNo));
 
         if (openDept !== deptNo) {
-            axios({
-                url: 'http://localhost:8080/emp/empListByDeptCom',
-                method: 'post',
-                data: {
-                    comId: company,
-                    deptNo: deptNo,
-                },
-            })
-                .then((res) => {
-                    console.log('저장사원', empList);
-                    setEmpList(res.data);
-                    setToggle((prevToggle) => !prevToggle);
-                    console.log(toggle);
-                })
-                .catch((error) => {
-                    console.error('Error fetching employee list:', error);
-                });
+           
         }
 
         console.log(deptNo)
