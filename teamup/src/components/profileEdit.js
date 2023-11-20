@@ -79,7 +79,7 @@ const ProfileEdit = ()=>{
   
   
   //이미지 미리보기 업데이트
-  const updateImagePreview = async (e)=>{
+  const updateImagePreview = ()=>{
     const changeImage = document.getElementById("changeImage");
     const previewImage = document.getElementById("previewImage");
     
@@ -91,28 +91,28 @@ const ProfileEdit = ()=>{
       previewImage.src = URL.createObjectURL(file);
         
       // 서버로 선택된 이미지를 업로드
-      const formData = new FormData();
-      formData.append("attach", file);
+      // const formData = new FormData();
+      // formData.append("attach", file);
       
       // reader.readAsDataURL(file);
       // reader.readAsArrayBuffer(file);
       
       // 여기에 이미지를 서버에 업로드하는 로직을 추가해야 합니다.
       // axios를 사용하여 서버에 이미지 업로드 요청을 보내세요.
-      axios({
-        url:`http://localhost:8080/profile/${loggedInEmpNo}`,
-        method:"put",
-        // responseType : "blob"
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(response =>{
-        const arrayBuffer = e.target.result;
-        // const blob = new Blob([arrayBuffer], { type: file.type });
-      })
-      .catch(err =>{});
+      // axios({
+      //   url:`http://localhost:8080/profile/${loggedInEmpNo}`,
+      //   method:"put",
+      //   // responseType : "blob"
+      //   data: formData,
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // })
+      // .then(response =>{
+      //   // const arrayBuffer = e.target.result;
+      //   // const blob = new Blob([arrayBuffer], { type: file.type });
+      // })
+      // .catch(err =>{});
       
     }
     
@@ -167,7 +167,12 @@ const ProfileEdit = ()=>{
     formData.append("empEmail", profile.empEmail);
     formData.append("profileTitle", profile.profileTitle);
     formData.append("profileContent", profile.profileContent);
-    formData.append("attach", attach);
+    // formData.append("attach", attach);
+
+    // 이미지 파일이 있는 경우에만 FormData에 추가
+    if (attach) {
+      formData.append("attach", attach);
+    }
 
     try{
       //서버로 업데이트 요청 전송
@@ -182,16 +187,19 @@ const ProfileEdit = ()=>{
 
       //업데이트 성공 시 모달 닫기
       closeModal();
+      
+      // FormData에 파일을 추가하고 나서 프로필 상태 업데이트
+      setProfile({
+        ...profile,
+        attach: attach,
+      });
     }
     catch(error){
       console.error("프로필 업데이트 에러", error);
+      //수정한 이미지 파일이 없는 경우에도 모달 닫기
+      closeModal();
     }
 
-    // FormData에 파일을 추가하고 나서 프로필 상태 업데이트
-    setProfile({
-      ...profile,
-      attach: formData,
-    });
 
 
     //프로필 데이터 및 이미지 업데이트
@@ -244,6 +252,8 @@ const ProfileEdit = ()=>{
     });
   }, []);
 
+
+  
   return (
     <>
       <div className="row">
