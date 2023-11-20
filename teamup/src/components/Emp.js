@@ -23,38 +23,50 @@ const Emp = () => {
     useEffect(() => {
         loadDeptList();
     }, []);
-
-
-
+    
     const [toggle, setToggle] = useState(false);
-
-
-
-
-    //부서리스트
+    const [openDept, setOpenDept] = useState(null);
+    
+    // 부서리스트
     const loadDeptList = () => {
         axios({
             url: `http://localhost:8080/dept/listByCompany/${company}`,
             method: 'get'
         }).then(res => {
-            setDeptList(res.data)
+            setDeptList(res.data);
             //console.log('저장부서',deptList)
         });
     };
-
-    const [openDept, setOpenDept] = useState(null);
-
+    
     const spreadDept = (deptNo) => {
         setOpenDept((prevDept) => (prevDept === deptNo ? null : deptNo));
 
         if (openDept !== deptNo) {
-           
+            axios({
+                url: 'http://localhost:8080/emp/empListByDeptCom',
+                method: 'post',
+                data: {
+                    comId: company,
+                    deptNo: deptNo,
+                },
+            })
+                .then((res) => {
+                    console.log('저장사원', empList);
+                    setEmpList(res.data);
+                    setToggle((prevToggle) => !prevToggle);
+                    console.log(toggle);
+                })
+                .catch((error) => {
+                    console.error('Error fetching employee list:', error);
+                });
         }
 
         console.log(deptNo)
 
 
+
     };
+
 
     const [showModal, setShowModal] = useState(false);
 

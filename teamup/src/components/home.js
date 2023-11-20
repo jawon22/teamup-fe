@@ -63,7 +63,6 @@ const Home = () => {
         setAttendList(response.data);
       })
       .catch((err) => {
-        window.alert("통신 오류가 발생했습니다.!!!");
       });
   };
 
@@ -79,7 +78,6 @@ const Home = () => {
         setAttendList(response.data);
       })
       .catch(err => {
-        window.alert("통신 오류가 발생했습니다!");
       });
   };
 
