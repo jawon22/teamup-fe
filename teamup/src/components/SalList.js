@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { userState } from '../recoil';
 import axios from "axios";
 import { useLocation } from 'react-router-dom'
@@ -28,7 +28,7 @@ const SalList=(prop)=>{
         salDetail();
     },[]);
 
-    //화면 실행시 최신 급여내역을 출력 //
+    //화면 실행시 최신 급여내역을 출력 
     const salDetail =()=>{
         //서버에서 급여내역 list 불러와서 state에 설정하는 코드 
         axios({
@@ -89,14 +89,19 @@ const SalList=(prop)=>{
     };
 
     //실지급액
-    const totalSal = parseFloat(salList.salListTotal) - parseFloat(salList.salListHealth)
-        - parseFloat(salList.salListLocal) - parseFloat(salList.salListLtcare)
-        - parseFloat(salList.salListNational) - parseFloat(salList.salListWork);
+    //- useMemo : 특정 값이 변할 때에만 계산하도록 처리
+    const totalSal = useMemo(()=>{
+        return parseFloat(salList.salListTotal || 0) - parseFloat(salList.salListHealth || 0)
+        - parseFloat(salList.salListLocal || 0) - parseFloat(salList.salListLtcare || 0)
+        - parseFloat(salList.salListNational || 0) - parseFloat(salList.salListWork || 0)
+    }, [salList]);
 
     //총공제액
-    const totalTax = parseFloat(salList.salListHealth)
-    + parseFloat(salList.salListLocal) + parseFloat(salList.salListLtcare)
-    + parseFloat(salList.salListNational) + parseFloat(salList.salListWork);
+    const totalTax = useMemo(()=>{
+        return parseFloat(salList.salListHealth || 0)
+        + parseFloat(salList.salListLocal || 0) + parseFloat(salList.salListLtcare || 0)
+        + parseFloat(salList.salListNational || 0) + parseFloat(salList.salListWork || 0)
+    },[salList]);
 
     return(
 

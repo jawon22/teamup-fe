@@ -5,7 +5,16 @@ import axios from "axios";
 import { userState } from "../recoil";
 import {CgProfile} from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
+
+
 import './homeStyle.css';
+import TodoTemplate from "./TodoList/TodoTemplate";
+import TodoHead from "./TodoList/TodoHead";
+import TodoList from "./TodoList/TodoList";
+import TodoCreate from "./TodoList/TodoCreate";
+import { TodoProvider } from "../TodoContext";
+
+
 
 const Home = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -106,8 +115,9 @@ const Home = () => {
 
             <div className="home-profile col-3">
 
-              <div className="row border border-primary h-100">
+              <div className="row border border-primary h-50 mb-5 pb-5">
                     <h1 >홈페이지</h1>
+
                     <CgProfile className="me-3" size={150}style={{color:'#218C74'}} />
 
               <div className="d-flex">
@@ -122,9 +132,20 @@ const Home = () => {
             <button className="btn btn-primary" onClick={attendEndClick}
               disabled={flag === "근무전"}>퇴근하기</button>
           </div>
+
               </div>
-              <div className="row border border-primary h-50 h1">
-                TodoList
+
+
+              </div>
+
+              <div className="row h-50 me-1">
+                <TodoProvider>
+                    <TodoTemplate>
+                      <TodoHead/>
+                      <TodoList/>
+                      <TodoCreate/>
+                    </TodoTemplate>                  
+                </TodoProvider>
               </div>
 
             </div>
