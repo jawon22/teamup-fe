@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { companyState, levelState, userState } from '../recoil';
-import Emp from './emp';
+import Emp from './Emp';
 import { AiOutlineHome} from "react-icons/ai";
 import { IoDocumentTextOutline } from "react-icons/io5";//전자결재
 import { AiOutlineNotification } from "react-icons/ai";//공지사항
@@ -16,6 +16,7 @@ import surf from "./images/TeamUpLogoW.png";
 
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 임포트
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // 부트스트랩 JavaScript 파일 임포트
+import Cookies from 'js-cookie';
 
 
 const Sidebar = (props) => {
@@ -25,15 +26,24 @@ const Sidebar = (props) => {
     const [level, setLevel] = useRecoilState(levelState);
 
     const location = useLocation();
+    const navigate = useNavigate();
 
-    const login = ()=>{
-        setUser('202302032');
-        setLevel('1');
-    };
-    const logout = ()=>{
-        setUser('');
-        setLevel('');
-    };
+
+
+    const logout = () => {
+        console.log("logout function called");
+        Cookies.remove('userId', { path: '/' });
+        alert("로그아웃 되었습니다.")
+        navigate("/login");
+
+        setUser("");
+        setCompany("");
+    
+      };
+
+      useEffect(()=>{
+    },[])
+    
 
     return (
         <div>
@@ -44,7 +54,7 @@ const Sidebar = (props) => {
                     <div className='col'>            
                         <div className='text-end' >
                             {user}{company}
-                            <button onClick={login} className='btn btn-primary'>로그인</button>
+                            <button  className='btn btn-primary'>로그인</button>
                             <button onClick={logout} className='btn btn-primary'>로그아웃</button>
                             <NavLink to='/login' className="nav-link">
                                 로그인 페이지로
