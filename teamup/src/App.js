@@ -26,20 +26,19 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 import { useRecoilState } from 'recoil';
-
-
-import { userState } from './recoil';
-
-
 import { companyState, userState } from './recoil';
 
 
 
-import axios from 'axios';
+
+
+
+
 import Emp from './components/Emp';
 
 
@@ -97,9 +96,6 @@ useEffect(()=>{
 
                 <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
                 <NavLink to="/empTree"className={"ms-2"}>조직도</NavLink>
-
-                <button className="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">조직도</button>
-
                 <NavLink to="/profileEdit"className="ms-1">프로필</NavLink>
 
                 <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
