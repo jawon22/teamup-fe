@@ -2,13 +2,11 @@ import { useRecoilState } from 'recoil';
 import React, { useEffect, useMemo, useState } from "react";
 import { userState } from '../recoil';
 import axios from "axios";
-import { useLocation } from 'react-router-dom'
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 
 const SalList=(prop)=>{
     const [user, setUser] = useRecoilState(userState);
-    const location = useLocation();
     const empNo = user.substring(6)
 
     const currentDate = new Date();
@@ -144,7 +142,7 @@ const SalList=(prop)=>{
                     <hr className='text-primary'/>
                     </div>
                     <div className='col-3 h4'>
-                    {salList && salList.salListTotal ? salList.salListTotal.toLocaleString() : '0'}원                     
+                    {totalSal.toLocaleString()}원원                     
                     </div>
                 </div>
 

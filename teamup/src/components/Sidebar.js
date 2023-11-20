@@ -76,7 +76,7 @@ const Sidebar = (props) => {
                     </NavLink> 
                 </div>
                 <div className="ms-4">
-                    <NavLink to="#" className="nav-link d-flex align-items-center">
+                    <NavLink to="/Board" className="nav-link d-flex align-items-center">
                         <AiOutlineNotification className="text-white me-3" size="30"/>
                         <span>공지사항</span>
                     </NavLink> 
