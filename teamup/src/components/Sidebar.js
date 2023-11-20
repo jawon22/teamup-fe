@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { companyState, levelState, userState } from '../recoil';
 import Emp from './emp';
@@ -26,19 +26,24 @@ const Sidebar = (props) => {
     const [level, setLevel] = useRecoilState(levelState);
 
     const location = useLocation();
+    const navigate = useNavigate();
 
-    const login = ()=>{
-        setUser('202302029');
-        setLevel('1');
-    };
+
 
     const logout = () => {
         console.log("logout function called");
         Cookies.remove('userId', { path: '/' });
         alert("로그아웃 되었습니다.")
-        window.location.reload();
+        navigate("/login");
+
+        setUser("");
+        setCompany("");
     
       };
+
+      useEffect(()=>{
+        logout()
+    },[])
     
 
     return (
@@ -50,7 +55,7 @@ const Sidebar = (props) => {
                     <div className='col'>            
                         <div className='text-end' >
                             {user}{company}
-                            <button onClick={login} className='btn btn-primary'>로그인</button>
+                            <button  className='btn btn-primary'>로그인</button>
                             <button onClick={logout} className='btn btn-primary'>로그아웃</button>
                             <NavLink to='/login' className="nav-link">
                                 로그인 페이지로
