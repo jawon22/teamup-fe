@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useTodoState } from '../../TodoContext';
 import { RiTodoLine } from "react-icons/ri";
+import { todosState } from '../../recoil';
+import { useRecoilState } from 'recoil';
 
 const TodoHeadBlock = styled.div`
   padding-top: 20px;
@@ -23,17 +25,13 @@ const TodoHeadBlock = styled.div`
 `;
 
 function TodoHead() {
-    const todos = useTodoState();
+    // Recoil 상태 및 디스패치
+    const [todos, setTodos] = useRecoilState(todosState);
     console.log(todos);
     const undoneTasks = todos.filter(todo => !todo.todoDone);
+    
 
-    const today = new Date();
-    const dateString = today.toLocaleDateString('ko-kr', {
-        year : 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    const dayName = today.toLocaleDateString('ko-kr', {weekday: 'long'});
+
 
   return (
     <TodoHeadBlock>
