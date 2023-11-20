@@ -78,7 +78,7 @@ function App() {
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
                           <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
-                            <NavDropdown.Item >마이페이지</NavDropdown.Item>              
+                            <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>              
                             <NavLink  className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} to='/salList'>
                               <NavDropdown.Item className={`nav-link ${location.pathname === '/salList' ? 'active' : ''}`} href='/salList'>급여내역</NavDropdown.Item>
                             </NavLink>                                            
