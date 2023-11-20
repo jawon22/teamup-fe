@@ -42,7 +42,6 @@ const Sidebar = (props) => {
       };
 
       useEffect(()=>{
-        logout()
     },[])
     
 
