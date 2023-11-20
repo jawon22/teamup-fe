@@ -6,7 +6,7 @@ import { todosState } from '../../recoil';
 import { useRecoilState } from 'recoil';
 
 const TodoHeadBlock = styled.div`
-  padding-top: 20px;
+  padding-top: 15px;
 
   padding-bottom: 10px;
   border-bottom: 1px solid #e9ecef;
