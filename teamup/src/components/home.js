@@ -5,6 +5,7 @@ import axios from "axios";
 import { userState } from "../recoil";
 import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
+import surf from "./images/profileImage.png";
 
 
 import './homeStyle.css';
@@ -105,15 +106,43 @@ const Home = () => {
     return new Date(dateTimeString).toLocaleString("ko-KR", options);
   };
 
+
+  //사원번호로 프로필 이미지 불러오기
+  const loggedInEmpNo = parseInt(user.substring(6));
+
+  const [imgSrc, setImgSrc] = useState(surf);//처음에는 없다고 치고 기본이미지로 설정
+  useEffect(()=>{
+    axios({
+      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      method:"get"
+    })
+    .then(response=>{
+      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+    })
+    .catch(err=>{
+      setImgSrc(surf);
+    });
+  }, []);
+
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrc || surf;
+
+
+
   return (
     <div className="container-fluid">
 
         <div className="row ms-1">
 
-        <div className="home-profile col-3">
-              <div className="row border border-primary h-50 mb-3 pb-1 me-1">
+            <div className="home-profile col-3">
 
-                    <CgProfile  size={150}style={{color:'#218C74'}} />
+              <div className="row border border-primary h-50 mb-3 pb-1 me-1
+                                  d-flex justify-content-center align-items-center">
+
+                    {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
+                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
+                                style={{width:"220px", height:"200px", objectFit:"cover"}}/>
 
                       <div className="d-flex">
                         <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>

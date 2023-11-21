@@ -163,11 +163,23 @@ const Search = () => {
         axios({
             url: "http://localhost:8080/profile/",
             method: "get",
+
         })
             .then(response => {//성공
-                // console.log(response);
                 setProfileList(response.data);
+                
+                 // 각 프로필의 이미지 URL을 저장할 배열
+                const imgSrcList = [];
 
+                // // 각 프로필에 대한 이미지 URL을 가져와서 배열에 저장
+                // response.data.forEach(profile => {
+                //     const empNo = profile.empNo;
+                //     const imgSrc = `http://localhost:8080/image/profile/${empNo}`;
+                //     imgSrcList.push(imgSrc);
+                // });
+
+        // imgSrcList 상태에 배열을 설정
+        setImgSrcList(imgSrcList);
             })
             .catch(err => {
                 console.error(err);
@@ -212,21 +224,6 @@ const Search = () => {
 
     
 
-    //사번으로 이미지 출력하기
-    const [imgSrc, setImgSrc] = useState(surf);
-    useEffect((empNo)=>{
-        axios({
-            url:`http://localhost:8080/image/profile/${empNo}`,
-            method:"get"
-        })
-        .then(response=>{
-            setImgSrc(`http://localhost:8080/image/profile/${empNo}`);
-        })
-        .catch(err=>{
-            setImgSrc(surf);
-        });
-    },[]);
-
 
 
     //모달 관련 처리
@@ -259,6 +256,26 @@ const Search = () => {
     };
 
 
+
+// const empNo = parseInt(user.substring(6));
+const empNo = user.substring(6);
+    //사번으로 주소록에 프로필이미지 출력
+  const [imgSrcList, setImgSrcList] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
+  useEffect(()=>{
+    axios({
+      url:`http://localhost:8080/image/profile/${empNo}`,
+      method:"get"
+    })
+    .then(response=>{
+      setImgSrcList(`http://localhost:8080/image/profile/${empNo}`);
+    })
+    .catch(err=>{
+      setImgSrcList(surf);
+    });
+  }, []);
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrcList || surf;
 
 
 
@@ -357,9 +374,7 @@ const Search = () => {
                                                 {/* <p>일단이미지번호들어오나보자 : 
                                                     {profile.attachNo}
                                                 </p> */}
-                                                {/* {조건 ? '추가' : '수정'} */}
-                                                {imgSrc === undefined ? surf : imgSrc}
-                                                <img src={imgSrc || surf} alt="profileImage" className="rounded-circle"
+                                                <img src={displayImage} alt="profileImage" className="rounded-circle"
                                                         style={{width:"180px", height:"180px", objectFit:"cover"}}/>
                                             </div>
                                             <div className="col-6 mt-5">
