@@ -240,10 +240,10 @@ const Attend = (props) => {
                 </h5>
                 <div className="d-flex row mt-4">
                     <div className="col-6 offset-3">
-                        <LuClipboardList /><span className="ms-1">근태현황</span>
+                        <LuClipboardList /><span className="ms-1 text-bold">근태현황</span>
                     </div>
                     <div className="col">
-                        <button onClick={handleShowClick} className="btn btn-primary ms-5">상세보기</button>
+                        <button onClick={handleShowClick} className="btn btn-primary custom-btn ms-5">상세보기</button>
                     </div>
                 </div>
                     
@@ -253,8 +253,8 @@ const Attend = (props) => {
 
                 <div className="row d-flex">
                     <div className="col-6">
-                        <div>총 근무일 수</div>
-                        <div>총 근무 시간 </div>
+                        <div className="text-bold">총 근무일 수</div>
+                        <div className="text-bold">총 근무 시간 </div>
                     </div>
                     <div className="col-6">
                         <div>{totalWorkDays} 일</div>
@@ -275,7 +275,7 @@ const Attend = (props) => {
       <div className={`attendList ${show ? 'show' : 'hide'}`}>
 
           <table className="table">
-            <thead className="t-border">
+            <thead className="table-primary">
               <tr>
                 <th>근무일자</th>
                 <th>출근시각</th>

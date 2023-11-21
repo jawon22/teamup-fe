@@ -59,7 +59,7 @@ const Mypage = () => {
 
     return (
         <>
-            <div className="container m-5">
+            <div className="container m-5 ps-5 pe-5">
 
                 {/* 마이페이지 상세 */}
                 <div className="row mt-4 mp-bg text-green">
@@ -69,7 +69,7 @@ const Mypage = () => {
                                 style={{width:"220px", height:"220px", objectFit:"cover"}}/>
                     </div>
 
-                    <div className="col-7">
+                    <div className="col-7 p-4">
 
                         <div className="row mt-3">
                             <div className="col-4 text-bold">부서번호</div>
@@ -107,10 +107,10 @@ const Mypage = () => {
                     </div>
                 </div>
                         
-                <div className="row mt-4 text-green">
+                <div className="row mt-5 text-green">
                     {/* 근태 관리 */}
-                    <div className="text-center text-green text-bold">
-                        <div className="row mp-bg mb-4">
+                    <div className="text-center text-green">
+                        <div className="row mp-bg mb-4 p-4">
                             <div className="col-12">
                             <Attend/>   
                             </div>
