@@ -181,27 +181,38 @@ const Search = () => {
 
         setProfile({ ...result[0] });
 
-        // 로컬 스토리지에서 이미지 경로 가져오기
-        const storedImagePath = localStorage.getItem(`profileImage_${emp.empNo}`);
+        // // 로컬 스토리지에서 이미지 경로 가져오기
+        // const storedImagePath = localStorage.getItem(`profileImage_${emp.empNo}`);
 
-        // 이미지 경로가 존재하면 프로필 상태 업데이트
-        if (storedImagePath) {
-            setProfile({
-                ...result[0],
-                attach: storedImagePath,
-            });
-        }
+        // // 이미지 경로가 존재하면 프로필 상태 업데이트
+        // if (storedImagePath) {
+        //     setProfile({
+        //         ...result[0],
+        //         attach: storedImagePath,
+        //     });
+        // }
 
         // 모달 창 열기
         openModal();
     };
 
+    
 
-    // const changeProfile = (target)=>{
-    //     setProfile({
-    //         ...target
-    //     });
-    // };
+    //사번으로 이미지 출력하기
+    const [imgSrc, setImgSrc] = useState(surf);
+    useEffect((empNo)=>{
+        axios({
+            url:`http://localhost:8080/image/profile/${empNo}`,
+            method:"get"
+        })
+        .then(response=>{
+            setImgSrc(`http://localhost:8080/image/profile/${empNo}`);
+        })
+        .catch(err=>{
+            setImgSrc(surf);
+        });
+    },[]);
+
 
 
     //모달 관련 처리
@@ -332,7 +343,10 @@ const Search = () => {
                                                 {/* <p>일단이미지번호들어오나보자 : 
                                                     {profile.attachNo}
                                                 </p> */}
-                                                <img src={profile.attach || surf} alt="profileImage" />
+                                                {/* {조건 ? '추가' : '수정'} */}
+                                                {imgSrc === undefined ? surf : imgSrc}
+                                                <img src={imgSrc || surf} alt="profileImage" className="rounded-circle"
+                                                        style={{width:"180px", height:"180px", objectFit:"cover"}}/>
                                             </div>
                                             <div className="col-6 mt-5">
                                                 <p>부서 : {profile.deptName}</p>
