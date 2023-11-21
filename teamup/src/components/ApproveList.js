@@ -22,10 +22,12 @@ const ApproveList = (props)=>{
     const [receiver, setReceiver] = useState([]); //승인자만 저장
     const [receiverInfo, setReceiverInfo] = useState([]); //승인자의 정보
     const [approveReceiver, setApproveReceiver] = useState([]); //승인자의 사원정보
+    const [receiverPosition, setReceiverPosition] = useState([]); //자신을 제외한 사원정보
 
     const [referer, setReferer] = useState([]); //참조자만 저장
     const [empList, setEmpList] = useState([]); // 회원에 대한 모든 정보 
     const [emp, setEmp] = useState([]); //결재 하나의 정보
+    const [ycount, setYCount] = useState([]);// Y카운트 갯수
 
     const empNo = parseInt(user.substring(6)); //로그인한 사람의 사원번호
 
@@ -36,6 +38,7 @@ const ApproveList = (props)=>{
     }
     console.log(receiver);
     console.log(receiverInfo);
+    // console.log(approveReceiver);
 
     // receivers의 모든정보추출
     const findReceiverInfo = ()=>{
@@ -61,6 +64,7 @@ const ApproveList = (props)=>{
     
     useEffect(()=>{
         findReceiverInfo();
+        approveCompute();
     },[receiver])
     
     // referers
@@ -165,6 +169,24 @@ const ApproveList = (props)=>{
     console.log(empList);
     console.log(emp);
     console.log(apprData);
+    // console.log(approveReceiver.empInfo.empNo);
+
+    //상세를 누르면 승인자들의 직급에 따라 계산
+    const approveCompute = ()=>{
+        const myApprInfo = receiverInfo.find(userInfo => userInfo.empInfo.empNo === empNo);
+
+        if(myApprInfo){
+            const higherPosition = receiverInfo.filter(userInfo => 
+                    userInfo.empInfo.empPositionNo > myApprInfo.empInfo.empPositionNo)
+            setReceiverPosition(higherPosition);
+            
+            const ycount = higherPosition.filter(i => i.receiversStatus ==="Y");
+            setYCount(ycount)
+        };
+    };
+    console.log(receiverPosition.length);
+    console.log(ycount.length);
+
 
     //자신이 올린 결재 삭제 처리
     const deleteAppr = (apprNo) =>{
@@ -398,10 +420,11 @@ const ApproveList = (props)=>{
                                                     </Col>
                                                     <Col xs={6} md={3} className='text-end'>
                                                         <Button variant="info" className='me-1'>승인</Button>
-                                                        {/* {(()=>{
-                                                            if(receiverInfo.empInfo.empPositionNo)
-                                                            <Button variant="info" className='me-1'>승인</Button>
-                                                        })()} */}
+                                                        {(()=>{
+                                                            if(approveReceiver.length === ycount.length){
+                                                                <Button variant="info" className='me-1'>승인</Button>
+                                                            }
+                                                        })()}
                                                         <Button variant='secondary'>반려</Button>
                                                     </Col>
                                                 </Row>
