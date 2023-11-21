@@ -322,7 +322,7 @@ const Search = () => {
                 </div>
 
 
-            </div>-
+            </div> 
 
 
             {/* Modal */}
