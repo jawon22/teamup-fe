@@ -4,6 +4,8 @@ import { userState } from "../recoil";
 import axios from "axios";
 import Attend from './attend';
 import surf from "./images/profileImage.png";
+import { FaEdit } from "react-icons/fa";
+
 
 const Mypage = () => {
     const [empInfo, setEmpInfo] = useState({
@@ -65,8 +67,12 @@ const Mypage = () => {
                 <div className="row mt-4 mp-bg text-green">
 
                     <div className="col-5 d-flex justify-content-center align-items-center">
-                        <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
+                        <img src={displayImage} alt="profileImage" id="previewImage" 
+                                className="rounded-circle" 
                                 style={{width:"220px", height:"220px", objectFit:"cover"}}/>
+                        <button type="button" className="btn btn-primary btn-icon rounded-circle" height="40px">
+                            <FaEdit size="30px" className="mt-150"/>
+                        </button>
                     </div>
 
                     <div className="col-7 p-4">
