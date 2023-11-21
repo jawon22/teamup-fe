@@ -36,7 +36,11 @@ import { companyState, userState } from './recoil';
 import Emp from './components/Emp';
 import surf from "./components/images/profileImage.png";
 import Chat from './components/chat';
+
+import BoardDetail from './components/BoardDetail';
+
 import ChatList from './components/chatList';
+
 
 
 
@@ -207,24 +211,27 @@ function App() {
 
 
 
-            <div className='mt-3'>
-              <Routes>
-                {/* 각종 라우터 */}
-                <Route path="/approveList" element={<ApproveList />}></Route>
-                <Route path="/approveWrite" element={<ApproveWrite />}></Route>
-                <Route path='/com' element={<Com />} ></Route>
-                <Route path='/search' element={<Search />}></Route>
-                <Route path='/home' element={<Home />}></Route>
-                <Route path='/login' element={<Login />}></Route>
-                <Route path="/mypage" element={<Mypage />}></Route>
-                <Route path="/deptInsert" element={<DeptInsert />}></Route>
-                <Route path="/calendar" element={<Calendar />}></Route>
-                <Route path='/companyJoin' element={<CompanyJoin />}></Route>
-                <Route path='/salList' element={<SalList />}></Route>
-                <Route path="/deptCalendar" element={<DeptCalendar />} ></Route>
-                <Route path="/Board" element={<Board />} ></Route>
+              
+                <div className='mt-3'>
+                  <Routes>
+                    {/* 각종 라우터 */}
+                    <Route path="/approveList" element={<ApproveList/>}></Route> 
+                    <Route path="/approveWrite" element={<ApproveWrite/>}></Route>
+                    <Route path='/com' element={<Com/>} ></Route>
+                    <Route path='/search' element={<Search/>}></Route>
+                    <Route path='/home' element={<Home/>}></Route>
+                    <Route path='/login' element={<Login/>}></Route>
+                    <Route path="/mypage" element={<Mypage/>}></Route>
+                    <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+                    <Route path="/calendar" element={<Calendar/>}></Route>
+                    <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
+                    <Route path='/salList' element={<SalList/>}></Route>
+                    <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
+                    <Route path="/Board" element={<Board/>} ></Route>
+                    <Route path='/empTree' element={<Emp/>}/>
+                    <Route path='/board/find/:idx' element={<BoardDetail/>}/>
 
-                <Route path='/empTree' element={<Emp />} />
+
 
 
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
