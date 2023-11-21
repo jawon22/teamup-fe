@@ -140,7 +140,7 @@ const Home = () => {
             <div className="home-profile col-3">
 
               <div className="row border-primary h-50 mb-3 pb-1 me-1
-                                  d-flex justify-content-center align-items-center graybox">
+                                  d-flex justify-content-center align-items-center graybox p-3">
 
                     {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
                     <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
