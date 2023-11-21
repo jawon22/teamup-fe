@@ -238,7 +238,7 @@ const ProfileEdit = ()=>{
 
   //이미지를 만들기 위해서 필요한 것은 사번
   //사번만 알면 <img src="http://localhost:8080/image/profile/사번">으로 이미지를 출력할 수 있다
-  const [imgSrc, setImgSrc] = useState(surf);//처음에는 없다고 치고 기본이미지로 설정
+  const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
   useEffect(()=>{
     axios({
       url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
@@ -251,6 +251,9 @@ const ProfileEdit = ()=>{
       setImgSrc(surf);
     });
   }, []);
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrc || surf;
 
 
   
@@ -281,7 +284,7 @@ const ProfileEdit = ()=>{
                         {/* <p>일단이미지번호들어오나보자 : 
                             {profile.attachNo}
                         </p> */}
-                        <img src={imgSrc} alt="profileImage" id="previewImage" className="rounded-circle" 
+                        <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
                                 style={{width:"180px", height:"180px", objectFit:"cover"}}/>
                         {/* <FaEdit type="file" name="attach" id="changeImage" onChange={updateImagePreview}/> */}
                         <input type="file" name="attach" id="changeImage" onChange={updateImagePreview}/>

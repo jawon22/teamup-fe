@@ -34,7 +34,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { companyState, userState } from './recoil';
 import Emp from './components/Emp';
-
+import surf from "./components/images/profileImage.png";
 
 
 
@@ -100,6 +100,26 @@ useEffect(()=>{
 
 
 
+  //로그인한 회원의 상단 프로필이미지
+  const loggedInEmpNo = parseInt(user.substring(6));
+
+  const [imgSrc, setImgSrc] = useState(surf);//처음에는 없다고 치고 기본이미지로 설정
+  useEffect(()=>{
+    axios({
+      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      method:"get"
+    })
+    .then(response=>{
+      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+    })
+    .catch(err=>{
+      setImgSrc(surf);
+    });
+  }, []);
+
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrc || surf;
 
 
 
@@ -140,7 +160,11 @@ useEffect(()=>{
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
 
-                          <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
+                          <NavDropdown title={<img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
+                                  style={{width:"45px", height:"45px", objectFit:"cover"}}/>} id="basic-nav-dropdown">  
+                            {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
+                            {/* <img src={imgSrc} alt="profileImage" id="previewImage" className="rounded-circle" 
+                                  style={{width:"45px", height:"45px", objectFit:"cover"}}/> */}
 
                             <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>              
                                    
