@@ -346,8 +346,8 @@ const empNo = user.substring(6);
                         ))}
                     </tbody>
                 </table>
-                <div className="row">
-                    <div className="col-6 offset-5 mt-4 item-center">
+                <div className="row item-center">
+                    <div className="col-6 offset-5 mt-4">
                         <Pagination >{items}</Pagination> 
                     </div>
                 </div>

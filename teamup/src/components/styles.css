@@ -333,7 +333,7 @@ li {
   }
 
   /* 출퇴근 버튼 */
-  .attend-btn {
+  .custom-btn {
     border-radius: 25px;
     font-weight: bold;
   }
@@ -383,4 +383,19 @@ li {
     border: none;
 }
 
-/* ul */
+/* 드롭다운 메뉴 */
+
+element.style {
+}
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #fff;
+    background-color: rgb(95, 166, 120)
+}
+
+/* 버튼이 선택되면 나오는 구린 색깔을 제발 바꿔줄사람 */
+
+/* 이미지 */
+.login-img {
+    width: '100%';
+    height: '50px'; /* Adjust the height as needed */
+} 
