@@ -3,8 +3,9 @@ import { useRecoilState } from "recoil";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { userState } from "../recoil";
-import {CgProfile} from "react-icons/cg";//임시프로필사진
+import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
+import surf from "./images/profileImage.png";
 
 
 import './homeStyle.css';
@@ -23,7 +24,7 @@ const Home = () => {
 
   //강사님이 알려주신 거
   // const [empNo, setEmpNo] = useState('');
-  
+
   //등록을 위한 state
   const [attendList, setAttendList] = useState({});
 
@@ -31,11 +32,11 @@ const Home = () => {
   const [flag, setFlag] = useState("출근전");
 
   //출퇴근 버튼 활성화&비활성화
-  useEffect(()=>{
-    if(attendList.attendStart && attendList.attendEnd) {
+  useEffect(() => {
+    if (attendList.attendStart && attendList.attendEnd) {
       setFlag("근무완료");
     }
-    else if(attendList.attendStart) {
+    else if (attendList.attendStart) {
       setFlag("근무중");
     }
     else {
@@ -52,7 +53,7 @@ const Home = () => {
   //페이지가 로드 될 때마다 attend 객체 조회
   useEffect(() => {
     loadAttend();
-  },[empNo]);
+  }, [empNo]);
 
   //조회 (오늘 출퇴근버튼 누른 시간)
   const loadAttend = () => {
@@ -64,6 +65,8 @@ const Home = () => {
       .then((response) => {
         setAttendList(response.data);
       })
+      .catch((err) => {
+      });
   };
 
   //출근 버튼(등록)
@@ -78,7 +81,6 @@ const Home = () => {
         setAttendList(response.data);
       })
       .catch(err => {
-        window.alert("통신 오류가 발생했습니다!");
       });
   };
 
@@ -107,20 +109,43 @@ const Home = () => {
 
   };
 
+
+  //사원번호로 프로필 이미지 불러오기
+  const loggedInEmpNo = parseInt(user.substring(6));
+
+  const [imgSrc, setImgSrc] = useState(surf);//처음에는 없다고 치고 기본이미지로 설정
+  useEffect(()=>{
+    axios({
+      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      method:"get"
+    })
+    .then(response=>{
+      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+    })
+    .catch(err=>{
+      setImgSrc(surf);
+    });
+  }, []);
+
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrc || surf;
+
+
+
   return (
     <div className="container-fluid">
 
         <div className="row ms-1 mp">
 
-
             <div className="home-profile col-3">
 
-              <div className="row border-primary h-50 mb-3 pb-1 me-1 graybox item-center">
-                    
-                    <div className="m-3 col-6 offset-3">
-                      <CgProfile  size={150}style={{color:'#218C74'}} />
-                    </div>
+              <div className="row border border-primary h-50 mb-3 pb-1 me-1
+                                  d-flex justify-content-center align-items-center">
 
+                    {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
+                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
+                                style={{width:"220px", height:"200px", objectFit:"cover"}}/>
                       <div className="d-flex">
                         <div className="m-2 me-3 text-bold">출근시간</div>
                         <div className="m-2">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
