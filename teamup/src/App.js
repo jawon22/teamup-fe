@@ -36,6 +36,7 @@ import { companyState, userState } from './recoil';
 import Emp from './components/Emp';
 import surf from "./components/images/profileImage.png";
 import Chat from './components/chat';
+import BoardDetail from './components/BoardDetail';
 
 
 
@@ -219,8 +220,9 @@ useEffect(()=>{
                     <Route path='/salList' element={<SalList/>}></Route>
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
                     <Route path="/Board" element={<Board/>} ></Route>
-
                     <Route path='/empTree' element={<Emp/>}/>
+                    <Route path='/board/find/:idx' element={<BoardDetail/>}/>
+
 
 
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}

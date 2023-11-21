@@ -6,6 +6,7 @@ import { TfiPencil } from "react-icons/tfi";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import { Link } from 'react-router-dom';
 
 const Board =(props)=>{
     const [user, setUser] = useRecoilState(userState);
@@ -135,7 +136,7 @@ const Board =(props)=>{
                                 <td>{board.boardNo}</td>
                                 <td>{board.empNo}</td>
                                 <td>{board.deptNo}</td>
-                                <td>{board.boardTitle}</td>
+                                <td><Link to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link></td>
                                 <td>{board.boardWriteDate}</td>
                                 <td>{board.boardUpdateDate}</td>
                                 <td>{board.boardReadCount}</td>

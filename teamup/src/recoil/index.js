@@ -43,5 +43,11 @@ const referrerState  = atom({
     default: [],
   });
 
+  const loadingState = atom({
+    key: 'loadingState',
+    default: true,
+  });
+  
 
-export {userState, levelState, tokenState, receiverState, referrerState,companyState, todosState};
+
+export {userState, levelState, tokenState, receiverState, referrerState,companyState, todosState, loadingState};
