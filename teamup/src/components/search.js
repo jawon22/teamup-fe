@@ -114,20 +114,6 @@ const Search = () => {
 
     };
 
-    const loadForSearch2 = () => {
-        axios({
-            url: "http://localhost:8080/emp/search/",
-            method: "post",
-            data: data
-        })
-            .then(response => {
-                console.log("보낸 데이터", data);
-                setSearchList(response.data);
-                console.log(response.data);
-            })
-            .catch();
-    };
-
     const loadForSearch = (pageNumber) => {
         axios({
             url: "http://localhost:8080/emp/search/",
@@ -167,19 +153,8 @@ const Search = () => {
         })
             .then(response => {//성공
                 setProfileList(response.data);
-                
-                 // 각 프로필의 이미지 URL을 저장할 배열
-                const imgSrcList = [];
 
-                // // 각 프로필에 대한 이미지 URL을 가져와서 배열에 저장
-                // response.data.forEach(profile => {
-                //     const empNo = profile.empNo;
-                //     const imgSrc = `http://localhost:8080/image/profile/${empNo}`;
-                //     imgSrcList.push(imgSrc);
-                // });
 
-        // imgSrcList 상태에 배열을 설정
-        setImgSrcList(imgSrcList);
             })
             .catch(err => {
                 console.error(err);
@@ -207,16 +182,11 @@ const Search = () => {
 
         setProfile({ ...result[0] });
 
-        // // 로컬 스토리지에서 이미지 경로 가져오기
-        // const storedImagePath = localStorage.getItem(`profileImage_${emp.empNo}`);
-
-        // // 이미지 경로가 존재하면 프로필 상태 업데이트
-        // if (storedImagePath) {
-        //     setProfile({
-        //         ...result[0],
-        //         attach: storedImagePath,
-        //     });
-        // }
+        // 클릭한 회원의 이미지 로드
+        const empNo = result[0].empNo;
+        loadProfileImage(empNo);
+        
+        setProfile({ ...result[0] });
 
         // 모달 창 열기
         openModal();
@@ -258,26 +228,24 @@ const Search = () => {
 
 
 // const empNo = parseInt(user.substring(6));
-const empNo = user.substring(6);
+// const empNo = user.substring(6);
     //사번으로 주소록에 프로필이미지 출력
-  const [imgSrcList, setImgSrcList] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
-  useEffect(()=>{
-    axios({
-      url:`http://localhost:8080/image/profile/${empNo}`,
-      method:"get"
-    })
-    .then(response=>{
-      setImgSrcList(`http://localhost:8080/image/profile/${empNo}`);
-    })
-    .catch(err=>{
-      setImgSrcList(surf);
-    });
-  }, []);
+    const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
+    const loadProfileImage= (empNo)=>{
+      axios({
+        url:`http://localhost:8080/image/profile/${empNo}`,
+        method:"get"
+      })
+      .then(response=>{
+        setImgSrc(`http://localhost:8080/image/profile/${empNo}`);
+      })
+      .catch(err=>{
+        setImgSrc(surf);
+      });
+    };
 
-  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
-  const displayImage = imgSrcList || surf;
-
-
+    //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+    const displayImage = imgSrc || surf;
 
 
 
@@ -308,7 +276,7 @@ const empNo = user.substring(6);
                     </div>
 
                     <div className="col-1">
-                        <button onClick={loadForSearch2}>검색</button>
+                        <button onClick={loadForSearch}>검색</button>
                     </div>
                 </div>
 
