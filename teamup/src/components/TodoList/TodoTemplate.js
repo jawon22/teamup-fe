@@ -9,7 +9,8 @@ height: 400px;
 position: relative; /* 추후 박스 하단에 추가 버튼을 위치시키기 위한 설정 */
 background: white;
 border-radius: 16px;
-box-shadow: 0 0 2px 0 rgba(33, 140, 116);
+// box-shadow: 0 0 2px 0 rgba(33, 140, 116);
+box-shadow: 0px 0px 5px 0px lightgray;
 
 margin: 0 auto; /* 페이지 중앙에 나타나도록 설정 */
 

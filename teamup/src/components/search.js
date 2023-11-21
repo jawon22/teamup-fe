@@ -114,20 +114,6 @@ const Search = () => {
 
     };
 
-    const loadForSearch2 = () => {
-        axios({
-            url: "http://localhost:8080/emp/search/",
-            method: "post",
-            data: data
-        })
-            .then(response => {
-                console.log("보낸 데이터", data);
-                setSearchList(response.data);
-                console.log(response.data);
-            })
-            .catch();
-    };
-
     const loadForSearch = (pageNumber) => {
         axios({
             url: "http://localhost:8080/emp/search/",
@@ -163,10 +149,11 @@ const Search = () => {
         axios({
             url: "http://localhost:8080/profile/",
             method: "get",
+
         })
             .then(response => {//성공
-                // console.log(response);
                 setProfileList(response.data);
+
 
             })
             .catch(err => {
@@ -195,37 +182,17 @@ const Search = () => {
 
         setProfile({ ...result[0] });
 
-        // // 로컬 스토리지에서 이미지 경로 가져오기
-        // const storedImagePath = localStorage.getItem(`profileImage_${emp.empNo}`);
-
-        // // 이미지 경로가 존재하면 프로필 상태 업데이트
-        // if (storedImagePath) {
-        //     setProfile({
-        //         ...result[0],
-        //         attach: storedImagePath,
-        //     });
-        // }
+        // 클릭한 회원의 이미지 로드
+        const empNo = result[0].empNo;
+        loadProfileImage(empNo);
+        
+        setProfile({ ...result[0] });
 
         // 모달 창 열기
         openModal();
     };
 
     
-
-    //사번으로 이미지 출력하기
-    const [imgSrc, setImgSrc] = useState(surf);
-    useEffect((empNo)=>{
-        axios({
-            url:`http://localhost:8080/image/profile/${empNo}`,
-            method:"get"
-        })
-        .then(response=>{
-            setImgSrc(`http://localhost:8080/image/profile/${empNo}`);
-        })
-        .catch(err=>{
-            setImgSrc(surf);
-        });
-    },[]);
 
 
 
@@ -260,16 +227,36 @@ const Search = () => {
 
 
 
+// const empNo = parseInt(user.substring(6));
+// const empNo = user.substring(6);
+    //사번으로 주소록에 프로필이미지 출력
+    const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
+    const loadProfileImage= (empNo)=>{
+      axios({
+        url:`http://localhost:8080/image/profile/${empNo}`,
+        method:"get"
+      })
+      .then(response=>{
+        setImgSrc(`http://localhost:8080/image/profile/${empNo}`);
+      })
+      .catch(err=>{
+        setImgSrc(surf);
+      });
+    };
 
+    //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+    const displayImage = imgSrc || surf;
 
 
 
     return (
         <>
-            <h1>복합검색</h1>
             <div className="container">
+                <div className="mt-3 mb-4">
+                    <h2>주소록</h2>
+                </div>
 
-                <div className="row">
+                <div className="row mb-5">
                     <div className="col-2">
                         <select onChange={dataChange} name="select" class="form-select" id="exampleSelect">
                             <option value="d.dept_name">부서</option>
@@ -291,25 +278,27 @@ const Search = () => {
                     </div>
 
                     <div className="col-1">
-                        <button onClick={loadForSearch2}>검색</button>
+
+                        <button onClick={loadForSearch} className="btn btn-primary">검색</button>
+
                     </div>
                 </div>
 
 
-                <table className="table table-border mt-4">
-                    <thead>
+                <table className="table table-hover mt-4 text-center">
+                    <thead className="table-primary">
                         <tr>
                             <th>사번</th>
                             <th>부서</th>
                             <th>직급</th>
                             <th>이름</th>
-                            <th>email</th>
+                            <th>이메일</th>
+                            <th>전화번호</th>
                             <th>입사일</th>
                             <th>퇴사일</th>
-                            <th>전화번호</th>
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         {searchList.map(list => (
                             <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)}>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empId}</td>
@@ -317,9 +306,9 @@ const Search = () => {
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empPositionName}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empName}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empEmail}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empTel}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empJoin}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empExit}</td>
-                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empTel}</td>
                                 {/* <td>
                                     <button className="btn btn-sm btn-primary" onClick={e=>handleProfileButtonClick(list)}>프로필</button>
                                 </td> */}
@@ -327,14 +316,14 @@ const Search = () => {
                         ))}
                     </tbody>
                 </table>
-                <div className="row">
-                    <div className="col-6 offset-5">
-                        <Pagination >{items}</Pagination>
+                <div className="row item-center">
+                    <div className="col-6 offset-5 mt-4">
+                        <Pagination >{items}</Pagination> 
                     </div>
                 </div>
 
 
-            </div>
+            </div> 
 
 
             {/* Modal */}
@@ -357,9 +346,7 @@ const Search = () => {
                                                 {/* <p>일단이미지번호들어오나보자 : 
                                                     {profile.attachNo}
                                                 </p> */}
-                                                {/* {조건 ? '추가' : '수정'} */}
-                                                {imgSrc === undefined ? surf : imgSrc}
-                                                <img src={imgSrc || surf} alt="profileImage" className="rounded-circle"
+                                                <img src={displayImage} alt="profileImage" className="rounded-circle"
                                                         style={{width:"180px", height:"180px", objectFit:"cover"}}/>
                                             </div>
                                             <div className="col-6 mt-5">

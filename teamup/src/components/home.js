@@ -3,9 +3,9 @@ import { useRecoilState } from "recoil";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { userState } from "../recoil";
-import {CgProfile} from "react-icons/cg";//임시프로필사진
+import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
-
+import surf from "./images/profileImage.png";
 
 import './homeStyle.css';
 import TodoTemplate from "./TodoList/TodoTemplate";
@@ -16,12 +16,14 @@ import { TodoProvider } from "../TodoContext";
 
 
 
+
 const Home = () => {
+
   const [user, setUser] = useRecoilState(userState);
 
   //강사님이 알려주신 거
   // const [empNo, setEmpNo] = useState('');
-  
+
   //등록을 위한 state
   const [attendList, setAttendList] = useState({});
 
@@ -29,11 +31,11 @@ const Home = () => {
   const [flag, setFlag] = useState("출근전");
 
   //출퇴근 버튼 활성화&비활성화
-  useEffect(()=>{
-    if(attendList.attendStart && attendList.attendEnd) {
+  useEffect(() => {
+    if (attendList.attendStart && attendList.attendEnd) {
       setFlag("근무완료");
     }
-    else if(attendList.attendStart) {
+    else if (attendList.attendStart) {
       setFlag("근무중");
     }
     else {
@@ -50,7 +52,7 @@ const Home = () => {
   //페이지가 로드 될 때마다 attend 객체 조회
   useEffect(() => {
     loadAttend();
-  },[empNo]);
+  }, [empNo]);
 
   //조회 (오늘 출퇴근버튼 누른 시간)
   const loadAttend = () => {
@@ -94,39 +96,67 @@ const Home = () => {
 
   const formatDateTime = (dateTimeString) => {
     const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
     };
-
     return new Date(dateTimeString).toLocaleString("ko-KR", options);
+
+
+
+
+
   };
+
+
+  //사원번호로 프로필 이미지 불러오기
+  const loggedInEmpNo = parseInt(user.substring(6));
+
+  const [imgSrc, setImgSrc] = useState(surf);//처음에는 없다고 치고 기본이미지로 설정
+  useEffect(()=>{
+    axios({
+      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      method:"get"
+    })
+    .then(response=>{
+      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+    })
+    .catch(err=>{
+      setImgSrc(surf);
+    });
+  }, []);
+
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrc || surf;
+
+
 
   return (
     <div className="container-fluid">
 
-        <div className="row ms-1">
-
+        <div className="row ms-1 mp">
 
             <div className="home-profile col-3">
 
-              <div className="row border border-primary h-50 mb-3 pb-1 me-1">
+              <div className="row border-primary h-50 mb-3 pb-1 me-1
+                                  d-flex justify-content-center align-items-center graybox p-3">
 
-                    <CgProfile  size={150}style={{color:'#218C74'}} />
-
-                      <div className="d-flex">
+                    {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
+                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
+                                style={{width:"220px", height:"200px", objectFit:"cover"}}/>
+                      <div className="d-flex ms-4">
+                        <div className="m-1 me-3 text-bold">출근시간</div>
                         <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-                        <button className="btn btn-primary" onClick={attendStartClick} 
+                        <button className="btn btn-primary custom-btn ms-2" onClick={attendStartClick}
                         disabled={flag !== "근무전"}>
                           출근하기
                         </button>
                       </div>
-                              <div className="d-flex">
+                      <div className="d-flex ms-4">
+                        <div className="m-1 me-3 text-bold">퇴근시간</div>
                         <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-                        <button className="btn btn-primary" onClick={attendEndClick}
+                        <button className="btn btn-primary custom-btn ms-2" onClick={attendEndClick} 
                           disabled={flag === "근무전"}>퇴근하기</button>
                       </div>
 
@@ -148,13 +178,13 @@ const Home = () => {
 
 
               <div className="home-center col-5">
-                  <div className="row border border-primary h-75">
+                  <div className="row graybox me-1 border-primary h-75">
                     전자 결재
                   </div>
 
               </div>
 
-              <div className="home-calendar col-4 border border-primary h-100">
+              <div className="home-calendar col-4 graybox border-primary h-100 p-4">
               <Calendar/>
               </div>
 
