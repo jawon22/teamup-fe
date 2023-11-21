@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { userState } from "../recoil";
-import {CgProfile} from "react-icons/cg";//임시프로필사진
+import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
 
 
@@ -21,7 +21,7 @@ const Home = () => {
 
   //강사님이 알려주신 거
   // const [empNo, setEmpNo] = useState('');
-  
+
   //등록을 위한 state
   const [attendList, setAttendList] = useState({});
 
@@ -29,11 +29,11 @@ const Home = () => {
   const [flag, setFlag] = useState("출근전");
 
   //출퇴근 버튼 활성화&비활성화
-  useEffect(()=>{
-    if(attendList.attendStart && attendList.attendEnd) {
+  useEffect(() => {
+    if (attendList.attendStart && attendList.attendEnd) {
       setFlag("근무완료");
     }
-    else if(attendList.attendStart) {
+    else if (attendList.attendStart) {
       setFlag("근무중");
     }
     else {
@@ -50,7 +50,7 @@ const Home = () => {
   //페이지가 로드 될 때마다 attend 객체 조회
   useEffect(() => {
     loadAttend();
-  },[empNo]);
+  }, [empNo]);
 
   //조회 (오늘 출퇴근버튼 누른 시간)
   const loadAttend = () => {
@@ -110,9 +110,7 @@ const Home = () => {
 
         <div className="row ms-1">
 
-
-            <div className="home-profile col-3">
-
+        <div className="home-profile col-3">
               <div className="row border border-primary h-50 mb-3 pb-1 me-1">
 
                     <CgProfile  size={150}style={{color:'#218C74'}} />
