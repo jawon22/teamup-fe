@@ -110,66 +110,58 @@ const Home = () => {
   return (
     <div className="container-fluid">
 
-      <div className="row ms-3">
-
+        <div className="row ms-1">
 
         <div className="home-profile col-3">
+              <div className="row border border-primary h-50 mb-3 pb-1 me-1">
 
-          <div className="row border border-primary h-50 mb-5 pb-5">
-            <h1 >홈페이지</h1>
+                    <CgProfile  size={150}style={{color:'#218C74'}} />
 
-            <CgProfile className="me-3" size={150} style={{ color: '#218C74' }} />
+                      <div className="d-flex">
+                        <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
+                        <button className="btn btn-primary" onClick={attendStartClick} 
+                        disabled={flag !== "근무전"}>
+                          출근하기
+                        </button>
+                      </div>
+                              <div className="d-flex">
+                        <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
+                        <button className="btn btn-primary" onClick={attendEndClick}
+                          disabled={flag === "근무전"}>퇴근하기</button>
+                      </div>
 
-            <div className="d-flex">
-              <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-              <button className="btn btn-primary" onClick={attendStartClick}
-                disabled={flag !== "근무전"}>
-                출근하기
-              </button>
-            </div>
-            <div className="d-flex">
-              <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-              <button className="btn btn-primary" onClick={attendEndClick}
-                disabled={flag === "근무전"}>퇴근하기</button>
-            </div>
+              </div>
+
+              <div className="row h-50 me-1">
+                <TodoProvider>
+                    <TodoTemplate>
+                      <TodoHead/>
+                      <TodoList/>
+                      <TodoCreate/>
+                    </TodoTemplate>                  
+                </TodoProvider>
+              </div>
+
+              </div>
+
+
+
+
+              <div className="home-center col-5">
+                  <div className="row border border-primary h-75">
+                    전자 결재
+                  </div>
+
+              </div>
+
+              <div className="home-calendar col-4 border border-primary h-100">
+              <Calendar/>
+              </div>
 
           </div>
 
-
         </div>
 
-        <div className="row h-50 me-1">
-          <TodoProvider>
-            <TodoTemplate>
-              <TodoHead />
-              <TodoList />
-              <TodoCreate />
-            </TodoTemplate>
-          </TodoProvider>
-        </div>
-
-      </div>
-
-      <div className="home-center col-5">
-        <div className="row border border-primary h-50">
-          공지사항
-        </div>
-        <div className="row border border-primary h-50">
-          전자 결재
-        </div>
-        <div className="row border border-primary h-50">
-          전체 일정
-        </div>
-      </div>
-
-      <div className="home-calendar col-4 border border-primary h-100">
-        <Calendar />
-      </div>
-
-    </div>
-  
-  
-    
     );
 };
 

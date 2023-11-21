@@ -13,6 +13,7 @@ import Login from './components/login';
 import Mypage from './components/mypage';
 import DeptInsert from './components/detpInsert';
 import CompanyJoin from './components/companyJoin';
+import Board from './components/Board';
 import TeamUpLogo from './components/images/TeamUpLogo.png';
 
 import { CgProfile } from "react-icons/cg";
@@ -32,20 +33,21 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { companyState, userState } from './recoil';
-
-
-
-
-
-
-
 import Emp from './components/Emp';
+
+
+
+
+
+
+
 
 
 
 function App() {
   const location = useLocation();
   const [user, setUser] = useRecoilState(userState);
+  const savedToken = Cookies.get('userId');
 
     // 조직도 관련 const 모음--------------------
     const [show, setShow] = useState(false);
@@ -56,16 +58,38 @@ function App() {
   const [company, setCompany] = useRecoilState(companyState);
   const navigate = useNavigate();
 
+  const loadInfo = () => {
+
+    console.log("????",savedToken)
+    axios({
+      url: `http://localhost:8080/emp/findtoken/${savedToken}`,
+      method: 'get',
+    }).then(res => {
+
+      if (savedToken && savedToken === res.data.token) {
+        const decode = jwtDecode(savedToken)
+        const userId = decode.sub
+        setUser(userId);
+        console.log(userId)
+        let userNo = userId.substring(6);
 
 
+        axios({
+          url: `http://localhost:8080/emp/mypage/${userNo}`,
+          method: 'get'
+        }).then(response => {
+          console.log(response.data)
+          setCompany(response.data.comId)
 
-useEffect(()=>{
-  if(user!== ''){
 
-    navigate('/home')
-    console.log("user=",user)
+        });
+      }
+    }
+    )
   }
 
+useEffect(()=>{
+  loadInfo();
 },[])
 
   
@@ -160,6 +184,7 @@ useEffect(()=>{
                     <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
                     <Route path='/salList' element={<SalList/>}></Route>
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
+                    <Route path="/Board" element={<Board/>} ></Route>
 
                     <Route path='/empTree' element={<Emp/>}/>
 

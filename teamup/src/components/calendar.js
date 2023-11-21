@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from 'react'
+import './cal.css';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction" // import할것!
-import './cal.css';
 import { Modal } from "bootstrap";
 import { useRecoilState } from "recoil";
 import { companyState, userState } from "../recoil";
@@ -32,9 +32,7 @@ const Calendar = () => {
   //     calContent:clickedEvent.content,
   //     calColor:clickedEvent.color
   //   });
-
   //   console.log(schedule)
-
   //   openModal();
   // };
 
@@ -43,14 +41,8 @@ const Calendar = () => {
 
     const clickedEvent = e.event;
     const clickedEventId = clickedEvent.id;
-    console.log("=", clickedEvent);
-
-
-    console.log("???",schedule)
-
 
     // 이벤트의 정보를 setSchedule 함수로 저장
-
     setSchedule({
       empNo: empNo,
       calNo: clickedEventId,
@@ -62,10 +54,9 @@ const Calendar = () => {
     });
 
     // setSchedule이 비동기적으로 동작하므로 업데이트된 schedule을 확인하기 위해 로그를 찍어보세요.
-
     // 모달을 열기 전에 schedule을 확인해보세요.
     openModal();
-    console.log('Updated Schedule:', schedule);
+    // console.log('Updated Schedule:', schedule);
   };
 
 
@@ -73,8 +64,6 @@ const Calendar = () => {
 
 
   const [scheduleList, setScheduleList] = useState([]);
-
-
 
   const [schedule, setSchedule] = useState({
     calNo: "",
@@ -104,8 +93,7 @@ const Calendar = () => {
         ? moment(e.target.value).format('YYYY-MM-DD')
         : e.target.value;
 
-
-    console.log(schedule.calStartDate)
+    // console.log(schedule.calStartDate)
 
     setSchedule({
       ...schedule,
@@ -144,23 +132,6 @@ const Calendar = () => {
       });
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // [{"calNo":16,"
   // empNo":11,"
   // calStartDate":"2023-11-10",
@@ -169,8 +140,6 @@ const Calendar = () => {
   // "calContent":"테스트 컨텐츠",
   // "calStatus":"N",
   // "calColor":"red"}]
-
-
 
   // 일정 불러오기
   const loadSchedule = () => {
@@ -187,8 +156,6 @@ const Calendar = () => {
 
   useEffect(() => {
     loadSchedule();
-
-
   }, []);
 
   const select = (selectInfo) => {
@@ -196,38 +163,27 @@ const Calendar = () => {
     const end = selectInfo.endStr;
     openModal();
     //모달열고 start end-1 로 추가 
-    console.log('선택한 날짜 범위: ', start, '에서', end);
-    console.log('id: ', eventClick.clickedEventId);
+    // console.log('선택한 날짜 범위: ', start, '에서', end);
+    // console.log('id: ', eventClick.clickedEventId);
 
     setSchedule({
       ...schedule,
       calStartDate: start,
       calEndDate: end
-    }
-
-    )
-  }
-
+    })}
 
   const [id, setId] = useState('');
-
-
 
   //일정 클릭하면 ~상세 모달로 띄우기
   //   const eventClick = (e) => {
   //     const detail = e.event;
   //     setSchedule({...e});
   //     setId(detail.id);
-
-
   //     openModal();
   //     console.log('id: ', id);
   //     console.log('클릭한 번호:', detail.id);
   //     console.log('클릭한 이벤트 제목:', detail.title);
   // }
-
-
-
 
   const plugin = [
     dayGridPlugin, // 월간 달력 // day 그리드
@@ -254,45 +210,28 @@ const Calendar = () => {
     setId(null);
     modal.hide();
     setIsEventClicked(false);
-
   };
 
   const [isEventClicked, setIsEventClicked] = useState(false);
 
-
-
   //수정 버튼을 누르면 ! 그냥 상세보기 창에서 인풋 창으로 변경 할 수 있도록 만들어야 하는데
   //click하기 전에는 sapn으로 보여주고 click 하면 수정 input 창이랑 버튼이 hidden 에서 보이도록 만든다
-
-
 
   ///삭제 
   const deleteSchedule = () => {
     axios({
       url: `http://localhost:8080/cal_emp/delete/${schedule.calNo}`,
       method: "delete",
-
-
-
     }).then(response => {
       if (response.data !== null) alert("삭제되었습니다")
     });
-
   };
-
-
-
-
-
-
-
 
   return (
     <>
       <FullCalendar
         // height={} // 높이 지정
         plugins={plugin}
-
         initialView="dayGridMonth" // 초기뷰 dayGridMonth or timeGridWeek
         headerToolbar={{ // 띄어쓰면 갭이 생기고, 콤마가 있으면 그룹으로 묶는 형태
           left: "today prev,next",
@@ -300,12 +239,9 @@ const Calendar = () => {
           right: "dayGridMonth,dayGridWeek,dayGridDay"
         }}
 
-
-        footerToolbar={{
-
-          //  right: "dayGridMonth,dayGridWeek,dayGridDay"
-        }}
-
+        // footerToolbar={{
+        //    right: "dayGridMonth,dayGridWeek,dayGridDay"
+        // }}
 
         buttonText={{
           // prev: "이전", // 부트스트랩 아이콘으로 변경 가능
@@ -341,7 +277,6 @@ const Calendar = () => {
         // eventContent={fn(): node {} || true} // 일정 커스텀
         eventTextColor="#3B3131"
         events={scheduleList.map(schedule => ({
-
           id: schedule.calNo,
           //empNo:schedule.empNo,
           title: schedule.calTitle,
@@ -349,38 +284,35 @@ const Calendar = () => {
           end: moment(schedule.calEndDate).format('YYYY-MM-DD'),
           color: schedule.calColor,
           content: schedule.calContent
-
-
         }))} // empNo:"11",
       // calStartDate:"",
       // calEndDate:"",
       // calTitle:"",
       // calContent:"",
       // calColor:""
-
       />
 
       <div>
 
         <div className="modal fade" ref={bsModal} keyboard={'false'} backdrop="static" id="exampleModal" tabindex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">{isEventClicked ? '상세' : '등록'}</h1>
+            <div className="modal-content border">
+              <div className="modal-header border">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">{isEventClicked ? '일정내용' : '일정 등록'}</h1>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div className="modal-body">
+              <div className="modal-body ">
                 <div className="container-fluid">
-                  <div className="row mt-4">
+                  <div className="row mt-2">
                     <div className="col">
                       Title <input type="text" name="calTitle" onChange={changeSchedule} className="form-control" value={schedule.calTitle} />
                     </div>
                     <div className="col">
-                      Color <select type="text" name="calColor" onChange={changeSchedule} className="form-control" value={schedule.calColor} >
-                        <option>----선택----</option>
-                        <option value={"#E0FFFF"}>1</option>
-                        <option value={"#E6E6FA"}>2</option>
-                        <option value={"#FFF0F5"}>3</option>
+                      Type <select type="text" name="calColor" onChange={changeSchedule} className="form-control" value={schedule.calColor} >
+                        <option>일정 타입 선택</option>
+                        <option value={"#74b9ff"}>부서일정</option>
+                        <option value={"#E6E6FA"}>개인일정</option>
+                        <option value={"#ff7675"}>중요일정</option>
                       </select>
                     </div>
                   </div>
@@ -400,20 +332,18 @@ const Calendar = () => {
 
                 </div>
 
-
-
               </div>
-              <div className="modal-footer">
+              <div className="modal-footer border">
                 <button type="button" className="btn btn-secondary" onClick={closeModal} data-bs-dismiss="modal">Close</button>
 
                 {isEventClicked ?
                   <div>
-                    <div className="position-absolute bottom-0 start-0 mb-3 ms-3">
-                      <button type="button" className="btn btn-danger " onClick={deleteSchedule}>삭제</button>
-                    </div>
-                    <div>
-                      <button type="button" className="btn btn-primary" onClick={editSchedule}>수정</button>
-                    </div>
+                      <div className="position-absolute start-0 mb-3 ms-3">
+                        <button type="button" className="btn btn-danger " onClick={deleteSchedule}>삭제</button>
+                      </div>
+                      <div>
+                        <button type="button" className="btn btn-primary" onClick={editSchedule}>수정</button>
+                      </div>
                   </div>
                   :
                   <button type="button" className="btn btn-primary" onClick={addSchedule}>등록</button>

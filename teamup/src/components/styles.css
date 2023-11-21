@@ -320,3 +320,11 @@ li {
     border-color: #218C74;
 }
 
+.show {
+    display: block;
+  }
+  
+  .hide {
+    display: none;
+  }
+

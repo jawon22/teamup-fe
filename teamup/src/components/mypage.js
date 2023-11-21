@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { userState } from "../recoil";
 import axios from "axios";
 import Attend from './attend';
-import AttendDetail from './attendDetail';
 
 const Mypage = () => {
     const [empInfo, setEmpInfo] = useState({
@@ -79,18 +78,9 @@ const Mypage = () => {
                 </div>
                         
                 <div className="row mt-4 text-green">
-                    {/* 연차 관리 */}
-                    <div className="col-6 text-center">
-                        <div className="row mp-bg mb-4 me-1">
-                            <div className="col-12">
-                                연차 관리
-                            </div>
-                        </div>
-                    </div>
-
                     {/* 근태 관리 */}
-                    <div className="col-6 text-center text-green text-bold">
-                        <div className="row mp-bg mb-4 ms-1">
+                    <div className="text-center text-green text-bold">
+                        <div className="row mp-bg mb-4">
                             <div className="col-12">
                             <Attend/>   
                             </div>
@@ -98,13 +88,6 @@ const Mypage = () => {
                     </div>
                 </div>
                 
-                {/* 근태 관리 상세 */}
-                <div className="row p-5 text-center green-color mp-bg">
-                    <div className="col-12">
-                        <AttendDetail/>
-                    </div>
-                </div>
-
             </div>
         </>
     );
