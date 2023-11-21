@@ -292,7 +292,7 @@ const Search = () => {
                             <th>부서</th>
                             <th>직급</th>
                             <th>이름</th>
-                            <th>email</th>
+                            <th>이메일</th>
                             <th>전화번호</th>
                             <th>입사일</th>
                             <th>퇴사일</th>
