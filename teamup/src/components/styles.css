@@ -398,6 +398,7 @@ element.style {
 .login-img {
     width: '100%';
     height: '50px'; /* Adjust the height as needed */
+
 }
 
 /*큰 마진탑이 필요했어여.... align-items-center 안먹더라고?*/
@@ -407,4 +408,30 @@ element.style {
 
 .btn-icon{
     border-radius: 50px;
+
+} 
+
+.link {
+    color: #a4b0be;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #218C74;
+    text-decoration: none;
+}
+
+.btn:active,
+.btn:focus {
+  background-color: #165849;
+  color: #fff;
+  border: none;
+  box-shadow: none;
+}
+
+.btn.active,
+.btn:active,
+.btn:focus {
+  background-color: #165849;
+  color: #fff;
 }
