@@ -19,7 +19,7 @@ import { CgProfile } from "react-icons/cg";
 import { BsFillBellFill } from "react-icons/bs";
 import { RiKakaoTalkFill } from "react-icons/ri";
 
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import SalList from './components/SalList';
 import Offcanvas from 'react-bootstrap/Offcanvas';
@@ -40,6 +40,7 @@ import { companyState, userState } from './recoil';
 
 
 import Emp from './components/Emp';
+import Chat from './components/chat';
 
 
 
@@ -98,7 +99,12 @@ useEffect(()=>{
   //만약에  user가 null이 아니면 로그인 버튼 활성화 로그인이 되어있다면 비활성화
 
 
+  const [showModal, setShowModal] = useState(false);
 
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
+
+  //내정보
 
 
 
@@ -130,7 +136,8 @@ useEffect(()=>{
                 <div className='row'>
                   <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
                     <div className='col-2 offset-6 mt-1 me-1'>
-                      <RiKakaoTalkFill className="me-2" size="45" style={{ color: '#218C74' }} />
+                      {/* 모달로채팅방 */}
+                      <RiKakaoTalkFill onClick={openModal}  className="me-2" size="45" style={{ color: '#218C74' }} />
                     </div>
                     <div className='col-2 mt-1'>
                       <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
@@ -214,6 +221,24 @@ useEffect(()=>{
         </div>
 
       </div>
+
+
+
+
+      {showModal && (
+                                <div className="chat-modal-background" >
+                                    <div className="chat-modal-content">
+                                        <button className="chat-modal-close-button" onClick={closeModal}>
+                                            &times;
+                                        </button>
+                                            <Chat/>
+                     
+                                        <button className="position-absolute bottom-0 end-0 me-3 mb-3" onClick={closeModal}>닫기</button>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            )}
 
     </>
   );

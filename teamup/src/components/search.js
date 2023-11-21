@@ -114,6 +114,20 @@ const Search = () => {
 
     };
 
+    const loadForSearch2 = () => {
+        axios({
+            url: "http://localhost:8080/emp/search/",
+            method: "post",
+            data: data
+        })
+            .then(response => {
+                console.log("보낸 데이터", data);
+                setSearchList(response.data);
+                console.log(response.data);
+            })
+            .catch();
+    };
+
     const loadForSearch = (pageNumber) => {
         axios({
             url: "http://localhost:8080/emp/search/",
@@ -266,7 +280,7 @@ const Search = () => {
                     </div>
 
                     <div className="col-1">
-                        <button onClick={loadForSearch}>검색</button>
+                        <button onClick={loadForSearch2}>검색</button>
                     </div>
                 </div>
 
