@@ -317,12 +317,12 @@ const Search = () => {
                 </table>
                 <div className="row">
                     <div className="col-6 offset-5 mt-4 item-center">
-                        <Pagination >{items}</Pagination>
+                        <Pagination >{items}</Pagination> 
                     </div>
                 </div>
 
 
-            </div>
+            </div>-
 
 
             {/* Modal */}
