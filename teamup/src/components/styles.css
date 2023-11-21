@@ -307,10 +307,12 @@ li {
     margin-right: 10px; /* 각 아이콘 사이 간격 조절 */
 }
 
+/* 짙은 녹색 컬러 */
 .text-green {
     color:#165849;
 }
 
+/* 폰트 볼드체 */
 .text-bold {
     font-weight: bold;
 }
@@ -320,11 +322,80 @@ li {
     border-color: #218C74;
 }
 
+/* 드러내기 */
 .show {
     display: block;
   }
   
+  /* 숨기기 */
   .hide {
     display: none;
   }
 
+  /* 출퇴근 버튼 */
+  .custom-btn {
+    border-radius: 25px;
+    font-weight: bold;
+  }
+
+  /* 테두리에 그림자 */
+  .graybox {
+    box-shadow: 0px 0px 5px 0px lightgray;
+    border-radius: 10px;
+  }
+
+  /* 가운데 정렬 */
+  .item-center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* 페이지네이션 */
+  .pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.375rem;
+    --bs-pagination-font-size: 1rem;
+    --bs-pagination-color: #fff;
+    --bs-pagination-bg: #78c2ad;
+    --bs-pagination-border-width: var(--bs-border-width);
+    --bs-pagination-border-color: #78c2ad;
+    --bs-pagination-border-radius: var(--bs-border-radius);
+    --bs-pagination-hover-color: #fff;
+    --bs-pagination-hover-bg: #218C74;
+    --bs-pagination-hover-border-color: #218C74;
+    --bs-pagination-focus-color: #fff;
+    --bs-pagination-focus-bg: #218C74;
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(120, 194, 173, 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #218C74;
+    --bs-pagination-active-border-color: #218C74;
+    --bs-pagination-disabled-color: #fff;
+    --bs-pagination-disabled-bg: #cce8e0;
+    --bs-pagination-disabled-border-color: #cce8e0;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}
+
+/* 테이블 헤더 */
+.table-primary th, .table-primary td, .table-primary thead th, .table-primary tbody + tbody {
+    border: none;
+}
+
+/* 드롭다운 메뉴 */
+
+element.style {
+}
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #fff;
+    background-color: rgb(95, 166, 120)
+}
+
+/* 버튼이 선택되면 나오는 구린 색깔을 제발 바꿔줄사람 */
+
+/* 이미지 */
+.login-img {
+    width: '100%';
+    height: '50px'; /* Adjust the height as needed */
+} 

@@ -7,7 +7,6 @@ import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
 import surf from "./images/profileImage.png";
 
-
 import './homeStyle.css';
 import TodoTemplate from "./TodoList/TodoTemplate";
 import TodoHead from "./TodoList/TodoHead";
@@ -17,7 +16,9 @@ import { TodoProvider } from "../TodoContext";
 
 
 
+
 const Home = () => {
+
   const [user, setUser] = useRecoilState(userState);
 
   //강사님이 알려주신 거
@@ -95,15 +96,16 @@ const Home = () => {
 
   const formatDateTime = (dateTimeString) => {
     const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
     };
-
     return new Date(dateTimeString).toLocaleString("ko-KR", options);
+
+
+
+
+
   };
 
 
@@ -133,27 +135,28 @@ const Home = () => {
   return (
     <div className="container-fluid">
 
-        <div className="row ms-1">
+        <div className="row ms-1 mp">
 
             <div className="home-profile col-3">
 
-              <div className="row border border-primary h-50 mb-3 pb-1 me-1
-                                  d-flex justify-content-center align-items-center">
+              <div className="row border-primary h-50 mb-3 pb-1 me-1
+                                  d-flex justify-content-center align-items-center graybox">
 
                     {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
                     <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
                                 style={{width:"220px", height:"200px", objectFit:"cover"}}/>
-
-                      <div className="d-flex">
+                      <div className="d-flex ms-4">
+                        <div className="m-1 me-3 text-bold">출근시간</div>
                         <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-                        <button className="btn btn-primary" onClick={attendStartClick} 
+                        <button className="btn btn-primary custom-btn ms-2" onClick={attendStartClick}
                         disabled={flag !== "근무전"}>
                           출근하기
                         </button>
                       </div>
-                              <div className="d-flex">
+                      <div className="d-flex ms-4">
+                        <div className="m-1 me-3 text-bold">퇴근시간</div>
                         <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-                        <button className="btn btn-primary" onClick={attendEndClick}
+                        <button className="btn btn-primary custom-btn ms-2" onClick={attendEndClick} 
                           disabled={flag === "근무전"}>퇴근하기</button>
                       </div>
 
@@ -175,13 +178,13 @@ const Home = () => {
 
 
               <div className="home-center col-5">
-                  <div className="row border border-primary h-75">
+                  <div className="row graybox me-1 border-primary h-75">
                     전자 결재
                   </div>
 
               </div>
 
-              <div className="home-calendar col-4 border border-primary h-100">
+              <div className="home-calendar col-4 graybox border-primary h-100 p-4">
               <Calendar/>
               </div>
 

@@ -251,10 +251,12 @@ const Search = () => {
 
     return (
         <>
-            <h1>복합검색</h1>
             <div className="container">
+                <div className="mt-3 mb-4">
+                    <h2>주소록</h2>
+                </div>
 
-                <div className="row">
+                <div className="row mb-5">
                     <div className="col-2">
                         <select onChange={dataChange} name="select" class="form-select" id="exampleSelect">
                             <option value="d.dept_name">부서</option>
@@ -276,25 +278,27 @@ const Search = () => {
                     </div>
 
                     <div className="col-1">
-                        <button onClick={loadForSearch}>검색</button>
+
+                        <button onClick={loadForSearch} className="btn btn-primary">검색</button>
+
                     </div>
                 </div>
 
 
-                <table className="table table-border mt-4">
-                    <thead>
+                <table className="table table-hover mt-4 text-center">
+                    <thead className="table-primary">
                         <tr>
                             <th>사번</th>
                             <th>부서</th>
                             <th>직급</th>
                             <th>이름</th>
                             <th>email</th>
+                            <th>전화번호</th>
                             <th>입사일</th>
                             <th>퇴사일</th>
-                            <th>전화번호</th>
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         {searchList.map(list => (
                             <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)}>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empId}</td>
@@ -302,9 +306,9 @@ const Search = () => {
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empPositionName}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empName}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empEmail}</td>
+                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empTel}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empJoin}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empExit}</td>
-                                <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empTel}</td>
                                 {/* <td>
                                     <button className="btn btn-sm btn-primary" onClick={e=>handleProfileButtonClick(list)}>프로필</button>
                                 </td> */}
@@ -312,14 +316,14 @@ const Search = () => {
                         ))}
                     </tbody>
                 </table>
-                <div className="row">
-                    <div className="col-6 offset-5">
-                        <Pagination >{items}</Pagination>
+                <div className="row item-center">
+                    <div className="col-6 offset-5 mt-4">
+                        <Pagination >{items}</Pagination> 
                     </div>
                 </div>
 
 
-            </div>
+            </div> 
 
 
             {/* Modal */}
