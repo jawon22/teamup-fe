@@ -17,7 +17,7 @@ const BoardDetail=(props)=>{
 
 
     const getBoard = async ()=>{
-        const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/board/find/${idx}`);
+        const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/board/read/${idx}`);
         setBoard(response.data); // 추가: board 상태 업데이트
         setLoading(false); // 추가: 데이터 로딩 완료 시 loading 상태 업데이트
     };
@@ -34,8 +34,12 @@ const BoardDetail=(props)=>{
                 <BoardOne
                     idx={board.boardNo}
                     writer={board.empNo}
+                    dept={board.deptNo}
                     title={board.boardTitle}
                     contents={board.boardContent}
+                    writeDate={board.boardWriteDate}
+                    updateDate={board.boardUpdateDate}
+                    count={board.boardReadCount}
                 />
             )}
         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootswatch/dist/minty/bootstrap.min.css'
+import "./assets/fonts/font.css";
 
 // import 'bootswatch/dist/sandstone/bootstrap.min.css'
 

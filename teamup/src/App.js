@@ -41,6 +41,7 @@ import BoardDetail from './components/BoardDetail';
 
 import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
+import BoardUpdate from './components/BoardUpdate';
 
 
 
@@ -309,6 +310,7 @@ useEffect((props) => {
                     <Route path="/Board" element={<Board/>} ></Route>
                     <Route path='/empTree' element={<Emp/>}/>
                     <Route path='/board/find/:idx' element={<BoardDetail/>}/>
+                    <Route path='/board/update/:idx' element={<BoardUpdate/>}/>
 
 
 
