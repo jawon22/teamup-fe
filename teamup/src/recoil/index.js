@@ -47,7 +47,13 @@ const referrerState  = atom({
     key: 'loadingState',
     default: true,
   });
+
+  //채팅방 스테이트
+   const roomState =atom({
+    key:'roomState',
+    default:'',
+   })
   
 
 
-export {userState, levelState, tokenState, receiverState, referrerState,companyState, todosState, loadingState};
+export {userState, levelState, roomState,tokenState, receiverState, referrerState,companyState, todosState, loadingState};

@@ -40,6 +40,7 @@ import Chat from './components/chat';
 import BoardDetail from './components/BoardDetail';
 
 import ChatList from './components/chatList';
+import BoardUpdate from './components/BoardUpdate';
 
 
 
@@ -230,6 +231,7 @@ function App() {
                     <Route path="/Board" element={<Board/>} ></Route>
                     <Route path='/empTree' element={<Emp/>}/>
                     <Route path='/board/find/:idx' element={<BoardDetail/>}/>
+                    <Route path='/board/update/:idx' element={<BoardUpdate/>}/>
 
 
 
