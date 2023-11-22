@@ -34,7 +34,14 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { companyState, userState } from './recoil';
 import Emp from './components/Emp';
+import surf from "./components/images/profileImage.png";
 import Chat from './components/chat';
+
+import BoardDetail from './components/BoardDetail';
+
+import ChatList from './components/chatList';
+
+
 
 
 
@@ -50,18 +57,18 @@ function App() {
   const [user, setUser] = useRecoilState(userState);
   const savedToken = Cookies.get('userId');
 
-    // 조직도 관련 const 모음--------------------
-    const [show, setShow] = useState(false);
-    const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
-   //------------------------------조직도 끝---
+  // 조직도 관련 const 모음--------------------
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  //------------------------------조직도 끝---
 
   const [company, setCompany] = useRecoilState(companyState);
   const navigate = useNavigate();
 
   const loadInfo = () => {
 
-    console.log("????",savedToken)
+    console.log("????", savedToken)
     axios({
       url: `http://localhost:8080/emp/findtoken/${savedToken}`,
       method: 'get',
@@ -89,11 +96,11 @@ function App() {
     )
   }
 
-useEffect(()=>{
-  loadInfo();
-},[])
+  useEffect(() => {
+    loadInfo();
+  }, [])
 
-  
+
 
 
   //axios로 사용자 정보를 찾아서 이사람이 관리자인지 여부에따라 보여주고 말고를 결정하고 
@@ -102,10 +109,31 @@ useEffect(()=>{
 
   const [showModal, setShowModal] = useState(false);
 
+
+  //로그인한 회원의 상단 프로필이미지
+  const loggedInEmpNo = parseInt(user.substring(6));
+
+  const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
+  useEffect(()=>{
+
+      axios({
+        url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+        method:"get"
+      })
+      .then(response=>{
+        setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+      })
+      .catch(err=>{
+        setImgSrc(surf);
+      });
+  });
+
+
+  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+  const displayImage = imgSrc || surf;
+
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
-
-  //내정보
 
 
 
@@ -117,28 +145,28 @@ useEffect(()=>{
         <div className='row ms-5 mt-3'>
           <div className='col-md-10 offset-md-1 me-5'>
 
-        {/* 헤더 */}
-        <div className='row '>
-            <div className='col-8 me-auto'>
-              <Navbar.Brand href="#home" className='logo'>
-                <img src={TeamUpLogo} alt="TemaUpLog" width={100}/>
-                <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
+            {/* 헤더 */}
+            <div className='row '>
+              <div className='col-8 me-auto'>
+                <Navbar.Brand href="#home" className='logo'>
+                  <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
+                  <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
-                <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
-                <NavLink to="/empTree"className={"ms-2"}>조직도</NavLink>
-                <NavLink to="/profileEdit"className="ms-1">프로필</NavLink>
+                  <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
+                  <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink>
+                  <NavLink to="/profileEdit" className="ms-1">프로필</NavLink>
 
-                <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
+                  <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
 
-              </Navbar.Brand>
-            </div>
-            <div className='col-4'>
+                </Navbar.Brand>
+              </div>
+              <div className='col-4'>
 
                 <div className='row'>
                   <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
                     <div className='col-2 offset-6 mt-1 me-1'>
                       {/* 모달로채팅방 */}
-                      <RiKakaoTalkFill onClick={openModal}  className="me-2" size="45" style={{ color: '#218C74' }} />
+                      <RiKakaoTalkFill onClick={openModal} className="me-2" size="45" style={{ color: '#218C74' }} />
                     </div>
                     <div className='col-2 mt-1'>
                       <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
@@ -147,10 +175,17 @@ useEffect(()=>{
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
 
-                          <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">                                       
 
-                            <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>              
-                                   
+
+
+                          <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle" 
+                                  style={{width:"45px", height:"45px", objectFit:"cover"}}/>} id="basic-nav-dropdown">  
+                            {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
+                            {/* <img src={imgSrc} alt="profileImage" className="rounded-circle" 
+                                  style={{width:"45px", height:"45px", objectFit:"cover"}}/> */}
+                           <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
+
+
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
                         </Nav>
@@ -175,7 +210,8 @@ useEffect(()=>{
 
 
 
-                
+
+              
                 <div className='mt-3'>
                   <Routes>
                     {/* 각종 라우터 */}
@@ -192,8 +228,10 @@ useEffect(()=>{
                     <Route path='/salList' element={<SalList/>}></Route>
                     <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
                     <Route path="/Board" element={<Board/>} ></Route>
-
                     <Route path='/empTree' element={<Emp/>}/>
+                    <Route path='/board/find/:idx' element={<BoardDetail/>}/>
+
+
 
 
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
@@ -206,15 +244,15 @@ useEffect(()=>{
             {/* 조직도  */}
             <div className='row'>
 
-                  <div className='col-10 offset-1'>   
-                  <Offcanvas show={show} onHide={handleClose} placement='end'>
-                    <Offcanvas.Header closeButton>
-                      <Offcanvas.Title>조직도</Offcanvas.Title>
-                    </Offcanvas.Header>
-                    <Offcanvas.Body>
-                      <Emp/> 
-                    </Offcanvas.Body>
-                  </Offcanvas>
+              <div className='col-10 offset-1'>
+                <Offcanvas show={show} onHide={handleClose} placement='end'>
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>조직도</Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <Emp />
+                  </Offcanvas.Body>
+                </Offcanvas>
 
               </div>
             </div>
@@ -228,19 +266,32 @@ useEffect(()=>{
 
 
       {showModal && (
-                                <div className="chat-modal-background" >
-                                    <div className="chat-modal-content">
-                                        <button className="chat-modal-close-button" onClick={closeModal}>
-                                            &times;
-                                        </button>
-                                            <Chat/>
-                     
-                                        <button className="position-absolute bottom-0 end-0 me-3 mb-3" onClick={closeModal}>닫기</button>
-                                    </div>
-                                    <div>
-                                    </div>
-                                </div>
-                            )}
+        <div className="chat-modal-background" >
+          <div className="chat-modal-content">
+            <button className="chat-modal-close-button" onClick={closeModal}>
+              &times;
+            </button>
+
+            <div className='chat-container'>
+              <div className='row'>
+                <div className='col-4' >
+                  <ChatList  />
+                </div>
+                <div className='col-8'>
+                  <Chat/>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <button className="position-absolute bottom-0 end-0 me-3 mb-3" onClick={closeModal}>닫기</button>
+          </div>
+          <div>
+          </div>
+        </div>
+      )}
 
     </>
   );
