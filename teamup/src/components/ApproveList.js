@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { FaRegCheckSquare } from "react-icons/fa";
+import { FaRegSquare } from "react-icons/fa6";
 
 import { useRecoilState } from 'recoil';
 import { userState } from '../recoil';
@@ -362,123 +364,133 @@ const ApproveList = (props)=>{
                         size="lg"
                         aria-labelledby="approve-modal"
                         centered>
-                        <Modal.Body border="dark" style={{ width: '50rem'}}>
+
+                        <Modal.Header closeButton className='me-3'>
+                            <Modal.Title id="contained-modal-title-vcenter" className='ms-6 mt-3'>
+                                {apprData.empName}님의 결재신청서
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body border="dark">
                             <Container>
-                                {/* {조건 ? 참 : 거짓}
-                                    {조건 && 참}
-                                    {조건 || 거짓} */}
-                                <Row>
-                                    <Col aria-labelledby='approve-modal' closeButton className='text-end'>
-                                        <Button type='button' variant="light"
-                                            className='border-0 bg-transparent' onClick={closeModal}>
-                                                <span aria-hidden="true">&times;</span>
-                                        </Button>
+                                <Row className="justify-content-md-center">
+                                    <Col xs={10} md={10}>
+                                        {/* {조건 ? 참 : 거짓}
+                                            {조건 && 참}
+                                            {조건 || 거짓} */}
+                                        {/* <Row>
+                                            <Col aria-labelledby='approve-modal' closeButton className='text-end'>
+                                                <Button type='button' variant="light" size="30px"
+                                                    className='border-0 bg-transparent' onClick={closeModal}>
+                                                        <span aria-hidden="true">&times;</span>
+                                                </Button>
+                                            </Col>
+                                        </Row> */}
+
+                                        { apprData.length !==0 && 
+                                        <Row className='border border-success rounded mt-3'>
+                                            <Col className='text-end my-1'>
+                                                {/* {apprData.receiversDtoList.map((receiver,index)=>(
+                                                    <span key={index} className='ms-2' style={{display:'inline'}}>
+                                                        {receiver.receiversReceiver}
+                                                    </span>
+                                                ))} */}
+                                                {approveReceiver.map((receiver)=>(
+                                                    <span key={receiver.empPositionNo} className='me-3' style={{display:'inline'}}>
+                                                        {receiver.empName}
+                                                    </span>
+                                                ))}
+                                                <div></div>
+                                           
+                                                {apprData.receiversDtoList.map((receiver,index)=>(
+                                                    <span key={index} className='mx-4' style={{display:'inline'}}>
+                                                        {receiver.receiversStatus === 'Y' ? <FaRegCheckSquare /> : <FaRegSquare />}
+                                                    </span> 
+                                                ))}
+                                            </Col>
+                                        </Row>
+                                        }
+
+                                        <Row className='border border-success mt-3 rounded-top'>
+                                            <Col xs={2} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                부서
+                                            </Col>
+                                            <Col xs={4} md={4} className='py-2'>
+                                                {apprData.deptName}
+                                            </Col>
+                                            <Col xs={2} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                직위
+                                            </Col>
+                                            <Col xs={4} md={4} className='py-2'>
+                                                {emp.empPositionNo}
+                                            </Col>
+                                        </Row>
+
+                                        <Row className='border border-top-0 border-success'>
+                                            <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                사원번호
+                                            </Col>
+                                            <Col xs={12} md={4} className='py-2'>
+                                                {emp.empId}
+                                            </Col>
+                                            <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                이름
+                                            </Col>
+                                            <Col xs={12} md={4} className='py-2'>
+                                                {apprData.empName}
+                                            </Col>
+                                        </Row>
+
+                                        <Row className='border border-top-0 border-success'>
+                                            <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                연락처
+                                            </Col>
+                                            {apprData.length !==0 &&
+                                                <Col xs={12} md={10} className='py-2'>
+                                                    {apprData.empTel}
+                                                </Col>
+                                            }
+                                        </Row>
+
+                                        <Row className='border border-top-0 border-success'>
+                                            <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                기간
+                                            </Col>
+                                            {apprData.length !==0 &&
+                                                <Col xs={12} md={10} className='py-2'>
+                                                    {apprData.approveDto.apprDateStart} ~ {apprData.approveDto.apprDateEnd}
+                                                </Col>
+                                            }
+                                        </Row>
+
+                                        <Row className='border border-top-0 border-success rounded-bottom'>
+                                            <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                사유
+                                            </Col>
+                                            {apprData.length !==0 &&
+                                                <Col xs={12} md={10} className='py-2'>
+                                                    {apprData.approveDto.apprContent}
+                                                </Col>
+                                            }    
+                                        </Row>
+
+                                        <Row>
+                                            {apprData.length !==0 &&
+                                                <Col className='text-end mt-4'>
+                                                    신청일　:　
+                                                    {apprData.approveDto.apprDateStart.substring(0,4)}년
+                                                    {apprData.approveDto.apprDateStart.substring(5,7)}월
+                                                    {apprData.approveDto.apprDateStart.substring(8,10)}일
+                                                </Col>
+                                            } 
+                                        </Row>
+
+                                        <Row>
+                                            <Col className='text-end mt-2'>
+                                                신청자 : {apprData.empName}
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
-
-                                { apprData.length !==0 && 
-                                <Row>
-                                    <Col className='text-end'>
-                                        {/* {apprData.receiversDtoList.map((receiver,index)=>(
-                                            <span key={index} className='ms-2' style={{display:'inline'}}>
-                                                {receiver.receiversReceiver}
-                                            </span>
-                                        ))} */}
-                                        {approveReceiver.map((receiver)=>(
-                                            <span key={receiver.empPositionNo} className='ms-2' style={{display:'inline'}}>
-                                                {receiver.empName}
-                                            </span>
-                                        ))}
-                                        <div></div>
-                                        {apprData.receiversDtoList.map((receiver,index)=>(
-                                            <span key={index} className='ms-2' style={{display:'inline'}}>
-                                                {receiver.receiversStatus === 'Y' ? <FaCheck /> : ""}
-                                            </span> 
-                                        ))}
-                                    </Col>
-                                </Row>
-                                }
-
-                                <Row style={{border: '1px solid gray'}}>
-                                    <Col xs={12} md={2} style={{border: '1px solid gray', backgroundColor:'skyblue'}}>
-                                        부서
-                                    </Col>
-                                    <Col xs={6} md={4} style={{border: '1px solid gray'}}>
-                                        {apprData.deptName}
-                                    </Col>
-                                    <Col xs={12} md={2} style={{border: '1px solid gray', backgroundColor:'skyblue' }}>
-                                        직위
-                                    </Col>
-                                    <Col xs={6} md={4} style={{border: '1px solid gray'}}>
-                                        {emp.empPositionNo}
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col xs={12} md={2}>
-                                        사원번호
-                                    </Col>
-                                    <Col xs={6} md={4}>
-                                        {emp.empId}
-                                    </Col>
-                                    <Col xs={12} md={2}>
-                                        이름
-                                    </Col>
-                                    <Col xs={6} md={4}>
-                                        {apprData.empName}
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col xs={6} md={2}>
-                                        연락처
-                                    </Col>
-                                    {apprData.length !==0 &&
-                                        <Col xs={6} md={10}>
-                                            {apprData.empTel}
-                                        </Col>
-                                    }
-                                </Row>
-
-                                <Row>
-                                    <Col xs={6} md={2}>
-                                        기간
-                                    </Col>
-                                    {apprData.length !==0 &&
-                                        <Col xs={6} md={10}>
-                                            {apprData.approveDto.apprDateStart} ~ {apprData.approveDto.apprDateEnd}
-                                        </Col>
-                                    }
-                                </Row>
-
-                                <Row>
-                                    <Col xs={6} md={2}>
-                                        사유
-                                    </Col>
-                                    {apprData.length !==0 &&
-                                        <Col xs={6} md={10}>
-                                            {apprData.approveDto.apprContent}
-                                        </Col>
-                                    }    
-                                </Row>
-
-                                <Row>
-                                    {apprData.length !==0 &&
-                                        <Col className='text-end'>
-                                            신청일　:　
-                                            {apprData.approveDto.apprDateStart.substring(0,4)}년
-                                            {apprData.approveDto.apprDateStart.substring(5,7)}월
-                                            {apprData.approveDto.apprDateStart.substring(8,10)}일
-                                        </Col>
-                                    } 
-                                </Row>
-
-                                <Row>
-                                    <Col className='text-end'>
-                                        신청자: {apprData.empName}
-                                    </Col>
-                                </Row>
-
                             </Container>
                         </Modal.Body>
                         <Modal.Footer>
@@ -497,48 +509,52 @@ const ApproveList = (props)=>{
                                     if(receiver.includes(empNo) && apprData.status === "진행"){ //수신일때
                                         return (
                                             <Container>
-                                                <Row>
-                                                    <Col xs={6} md={9}>
-                                                        <Form>
-                                                            <Form.Control
-                                                                type="text"
-                                                                placeholder="반려 시 사유를 입력하세요"
-                                                                autoFocus name='receiversReturnRs' value={checkRecevier.receiversReturnRs}
-                                                                onChange={e=>changeRecevier(e)}
-                                                                />
-                                                        </Form>
-                                                    </Col>
-                                                    <Col xs={6} md={3} className='text-end'>
-                                                        {(()=>{
-                                                            if(receiver.length === 1 && apprData.status ==="진행"){
-                                                                return (
-                                                                    <div>
-                                                                        <Button variant="info" className='me-1'
-                                                                            onClick={checkAppr}>승인</Button>
-                                                                        <Button variant='secondary' onClick={cancelAppr}>반려</Button>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                            if(receiver.length > 1 && apprData.status === "진행"){
-                                                                const myIndex = receiver.findIndex((r) => r === empNo);
-                                                                if (myIndex !== -1) {
-                                                                    const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
-                                                                    if (allApproved && checkInfo !== undefined) {
+                                                <Row className="justify-content-md-center">
+                                                    <Col xs={10} md={10}>
+                                                        <Row>
+                                                            <Col xs={6} md={9}>
+                                                                <Form>
+                                                                    <Form.Control
+                                                                        type="text"
+                                                                        placeholder="반려 시 사유를 입력하세요"
+                                                                        autoFocus name='receiversReturnRs' value={checkRecevier.receiversReturnRs}
+                                                                        onChange={e=>changeRecevier(e)} className='mt-2 mb-4'
+                                                                        />
+                                                                </Form>
+                                                            </Col>
+                                                            <Col xs={6} md={3} className='text-end'>
+                                                                {(()=>{
+                                                                    if(receiver.length === 1 && apprData.status ==="진행"){
                                                                         return (
                                                                             <div>
-                                                                                <Button variant="info"
-                                                                                    className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''}`}
+                                                                                <Button variant="primary" className='me-1'
                                                                                     onClick={checkAppr}>승인</Button>
-                                                                                <Button variant='secondary' 
-                                                                                    className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''}`}
-                                                                                    onClick={cancelAppr}>반려</Button>
+                                                                                <Button variant='secondary' onClick={cancelAppr}>반려</Button>
                                                                             </div>
                                                                         );
                                                                     }
-                                                                }
-                                                            }
-                                                            return null;
-                                                        })()}
+                                                                    if(receiver.length > 1 && apprData.status === "진행"){
+                                                                        const myIndex = receiver.findIndex((r) => r === empNo);
+                                                                        if (myIndex !== -1) {
+                                                                            const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
+                                                                            if (allApproved && checkInfo !== undefined) {
+                                                                                return (
+                                                                                    <div>
+                                                                                        <Button variant="primary"
+                                                                                            className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''} mt-2 mb-4`}
+                                                                                            onClick={checkAppr}>승인</Button>
+                                                                                        <Button variant='secondary' 
+                                                                                            className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''} mt-2 mb-4`}
+                                                                                            onClick={cancelAppr}>반려</Button>
+                                                                                    </div>
+                                                                                );
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    return null;
+                                                                })()}
+                                                            </Col>
+                                                        </Row>
                                                     </Col>
                                                 </Row>
                                             </Container>
