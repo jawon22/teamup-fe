@@ -13,9 +13,7 @@ import TodoHead from "./TodoList/TodoHead";
 import TodoList from "./TodoList/TodoList";
 import TodoCreate from "./TodoList/TodoCreate";
 import { TodoProvider } from "../TodoContext";
-
-
-
+import Weather from "./weather";
 
 const Home = () => {
 
@@ -29,6 +27,18 @@ const Home = () => {
 
   //상태판정
   const [flag, setFlag] = useState("출근전");
+
+  //사원 
+  const [empInfo, setEmpInfo] = useState({
+    comId: '',
+    deptNo: '',
+    empId: '',
+    empName: '',
+    empEmail: '',
+    empPositionNo: '',
+    empTel: '',
+    empJoin: ''
+});
 
   //출퇴근 버튼 활성화&비활성화
   useEffect(() => {
@@ -100,11 +110,9 @@ const Home = () => {
       minute: "2-digit",
       second: "2-digit",
     };
+
+
     return new Date(dateTimeString).toLocaleString("ko-KR", options);
-
-
-
-
 
   };
 
@@ -113,17 +121,17 @@ const Home = () => {
   const loggedInEmpNo = parseInt(user.substring(6));
 
   const [imgSrc, setImgSrc] = useState(surf);//처음에는 없다고 치고 기본이미지로 설정
-  useEffect(()=>{
+  useEffect(() => {
     axios({
-      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
-      method:"get"
+      url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      method: "get"
     })
-    .then(response=>{
-      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
-    })
-    .catch(err=>{
-      setImgSrc(surf);
-    });
+      .then(response => {
+        setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+      })
+      .catch(err => {
+        setImgSrc(surf);
+      });
   }, []);
 
 
@@ -131,68 +139,103 @@ const Home = () => {
   const displayImage = imgSrc || surf;
 
 
+  //이름과 직급을 찍기 위해 사원정보를 불러옴
+  const myInfo = () => {
+    axios({
+        url: `http://localhost:8080/emp/mypage/${empNo}`,
+        method: 'get',
+    }).then(response => {
+        console.log(response.data);
+        setEmpInfo(response.data);
+    });
+};
+
+useEffect(() => {
+    myInfo();
+}, []);
+
+
 
   return (
+
     <div className="container-fluid">
-
-        <div className="row ms-1 mp">
-
-            <div className="home-profile col-3">
-
-              <div className="row border-primary h-50 mb-3 pb-1 me-1
-                                  d-flex justify-content-center align-items-center graybox p-3">
-
-                    {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
-                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
-                                style={{width:"220px", height:"200px", objectFit:"cover"}}/>
-                      <div className="d-flex ms-4">
-                        <div className="m-1 me-3 text-bold">출근시간</div>
-                        <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-                        <button className="btn btn-primary custom-btn ms-2" onClick={attendStartClick}
-                        disabled={flag !== "근무전"}>
-                          출근하기
-                        </button>
-                      </div>
-                      <div className="d-flex ms-4">
-                        <div className="m-1 me-3 text-bold">퇴근시간</div>
-                        <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-                        <button className="btn btn-primary custom-btn ms-2" onClick={attendEndClick} 
-                          disabled={flag === "근무전"}>퇴근하기</button>
-                      </div>
-
-              </div>
-
-              <div className="row h-50 me-1">
-                <TodoProvider>
-                    <TodoTemplate>
-                      <TodoHead/>
-                      <TodoList/>
-                      <TodoCreate/>
-                    </TodoTemplate>                  
-                </TodoProvider>
-              </div>
-
-              </div>
+      <div className="row ms-2 mp">
 
 
+        {/* 세로로 첫 번째 줄 */}
+        <div className="home-profile col-3">
+
+          {/* 프로필과 출퇴근 버튼 */}
+          <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
+                                    justify-content-center align-items-center">
+            {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
 
 
-              <div className="home-center col-5">
-                  <div className="row graybox me-1 border-primary h-75">
-                    전자 결재
-                  </div>
+            {/* 프로필 */}
+            <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle"
+              style={{ width: "220px", height: "200px", objectFit: "cover" }} />
 
-              </div>
+            <div className="d-flex item-center text-bold">
+            <div>{empInfo.empName}</div>
+            </div>
 
-              <div className="home-calendar col-4 graybox border-primary h-100 p-4">
-              <Calendar/>
-              </div>
+            {/* 출근 */}
+            <div className="d-flex ms-4">
+              <div className="m-1 me-3 text-bold">출근시간</div>
+              <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
+              <button className="ms-2 btn btn-primary custom-btn" onClick={attendStartClick}
+                disabled={flag !== "근무전"}>출근하기</button>
+            </div>
 
+            {/* 퇴근 */}
+            <div className="d-flex ms-4">
+              <div className="m-1 me-3 text-bold">퇴근시간</div>
+              <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
+              <button className="ms-2 btn btn-primary custom-btn" onClick={attendEndClick}
+                disabled={flag === "근무전"}>퇴근하기</button>
+            </div>
+
+          </div>
+
+          {/* 투두리스트 */}
+          <div className="row h-50 me-1">
+            <TodoProvider>
+            <TodoTemplate style={{ width: '100%', height: '100%' }}>
+                <TodoHead />
+                <TodoList />
+                <TodoCreate />
+              </TodoTemplate>
+            </TodoProvider>
           </div>
 
         </div>
 
-    );
+        {/* 세로로 두 번째 줄 */}
+        <div className="home-center col-5 ">
+          <div className="row graybox border-primary h-50">
+            공지사항
+          </div>
+          <div className="row graybox border-primary h-50 mt-3">
+            전자결재
+          </div>
+        </div>
+
+        {/* 세로로 세 번째 줄 */}
+        <div className="col-4">
+          {/* 캘린더 */}
+          <div className="home-calendar graybox border-primary h-50 p-3">
+            <Calendar />
+          </div>
+
+          {/* 날씨 */}
+          <div className="graybox border-primary h-50 p-4 mt-3 custom-background text-bold white" style={{ backgroundImage: 'url("img/cloud.jpg")', backgroundSize: 'cover' }}>
+              <Weather />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
 };
 
 export default Home;
