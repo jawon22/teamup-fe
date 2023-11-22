@@ -14,6 +14,7 @@ import { userState } from '../recoil';
 import { useEffect, useRef, useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 import { copy } from 'stylis';
+import moment from 'moment';
 
 const ApproveList = (props)=>{
     const location = useLocation();
@@ -24,6 +25,7 @@ const ApproveList = (props)=>{
     const [receiverInfo, setReceiverInfo] = useState([]); //승인자의 정보
     const [approveReceiver, setApproveReceiver] = useState([]); //승인자의 사원정보
     const [receiverPosition, setReceiverPosition] = useState([]); //자신을 제외한 사원정보
+    const [checkInfo, setCheckInfo] = useState([]);
 
     const [referer, setReferer] = useState([]); //참조자만 저장
     const [empList, setEmpList] = useState([]); // 회원에 대한 모든 정보 
@@ -41,6 +43,8 @@ const ApproveList = (props)=>{
     console.log(receiverInfo);
     console.log(approveReceiver);
 
+    
+
     // receivers의 모든정보추출
     const findReceiverInfo = ()=>{
         const search = receiver.map(empNo => empList.find(emp => emp.empNo === empNo)); // 해당 승인자의 모든 정보 추출
@@ -57,12 +61,10 @@ const ApproveList = (props)=>{
 
         setReceiverInfo(combinedArray);
 
-        // return receiver.map(recNo => { // 해당 승인자의 번호와 직급순서 추출
-        //     const foundEmp = empList.find(emp => emp.empNo === recNo);
-        //     return foundEmp ? {empNo: foundEmp.empNo, empPositionNo: foundEmp.empPositionNo} : null
-        // });
+        const selectInfo = combinedArray.find(list=> list.empInfo.empNo ===empNo)
+        setCheckInfo(selectInfo);
     }
-    
+
     useEffect(()=>{
         findReceiverInfo();
         approveCompute();
@@ -199,7 +201,6 @@ const ApproveList = (props)=>{
     console.log(ycount);
     console.log(ycount.length);
 
-
     //자신이 올린 결재 삭제 처리
     const deleteAppr = (apprNo) =>{
         const choice = window.confirm("삭제하시나요?");
@@ -218,7 +219,7 @@ const ApproveList = (props)=>{
 
     const [checkRecevier , setCheckReceiver] = useState({
         receiversNo :0,
-        pahtNo:0,
+        pathNo:0,
         receiversReceiver:0,
         receiversStatus:"",
         receiversConfirmTime:"",
@@ -232,25 +233,72 @@ const ApproveList = (props)=>{
         }));
     }
 
+    const clearApprReceiver= ()=>{
+        setCheckReceiver({
+            receiversNo :0,
+            pathNo:0,
+            receiversReceiver:0,
+            receiversStatus:"",
+            receiversConfirmTime:"",
+            receiversReturnRs:""
+        })
+    }
+
     //승인자 결재 승인 처리
-    const checkAppr = async()=>{
-        const copyReceiver = {...checkRecevier};
-        delete copyReceiver.pahtNo;
+    const checkAppr = ()=>{
+        const { receiversReturnRs } = checkRecevier;
+
+        const copyReceiver = {...myApprInfo,receiversReturnRs};
+        delete copyReceiver.pathNo;
         delete copyReceiver.receiversReceiver;
-        
-        const response = await axios({
-            url:`${process.env.REACT_APP_REST_API_URL}/approve/${copyReceiver.pahtNo}/${copyReceiver.receiversReceiver}`,
+
+        // receiversConfirmTime이 null이면 현재 날짜로 설정
+    if (copyReceiver.receiversConfirmTime === null) {
+        copyReceiver.receiversConfirmTime = moment(new Date()).format('YYYY-MM-DD');
+    }
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/${myApprInfo.pathNo}/${myApprInfo.receiversReceiver}`,
             method:"put",
             data:copyReceiver
-        });
-        susinButton();
-        closeModal();
+        })
+        .then(response=>{
+            susinButton();
+            closeModal();
+
+        })
+    };
+    
+    //승인자 결재 반려 처리
+    const cancelAppr = () =>{
+        const { receiversReturnRs } = checkRecevier;
+
+        const copyReceiver = {...myApprInfo,receiversReturnRs};
+        delete copyReceiver.pathNo;
+        delete copyReceiver.receiversReceiver;
+
+        // receiversConfirmTime이 null이면 현재 날짜로 설정
+    if (copyReceiver.receiversConfirmTime === null) {
+        copyReceiver.receiversConfirmTime = moment(new Date()).format('YYYY-MM-DD');
     }
+        axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/pathNo/${myApprInfo.pathNo}/receiver/${myApprInfo.receiversReceiver}`,
+            method:"put",
+            data:copyReceiver
+        })
+        .then(response=>{
+            susinButton();
+            closeModal();
+        })
+    };
+    
 
     //모달 관련 처리
     const [show, setShow] = useState(false);
     const openModal = () => setShow(true);
-    const closeModal = () => setShow(false);
+    const closeModal = () => {
+        clearApprReceiver();
+        setShow(false)
+    };
 
     return(
         <div className="container-fluid">
@@ -463,20 +511,34 @@ const ApproveList = (props)=>{
                                                     <Col xs={6} md={3} className='text-end'>
                                                         {(()=>{
                                                             if(receiver.length === 1 && apprData.status ==="진행"){
-                                                                return <Button variant="info" className='me-1'>승인</Button>
+                                                                return (
+                                                                    <div>
+                                                                        <Button variant="info" className='me-1'
+                                                                            onClick={checkAppr}>승인</Button>
+                                                                        <Button variant='secondary' onClick={cancelAppr}>반려</Button>
+                                                                    </div>
+                                                                );
                                                             }
                                                             if(receiver.length > 1 && apprData.status === "진행"){
                                                                 const myIndex = receiver.findIndex((r) => r === empNo);
                                                                 if (myIndex !== -1) {
                                                                     const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
-                                                                    if (allApproved) {
-                                                                        return <Button variant="info" className='me-1'>승인</Button>;
+                                                                    if (allApproved && checkInfo !== undefined) {
+                                                                        return (
+                                                                            <div>
+                                                                                <Button variant="info"
+                                                                                    className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''}`}
+                                                                                    onClick={checkAppr}>승인</Button>
+                                                                                <Button variant='secondary' 
+                                                                                    className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''}`}
+                                                                                    onClick={cancelAppr}>반려</Button>
+                                                                            </div>
+                                                                        );
                                                                     }
                                                                 }
                                                             }
                                                             return null;
                                                         })()}
-                                                        <Button variant='secondary'>반려</Button>
                                                     </Col>
                                                 </Row>
                                             </Container>
