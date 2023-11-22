@@ -142,7 +142,7 @@ const SalList=(prop)=>{
                     <hr className='text-primary'/>
                     </div>
                     <div className='col-3 h4'>
-                    {totalSal.toLocaleString()}원원                     
+                    {totalSal.toLocaleString()}원                     
                     </div>
                 </div>
 
