@@ -1,11 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { companyState, roomState, userState } from "../recoil";
 import { Badge } from "react-bootstrap";
 import SockJS from "sockjs-client";
 
-const ChatList =()=>{
+const ChatList =(props)=>{
+   const  {roomNo, setRoomNo} =props;
     const [user, setUser] = useRecoilState(userState);
     const [company, setCompany] = useRecoilState(companyState);
 
@@ -16,7 +17,16 @@ const ChatList =()=>{
     const [empList, setEmpList] = useState([]);
     const [roomList, setRoomList] =useState([]);
 
+    const sendData = (e) => {
+      const newRoomNo = e.target.value;
+      setRoomNo(newRoomNo);
     
+      // Log the updated value inside a useEffect or another callback
+      // since setRoomNo is asynchronous
+      props.onRoomNoChange();
+     // console.log(newRoomNo);
+    };
+
 
 
 
@@ -73,47 +83,47 @@ const ChatList =()=>{
       };
 
 
-      const enterRoom =(e)=>{
-        setRooms(e.target.value)
-        console.log("click",rooms)
-        const socket = new SockJS('http://localhost:8080/ws/sockjs');
+      // const enterRoom =(e)=>{
+      //   setRooms(e.target.value)
+      //   console.log("click",rooms)
+      //   const socket = new SockJS('http://localhost:8080/ws/sockjs');
       
-        // 연결 성공 시 실행되는 콜백
-        socket.onopen = () => {
-          console.log(rooms,'WebSocket Connected!');
+      //   // 연결 성공 시 실행되는 콜백
+      //   socket.onopen = () => {
+      //     console.log(rooms,'WebSocket Connected!');
           
-          // 보낼 데이터를 정의
-          const data = {
-            type:"enterRoom",
-            roomNo: e.target.value
-          };
+      //     // 보낼 데이터를 정의
+      //     const data = {
+      //       type:"enterRoom",
+      //       chatRoomNo: e.target.value
+      //     };
           
-          // 데이터를 JSON 문자열로 변환하여 서버로 전송
-          socket.send(JSON.stringify(data));
-          console.log(e.chatRoomNo)
-        };
+      //     // 데이터를 JSON 문자열로 변환하여 서버로 전송
+      //     socket.send(JSON.stringify(data));
+      //     console.log(e.chatRoomNo)
+      //   };
       
-        // 메시지를 받았을 때 실행되는 콜백
-        socket.onmessage = (event) => {
-          const message = JSON.parse(event.data);
-          console.log('Received message:', message);
-          // 메시지 처리 로직을 추가하세요.
-        };
+      //   // 메시지를 받았을 때 실행되는 콜백
+      //   socket.onmessage = (event) => {
+      //     const message = JSON.parse(event.data);
+      //     console.log('Received message:', message);
+      //     // 메시지 처리 로직을 추가하세요.
+      //   };
       
-        // 연결이 닫힌 경우 실행되는 콜백
-        socket.onclose = () => {
-          console.log(rooms,'WebSocket Connection Closed.');
-          setRooms("")
-        };
+      //   // 연결이 닫힌 경우 실행되는 콜백
+      //   socket.onclose = () => {
+      //     console.log(rooms,'WebSocket Connection Closed.');
+      //     setRooms("")
+      //   };
       
-        // 컴포넌트가 언마운트되면 연결 종료
-        return () => {
-          if (socket.readyState === SockJS.OPEN) {
-            socket.close();
-          }
-        };
+      //   // 컴포넌트가 언마운트되면 연결 종료
+      //   return () => {
+      //     if (socket.readyState === SockJS.OPEN) {
+      //       socket.close();
+      //     }
+      //   };
       
-      };
+      // };
 
 
 
@@ -140,7 +150,7 @@ return (<>
 
 {roomList.map((room, index)=>(
    <div key={room.chatRoomNo} className="  border mt-2" style={{ borderColor: '#218C74', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)'}}>
-      <button type="button" name="chatRoomNo" value={room.chatRoomNo}  onClick={enterRoom}>{room.chatRoomNo}</button>
+      <button type="button" name="chatRoomNo" value={room.chatRoomNo} onClick={sendData}>{room.chatRoomNo}</button>
    </div>
    
 
