@@ -32,7 +32,7 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { companyState, userState } from './recoil';
+import { companyState, roomState, userState } from './recoil';
 import Emp from './components/Emp';
 import surf from "./components/images/profileImage.png";
 import Chat from './components/chat';
@@ -40,6 +40,7 @@ import Chat from './components/chat';
 import BoardDetail from './components/BoardDetail';
 
 import ChatList from './components/chatList';
+import SockJS from 'sockjs-client';
 
 
 
@@ -62,6 +63,84 @@ function App() {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   //------------------------------조직도 끝---
+
+
+//user로 내 정보 끌어오기
+
+const [socket, setSocket] = useState();
+const [room , setRoom] = useRecoilState(roomState);
+
+const [roomNo, setRoomNo] = useState("");
+
+
+
+const onRoomNoChange = () => {
+  //채팅방 번호 전달하기
+
+  console.log(roomNo);
+
+  console.log('useEffect in App.js triggered!');
+};
+
+
+
+
+useEffect((props) => {
+  // SockJS를 사용하여 WebSocket에 연결
+  const socket = new SockJS('http://localhost:8080/ws/sockjs');
+
+  // 연결 성공 시 실행되는 콜백
+  socket.onopen = () => {
+    console.log('WebSocket Connected!');
+    const data = {
+      type: 'enterRoom',
+      chatRoomNo: roomNo
+    };
+    
+    // 보낼 데이터를 정의
+
+    
+    // 데이터를 JSON 문자열로 변환하여 서버로 전송
+  };
+
+  console.log('App.js의 useEffect가 트리거되었습니다!');
+
+  // 메시지를 받았을 때 실행되는 콜백
+  socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log('Received message:', message);
+    // 메시지 처리 로직을 추가하세요.
+  };
+
+  // 연결이 닫힌 경우 실행되는 콜백
+  socket.onclose = () => {
+    console.log('WebSocket Connection Closed.');
+  };
+
+  // 컴포넌트가 언마운트되면 연결 종료
+  return () => {
+    if (socket.readyState === SockJS.OPEN) {
+      socket.close();
+    }
+  };
+}, []); // 컴포넌트가 처음 마운트될 때만 실행
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const [company, setCompany] = useRecoilState(companyState);
   const navigate = useNavigate();
@@ -275,7 +354,7 @@ function App() {
             <div className='chat-container'>
               <div className='row'>
                 <div className='col-4' >
-                  <ChatList  />
+                  <ChatList setRoomNo={setRoomNo}   list={roomNo}  onRoomNoChange={onRoomNoChange}/>
                 </div>
                 <div className='col-8'>
                   <Chat/>
