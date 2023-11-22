@@ -13,6 +13,7 @@ import { useRecoilState } from 'recoil';
 import { userState } from '../recoil';
 import { useEffect, useRef, useState } from 'react';
 import { FaCheck } from "react-icons/fa";
+import { copy } from 'stylis';
 
 const ApproveList = (props)=>{
     const location = useLocation();
@@ -26,7 +27,7 @@ const ApproveList = (props)=>{
 
     const [referer, setReferer] = useState([]); //참조자만 저장
     const [empList, setEmpList] = useState([]); // 회원에 대한 모든 정보 
-    const [emp, setEmp] = useState([]); //결재 하나의 정보
+    const [emp, setEmp] = useState([]); //결재 하나의 회원정보
     const [ycount, setYCount] = useState([]);// Y카운트 갯수
 
     const empNo = parseInt(user.substring(6)); //로그인한 사람의 사원번호
@@ -38,7 +39,7 @@ const ApproveList = (props)=>{
     }
     console.log(receiver);
     console.log(receiverInfo);
-    // console.log(approveReceiver);
+    console.log(approveReceiver);
 
     // receivers의 모든정보추출
     const findReceiverInfo = ()=>{
@@ -171,20 +172,31 @@ const ApproveList = (props)=>{
     console.log(apprData);
     // console.log(approveReceiver.empInfo.empNo);
 
+    const [myApprInfo, SetMyApprInfo] = useState([]);
+
+    useEffect(()=>{
+        approveCompute();
+    },[apprData])
+    console.log(myApprInfo);
+
     //상세를 누르면 승인자들의 직급에 따라 계산
     const approveCompute = ()=>{
-        const myApprInfo = receiverInfo.find(userInfo => userInfo.empInfo.empNo === empNo);
+        const myInfo = receiverInfo.find(userInfo => userInfo.empInfo.empNo === empNo); //자신의 정보
+        if(myInfo){
+            const myApprInfo = apprData.receiversDtoList.find(receiver => receiver.receiversReceiver === empNo);
+            SetMyApprInfo(myApprInfo);
 
-        if(myApprInfo){
             const higherPosition = receiverInfo.filter(userInfo => 
-                    userInfo.empInfo.empPositionNo > myApprInfo.empInfo.empPositionNo)
+                    userInfo.empInfo.empPositionNo > myInfo.empInfo.empPositionNo)
             setReceiverPosition(higherPosition);
-            
+
             const ycount = higherPosition.filter(i => i.receiversStatus ==="Y");
             setYCount(ycount)
-        };
+        }
     };
+    console.log(receiverPosition);
     console.log(receiverPosition.length);
+    console.log(ycount);
     console.log(ycount.length);
 
 
@@ -204,7 +216,36 @@ const ApproveList = (props)=>{
         .catch(err=>{});
     }
 
+    const [checkRecevier , setCheckReceiver] = useState({
+        receiversNo :0,
+        pahtNo:0,
+        receiversReceiver:0,
+        receiversStatus:"",
+        receiversConfirmTime:"",
+        receiversReturnRs:""
+    });
+
+    const changeRecevier = (e)=>{
+        setCheckReceiver((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }));
+    }
+
     //승인자 결재 승인 처리
+    const checkAppr = async()=>{
+        const copyReceiver = {...checkRecevier};
+        delete copyReceiver.pahtNo;
+        delete copyReceiver.receiversReceiver;
+        
+        const response = await axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/approve/${copyReceiver.pahtNo}/${copyReceiver.receiversReceiver}`,
+            method:"put",
+            data:copyReceiver
+        });
+        susinButton();
+        closeModal();
+    }
 
     //모달 관련 처리
     const [show, setShow] = useState(false);
@@ -414,16 +455,26 @@ const ApproveList = (props)=>{
                                                             <Form.Control
                                                                 type="text"
                                                                 placeholder="반려 시 사유를 입력하세요"
-                                                                autoFocus
+                                                                autoFocus name='receiversReturnRs' value={checkRecevier.receiversReturnRs}
+                                                                onChange={e=>changeRecevier(e)}
                                                                 />
                                                         </Form>
                                                     </Col>
                                                     <Col xs={6} md={3} className='text-end'>
-                                                        <Button variant="info" className='me-1'>승인</Button>
                                                         {(()=>{
-                                                            if(approveReceiver.length === ycount.length){
-                                                                <Button variant="info" className='me-1'>승인</Button>
+                                                            if(receiver.length === 1 && apprData.status ==="진행"){
+                                                                return <Button variant="info" className='me-1'>승인</Button>
                                                             }
+                                                            if(receiver.length > 1 && apprData.status === "진행"){
+                                                                const myIndex = receiver.findIndex((r) => r === empNo);
+                                                                if (myIndex !== -1) {
+                                                                    const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
+                                                                    if (allApproved) {
+                                                                        return <Button variant="info" className='me-1'>승인</Button>;
+                                                                    }
+                                                                }
+                                                            }
+                                                            return null;
                                                         })()}
                                                         <Button variant='secondary'>반려</Button>
                                                     </Col>
