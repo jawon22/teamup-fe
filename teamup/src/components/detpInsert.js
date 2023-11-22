@@ -95,6 +95,7 @@ const DeptInsert = () => {
     const bsModal = useRef();
     const bsModal2 = useRef();
     const deletModal =useRef();
+    const updateModal =useRef();
     const openModal = () => {
         const modal = new Modal(bsModal.current);
         modal.show();
@@ -123,7 +124,16 @@ const DeptInsert = () => {
         const modal = Modal.getInstance(deletModal.current);
         modal.hide();
 
-        // clearProfile();
+    };
+    const opneUpdateModal = () => {
+        const modal = new Modal(updateModal.current);
+        modal.show();
+    };
+    const closeUpdateModal = () => {
+        const modal = Modal.getInstance(updateModal.current);
+        modal.hide();
+
+
     };
 
     //초기값 false
@@ -214,6 +224,9 @@ const DeptInsert = () => {
             setEmpList(response.data);
         });
     };
+
+
+    
 
 
     
@@ -332,13 +345,52 @@ const DeptInsert = () => {
         empId: "",
         deptNo: '',
         empExit: '',
-
+        empName:"",
+        salAnnual:0
     });
-
+    const [isUpdate, setIsUpdate] = useState(false);
     const changeEmpDept = (target) => {
         setEmpInfo({ ...target })
         setIsDropdownOpen((prevId) => (prevId === target.empId ? null : target.empId));
+    };
+    
+    const nameSalupdate =()=>{
+        let No = empInfo.empId.substring(6);
 
+        axios({
+            url:`http://localhost:8080/emp/adminEmpUpdate/${No}`,
+            method:'put',
+            data:{
+                empDto: {
+                  empName: empInfo.empName
+                },
+                salDto: {
+                  salAnnual: empInfo.salAnnual
+                }
+              }
+        }).then( res=>{
+            closeUpdateModal();
+             setEmpInfo([])
+        }  );
+
+    }
+
+
+
+
+    const empInfoChange=(target)=>{
+        setEmpInfo({ ...target })
+        setIsUpdate((prevId) => (prevId === target.empId ? null : target.empId));
+        opneUpdateModal();
+    };
+
+
+    const change=(e)=>{
+        setEmpInfo({...empInfo,
+            [e.target.name]:e.target.value
+        })
+
+        console.log(empInfo.salAnnual)
     };
 
     const changeEmp = (e) => {
@@ -362,6 +414,7 @@ const DeptInsert = () => {
             if(response.data === null){alert("실패했습니다")}
             else{alert("성공")}
             loadDetpList();
+            setEmpInfo("");
            
         });
     };
@@ -440,7 +493,7 @@ const DeptInsert = () => {
 
                 {/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 */}
                 <div className="row mt-4">
-                    <div className="col ">
+                    <div className="col-6">
                         <tabel className="table table-border">
                             <thead>
                                 <tr>
@@ -469,7 +522,7 @@ const DeptInsert = () => {
                             </tbody>
                         </tabel>
                     </div>
-                    <div className="col ">
+                    <div className="col-6 ">
                         <tabel className="table table-border">
                             <thead>
                                 <tr>
@@ -490,8 +543,11 @@ const DeptInsert = () => {
                                             <td>{emp.empId}</td>
                                             <td>{emp.empEmail}</td>
                                             <td>
+                                            <button className="btn btn-outline-primary me-2" onClick={e => empInfoChange(emp)}>정보수정</button>
                                                 <button className="btn btn-outline-primary me-2" onClick={e => changeEmpDept(emp)}>부서이동</button>
                                                 <button className="btn btn-outline-primary" onClick={e => opneDateInput(emp)}>퇴사처리</button>
+
+                                                
                                                 {isEmpLeave === emp.empId && (
                                                     <div className="row">
                                                         <div className="col-7">
@@ -603,12 +659,42 @@ const DeptInsert = () => {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeDeletModal}>Close</button>
                                 
-                                <button type="button" className={` btn btn-danger ${dept.empCount !==0? 'disabled': ''}`} onClick={removeDept}>확인</button>
+                                <button type="button" className={`btn btn-danger ${dept.empCount !==0? 'disabled': ''}`} onClick={removeDept}>확인</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+            <div className="modal fade" ref={updateModal} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h1 className="modal-title fs-5" id="staticBackdropLabel">부서 삭제</h1>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                        <div className="row">
+                                            <div className="col-10 offset -1">
+                                                <label className="form-label">이름</label>
+                                                 <input className="form-control" name="empName" onChange={change} value={empInfo.empName}/>
+                                                 <label className="form-label">급여</label>
+                                                 <input className="form-control" name="salAnnual" onChange={change} value={empInfo.salAnnual}/>
+                                            </div>
+
+                                        </div>
+                                    
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeUpdateModal}>Close</button>
+                                
+                                <button type="button" className={` btn btn-danger `} onClick={nameSalupdate}>수정</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
         </>
