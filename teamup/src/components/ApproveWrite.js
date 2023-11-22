@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { receiverState, referrerState, userState } from "../recoil";
+import { companyState, receiverState, referrerState, userState } from "../recoil";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +9,12 @@ const ApproveWrite = (props)=>{
     const [user, setUser] = useRecoilState(userState);
     // const [receiver, setReceiver] = useRecoilState(receiverState);
     // const [referrer, setReferrer] = useRecoilState(referrerState);
+    const [company, setCompany] = useRecoilState(companyState);
 
     const [empList, setEmpList] = useState([]); //모든 사원 정보
     const [receiverList, setReceiverList] = useState([]); //결재자 처음 복제 리스트
     const [refererList, setRefererList] = useState([]); // 참조자 처음 복제
+    const [list, setList] = useState([]);
 
     const empNo = parseInt(user.substring(6)); // 202302032
     const navigate = useNavigate(); // 리다이렉트용
@@ -57,6 +59,22 @@ const ApproveWrite = (props)=>{
     //     approveSeeReferrer : referrer
     // });
 
+    // 같은 회사로 조회
+    // const selectCom = ()=>{
+    //     axios({
+    //         url:`${process.env.REACT_APP_REST_API_URL}/emp/complexSearch/`,
+    //         method:"post",
+    //         data:{
+    //         comId: company}
+    //     })
+    //     .then(response=>{
+    //         setList(response.data);
+    //     })
+    // }
+    // useEffect(()=>{selectCom()},[])
+    // console.log(list);
+
+
     // 사원 정보 조회
     const loadEmp = ()=>{
         axios({
@@ -65,8 +83,10 @@ const ApproveWrite = (props)=>{
         })
         .then(response=>{
             setEmpList(response.data);
-            setReceiverList(response.data);
-            setRefererList(response.data);
+
+            const removeMy = response.data.filter(receiver => receiver.empNo !== empNo && receiver.comId === company);
+            setReceiverList(removeMy);
+            setRefererList(removeMy);
         })
     };
 
@@ -229,7 +249,7 @@ const ApproveWrite = (props)=>{
                                         {/* map 함수를 이용해 option 태그 반복 생성 */}
                                             {receiverList.map(emp => (
                                                 <option key={emp.empNo} value={emp.empNo}>
-                                                    부서:{emp.deptNo} 직급:{emp.empPositionNo} 사원번호:{emp.empNo}
+                                                    부서:{emp.deptNo} 직급:{emp.empPositionNo} 사원:{emp.empName}
                                                 </option>
                                             ))}
                                         </select>
