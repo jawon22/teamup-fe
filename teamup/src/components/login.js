@@ -1,11 +1,12 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { companyState, tokenState, userState } from "../recoil";
 import { useNavigate } from 'react-router-dom'
 import jwt_decode, { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { NavLink } from 'react-router-dom';
+import { Modal } from "bootstrap";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Login = () => {
 
     const savedToken = Cookies.get('userId');
 
-    
+
     const [loginUser, setLoginUser] = useState({
         empId: "",
         empPw: ""
@@ -58,7 +59,7 @@ const Login = () => {
 
                 setTimeout(() => {
                     navigate('/home');
-                  }, 500);  // 1초 후에 '/home'으로 이동
+                }, 500);  // 1초 후에 '/home'으로 이동
             } else {
                 alert("실패");
             }
@@ -76,83 +77,153 @@ const Login = () => {
 
 
 
+    const bsModal = useRef();
+
+    const closeModal = () => {
+        const modal = Modal.getInstance(bsModal.current);
+        modal.hide();
+
+        // clearProfile();
+    };
+    const openModal = () => {
+        const modal = new Modal(bsModal.current);
+        modal.show();}
 
 
 
+        const [info , setInfo ] = useState(
+            {empId:"",
+            empEmail:"",}
+        );
+
+        const changeInfo = (e)=>{
+
+            setInfo({...info,
+                [e.target.name]:e.target.value}
+            )
+        }
+
+        const findPw =()=>{
+            axios({
+                url:"http://localhost:8080/emp/empFindPw/",
+                method:"post",
+                data:info
+            }).then(res=>{
+                alert("success")
+            });
+        }
+    
 
     return (
-            <>
-                <div className="container">
+        <>
+            <div className="container">
 
-                    <div className="d-flex row">
+                <div className="d-flex row">
 
-                        {/* 이미지 부분 */}
-                        <div className="col-8" style={{ height: "100vh", overflow: "hidden" }}>
-                            <img src="img/company.png" style={{ maxWidth: "100%", height: "100%" }} alt="Company Logo"></img>
+                    {/* 이미지 부분 */}
+                    <div className="col-8" style={{ height: "100vh", overflow: "hidden" }}>
+                        <img src="img/company.png" style={{ maxWidth: "100%", height: "100%" }} alt="Company Logo"></img>
+                    </div>
+
+                    {/* 로그인 부분 */}
+                    <div className="col-4 right">
+
+                        {/* 로고 */}
+                        <div style={{ textAlign: "right" }}>
+                            <img src="img/TeamUpLogo.png" style={{ maxWidth: "25%", height: "100%" }} alt="TeamUp Logo" />
                         </div>
-                        
-                        {/* 로그인 부분 */}
-                        <div className="col-4 right">
 
-                            {/* 로고 */}
-                            <div style={{ textAlign: "right" }}>
-                                <img src="img/TeamUpLogo.png" style={{ maxWidth: "25%", height: "100%" }} alt="TeamUp Logo" />
-                            </div>
+                        <div>
+                            id: 202383104<br />
+                            pw: 06b333a556 
 
-                            <div>
-                                id: 202384107<br />
-                                pw: 83a5dbf03f
-                            </div>
 
-                            {/* 아이디 */}
-                            <div className="row mt-4">
-                                <div className="col-ms-6 offset-ms-3">
-                                    <input type="text" name="empId" onChange={inputChange} 
+                            202384108
+                            669c61c235
+                        </div>
+
+                        {/* 아이디 */}
+                        <div className="row mt-4">
+                            <div className="col-ms-6 offset-ms-3">
+                                <input type="text" name="empId" onChange={inputChange}
                                     className="form-control p-4" placeholder="id"></input>
-                                </div>
                             </div>
+                        </div>
 
-                            {/* 패스워드 */}
-                            <div className="row mt-2">
-                                <div className="col-ms-6 offset-ms-3">
-                                    <input type="passwosrd" className="form-control p-4" name="empPw" 
+                        {/* 패스워드 */}
+                        <div className="row mt-2">
+                            <div className="col-ms-6 offset-ms-3">
+                                <input type="passwosrd" className="form-control p-4" name="empPw"
                                     onChange={inputChange} placeholder="password"></input>
-                                </div>
                             </div>
-                        
-                            {/* 로그인 버튼 */}
-                            <div className="row mt-4">
-                                <div className="col-ms-6 offset-ms-3">
-                                    <button className=" btn btn-primary w-100 p-3 text-bold" onClick={login}>Login</button>
-                                </div>
+                        </div>
+
+                        {/* 로그인 버튼 */}
+                        <div className="row mt-4">
+                            <div className="col-ms-6 offset-ms-3">
+                                <button className=" btn btn-primary w-100 p-3 text-bold" onClick={login}>Login</button>
                             </div>
+                        </div>
 
 
-                            {/* 회사가입 링크 / 링크 추가해야함 */}
-                            <div className="row">
-                                <div className="col-ms-6 offset-ms-3 mt-2" style={{ textAlign: "right" }}>
-                                    <NavLink to="#"className="ms-1 link">회사가입</NavLink>
-                                </div>
+                        {/* 회사가입 링크 / 링크 추가해야함 */}
+                        <div className="row">
+                            <div className="col-ms-6 offset-ms-3 mt-2" style={{ textAlign: "right" }}>
+                                <NavLink to="#" className="ms-1 link">회사가입</NavLink>
                             </div>
+                        </div>
 
-                            {/* 비밀번호 찾기 / 링크 추가해야함 */}
-                            <div className="row">
-                                <div className="col-ms-6 offset-ms-3 mt-2 d-flex mt-5" >
+                        {/* 비밀번호 찾기 / 링크 추가해야함 */}
+                        <div className="row">
+                            <div className="col-ms-6 offset-ms-3 mt-2 d-flex mt-5" >
 
-                                    <div>
-                                        <span className="me-3">비밀번호를 잊어버리셨나요?</span>
-                                        <button className="btn btn-primary" style={{backgroundColor:"rgb(195, 195, 195)", border:"none"}}>비밀번호 찾기</button>
-                                    </div>
-
+                                <div>
+                                    <span className="me-3">비밀번호를 잊어버리셨나요?</span>
+                                    <button className="btn btn-primary" onClick={openModal} style={{ backgroundColor: "rgb(195, 195, 195)", border: "none" }}>비밀번호 찾기</button>
                                 </div>
+
                             </div>
-                            
                         </div>
 
                     </div>
 
+   
+
+
+                    <div class="modal fade" ref={bsModal} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div className="row">
+                                        <div className="col">
+                                            <label className="form-label">사원번호</label>
+                                            <input className="form-control" name="empId" value={info.empId} onChange={changeInfo}/>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col">
+                                        <label className="form-label">이메일</label>
+                                        <input className="form-control" name="empEmail"value={info.empEmail} onChange={changeInfo}/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" onClick={closeModal} >Close</button>
+                                    <button type="button" class="btn btn-primary" onClick={findPw}>Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-            </>
+
+            </div>
+        </>
     );
 
 };
