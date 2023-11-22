@@ -1,10 +1,16 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-import { Modal } from "bootstrap";
 import surf from "./images/profileImage.png";
 import { useRecoilState } from "recoil";
 import { userState } from "../recoil";
 import { FaEdit } from "react-icons/fa";
+import { IoCamera } from "react-icons/io5";
+
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
 
 const ProfileEdit = ()=>{
   const [profile, setProfile] = useState({
@@ -19,7 +25,8 @@ const ProfileEdit = ()=>{
   const [user, setUser] = useRecoilState(userState);
   const loggedInEmpNo = parseInt(user.substring(6));
 
-  const bsModal = useRef();
+  // const bsModal = useRef();
+  const [showModal, setShowModal] = useState(false);
 
 
   //프로필 조회
@@ -83,7 +90,7 @@ const ProfileEdit = ()=>{
     const changeImage = document.getElementById("changeImage");
     const previewImage = document.getElementById("previewImage");
     
-    if(changeImage.files && changeImage.files[0]){
+    if(changeImage && changeImage.files && changeImage.files[0]){
       
       const file = changeImage.files[0];
       
@@ -185,14 +192,16 @@ const ProfileEdit = ()=>{
         },
       });
 
-      //업데이트 성공 시 모달 닫기
-      closeModal();
       
       // FormData에 파일을 추가하고 나서 프로필 상태 업데이트
       setProfile({
         ...profile,
         attach: attach,
       });
+
+
+      //업데이트 성공 시 모달 닫기
+      closeModal();
     }
     catch(error){
       console.error("프로필 업데이트 에러", error);
@@ -226,14 +235,10 @@ const ProfileEdit = ()=>{
   //모달 관련 처리
 
   const openModal = () =>{
-    updateImagePreview();
-    const modal = new Modal(bsModal.current);
-    modal.show();
+    setShowModal(true);
   };
   const closeModal = () =>{
-    const modal = Modal.getInstance(bsModal.current);
-    modal.hide();
-    // clearProfile();
+    setShowModal(false);
   };
 
   //이미지를 만들기 위해서 필요한 것은 사번
@@ -266,90 +271,87 @@ const ProfileEdit = ()=>{
       </div>
 
       {/* Modal */}
-      <div className="modal fade" ref={bsModal} 
-              data-bs-backdrop="static" tabIndex={1} role="dialog" aria-hidden="true">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">프로필</h5>
-              <button type="button" className="btn-close" data-dismiss="modal" onClick={closeModal}>
+      <Modal 
+        show={showModal}
+        onHide={closeModal} 
+        backdrop="static"
+        size="md"
+        centered={true}
+        aria-labelledby="contained-modal-title-vcenter">
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            <h5 className="modal-title">프로필</h5>
+              {/* <button type="button" className="btn-close" data-dismiss="modal" onClick={closeModal}>
                 <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="container-fluid">
+              </button> */}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="grid-example mt-3">
+          <Container>
+            <Row>
+              <Col xs={6} md={6}>
+                <label className="profile-file-button justify-content-end" for="changeImage">
+                  <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
+                      style={{width:"180px", height:"180px", objectFit:"cover"}}/>
+                  <IoCamera style={{width:"30px", height:"30px"}} className="ms-150"/>
+                </label>
+                <input type="file" name="attach" id="changeImage" style={{display:"none"}} onChange={updateImagePreview}/>
+              </Col>
+              <Col xs={6} md={6}>
+                <p>부서 : {profile.deptName}</p>
+                <p>직위 : {profile.empPositionName}</p>
+                <p>이름 : {profile.empName}</p>
+                <p>입사일 : {profile.empJoin}</p>
+              </Col>
+            </Row>
 
-                    <div className="row">
-                      <div className="col-6 mt-4 text-center">
-                        {/* <p>일단이미지번호들어오나보자 : 
-                            {profile.attachNo}
-                        </p> */}
-                        <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle" 
-                                style={{width:"180px", height:"180px", objectFit:"cover"}}/>
-                        {/* <FaEdit type="file" name="attach" id="changeImage" onChange={updateImagePreview}/> */}
-                        <input type="file" name="attach" id="changeImage" onChange={updateImagePreview}/>
-                      </div>
-                      <div className="col-6 mt-5">
-                        <p>부서 : {profile.deptName}</p>
-                        <p>직위 : {profile.empPositionName}</p>
-                        <p>이름 : {profile.empName}</p>
-                        <p>입사일 : {profile.empJoin}</p>
-                      </div>
-                    </div>
+            <Row>
+              <Col xs={4} md={3} className="text-center">
+                <p>연락처</p>
+              </Col>
+              <Col xs={8} md={9}>
+                <input type="tel" name="empTel" className="form-control" 
+                        value={profile.empTel} onChange={changeProfile}/>
+              </Col>
+            </Row>
+            
 
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-2">
-                          <p>연락처</p>
-                        </div>
-                        <div className="col-10">
-                          <input type="tel" name="empTel" className="form-control" 
-                              value={profile.empTel} onChange={changeProfile}/>
-                        </div>
-                      </div>  
-                      <div className="row">  
-                        <div className="col-2">
-                          <p>이메일</p>
-                        </div>
-                        <div className="col-10">
-                          <input type="email" name="empEmail" className="form-control" 
-                              value={profile.empEmail} onChange={changeProfile}/>
-                        </div>
-                      </div>  
-                      <div className="row">
-                        <div className="col-2">
-                          <p>소개</p>
-                        </div>
-                        <div className="col-10">
-                          <input type="text" name="profileTitle" className="form-control" 
-                              value={profile.profileTitle} onChange={changeProfile}/>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-2">
-                          <p>내용</p>
-                        </div>
-                        <div className="col-10">
-                          <textarea name="profileContent" className="form-control" rows="4"
-                              value={profile.profileContent} onChange={changeProfile}/>
-                        </div>
+            <Row>
+              <Col xs={4} md={3} className="text-center">
+                <p>이메일</p>
+              </Col>
+              <Col xs={8} md={9}>
+                <input type="email" name="empEmail" className="form-control" 
+                        value={profile.empEmail} onChange={changeProfile}/>
+              </Col>
+            </Row>
 
-                      </div>
-                    </div> 
+            <Row>
+              <Col xs={4} md={3} className="text-center">
+                <p>소개</p>
+              </Col>
+              <Col xs={8} md={9}>
+                <input type="text" name="profileTitle" className="form-control" 
+                        value={profile.profileTitle} onChange={changeProfile}/>
+              </Col>
+            </Row>
 
-              </div>
-            </div>
-            <div className="modal-footer">
-              <div className="row">
-                <div className="col">
-                  <button className="btn btn-secondary ms-1" onClick={closeModal}>닫기</button>
-                  <button className="btn btn-primary ms-1" onClick={updateProfile}>수정</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-       </div> 
+            <Row>
+              <Col xs={4} md={3} className="text-center">
+                <p>내용</p>
+              </Col>
+              <Col xs={8} md={9}>
+                <textarea name="profileContent" className="form-control" rows="4"
+                            value={profile.profileContent} onChange={changeProfile}/>
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>닫기</Button>
+          <Button variant="primary" onClick={updateProfile}>수정</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

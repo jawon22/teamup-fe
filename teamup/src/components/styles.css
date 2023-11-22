@@ -405,6 +405,9 @@ element.style {
 .mt-150{
     margin-top: 150px;
 }
+.ms-130{
+    margin-left: 130px;
+}
 
 .btn-icon{
     border-radius: 50px;
@@ -434,4 +437,14 @@ element.style {
 .btn:focus {
   background-color: #165849;
   color: #fff;
+}
+
+/*프로필 이미지 수정 버튼*/
+.image-edit-btn{
+    color: #218C74;
+    cursor: pointer;
+}
+.image-delete-btn{
+    color: #ea868f;
+    cursor: pointer;
 }
