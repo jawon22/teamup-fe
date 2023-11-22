@@ -24,7 +24,7 @@ import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import SalList from './components/SalList';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
+// import ProfileEdit from './components/profileEdit';//마이페이지로 합치면 지울껍니당
 import Calendar from './components/calendar';
 import DeptCalendar from './components/deptCalendar';
 import { useEffect, useState } from 'react';
@@ -233,8 +233,8 @@ useEffect((props) => {
                   <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
                   <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
-                  <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink>
-                  <NavLink to="/profileEdit" className="ms-1">프로필</NavLink>
+                  {/* <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink> */}
+                  {/* <NavLink to="/profileEdit" className="ms-1">프로필</NavLink> */}
 
                   <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
 
@@ -316,7 +316,7 @@ useEffect((props) => {
 
 
                 {/* 마이페이지에 합치면 profileEdit는 지울껍니당 */}
-                <Route path="/profileEdit" element={<ProfileEdit />}></Route>
+                {/* <Route path="/profileEdit" element={<ProfileEdit />}></Route> */}
 
 
               </Routes>
