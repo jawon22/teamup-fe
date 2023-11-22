@@ -15,15 +15,29 @@ const Chat = () => {
   const [socket, setSocket] = useState();
 
   //회사내 전체 리스트 끌어오기 
+
+
+
+
+  
   useEffect(() => {
     // SockJS를 사용하여 WebSocket에 연결
     const socket = new SockJS('http://localhost:8080/ws/sockjs');
 
     // 연결 성공 시 실행되는 콜백
-    socket.onopen = () => {
+    socket.onopen = (e) => {
       console.log('WebSocket Connected!');
+      
+      // 보낼 데이터를 정의
+      const data = {
+        type: 'enterRoom',
+        content: '107' 
+      };
+      
+      // 데이터를 JSON 문자열로 변환하여 서버로 전송
+      socket.send(JSON.stringify(data));
+      console.log(data)
     };
-
 
     // 메시지를 받았을 때 실행되는 콜백
     socket.onmessage = (event) => {
@@ -44,14 +58,6 @@ const Chat = () => {
       }
     };
   }, []); // 컴포넌트가 처음 마운트될 때만 실행
-
-  const send = () => {
-
-    axios({
-      url: "",
-    }).then();
-
-  };
 
 
   
