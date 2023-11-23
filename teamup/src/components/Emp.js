@@ -107,8 +107,8 @@ const Emp = () => {
                                             <span>{dept.deptName}</span>
                                             {openDept === dept.deptNo && (
                                                 <ul >
-                                                    {empList.map((emp, index) => (
-                                                        <li key={index} onClick={() => show(emp)}>
+                                                    {empList.map((emp, index2) => (
+                                                        <li key={index2} onClick={() => show(emp)}>
                                                             <Badge bg="success">{emp.empPositionName}</Badge> {emp.empName}
                                                         </li>
                                                     ))}

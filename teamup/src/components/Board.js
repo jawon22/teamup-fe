@@ -28,7 +28,7 @@ const Board =(props)=>{
     //화면 실행시 회사별 공지사항 리스트 출력
     const boardListByCom = ()=>{
         axios({
-            url:`http://localhost:8080/board/list/${comId}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/board/list/${comId}`,
             method: "get"
         })
         .then(response=>{
@@ -117,7 +117,7 @@ const Board =(props)=>{
                 
             <div className="row">
                 <div className="col">
-                    <table className="table table-bordered border-primary">
+                    <table className="table table-bordered ">
                         
                         <thead>
                             <tr>
@@ -145,8 +145,8 @@ const Board =(props)=>{
                         </tbody>
                     </table>
 
-                </div>
-            </div>
+                </div></div>
+            
 
             <Modal show={show} onHide={handleModalClose}>
             <Modal.Body>

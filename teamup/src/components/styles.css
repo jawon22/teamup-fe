@@ -405,10 +405,15 @@ element.style {
 .mt-150{
     margin-top: 150px;
 }
+.ms-130{
+    margin-left: 130px;
+}
+.ms-6{
+    margin-left: 60px;
+}
 
 .btn-icon{
     border-radius: 50px;
-
 } 
 
 .link {
@@ -429,6 +434,24 @@ element.style {
   box-shadow: none;
 }
 
+.btn.active,
+.btn:active,
+.btn:focus {
+  background-color: #165849;
+  color: #fff;
+}
+
+
+/*프로필 이미지 수정 버튼*/
+.image-edit-btn{
+    color: #218C74;
+    cursor: pointer;
+}
+.image-delete-btn{
+    color: #ea868f;
+    cursor: pointer;
+}
+
 .white {
     color:white;
 }
@@ -438,8 +461,8 @@ body {
     font-family: "nanum";
 }
 
-.wtable{
-    table {
-        width: 1000px;
-    }
+/*border background color*/
+.border-bg-color{
+    background-color: #d1e7dd;
 }
+
