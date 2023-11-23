@@ -32,7 +32,7 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { companyState, roomState, userState } from './recoil';
+import { companyState, deptNoState, nameState, roomState, userState } from './recoil';
 import Emp from './components/Emp';
 import surf from "./components/images/profileImage.png";
 import Chat from './components/chat';
@@ -42,6 +42,7 @@ import BoardDetail from './components/BoardDetail';
 import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
+import moment, { now } from 'moment';
 
 
 
@@ -82,6 +83,9 @@ function App() {
 
   const [socket, setSocket] = useState();
 
+
+  const [ messageList,setMessageList ] = useState([]);
+
 ///웹소켓
   useEffect(() => {
     const socket = new SockJS('http://localhost:8080/ws/sockjs');
@@ -99,9 +103,22 @@ function App() {
     console.log('App.js의 useEffect가 트리거되었습니다!');
 
     socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log('Received message:', message);
+      const getMessage = JSON.parse(event.data);
+      console.log('Received message:', getMessage);
+      console.log("메세지", messages);
+
+
+      console.log(getMessage.content);
+      
+      setMessages([...messages,getMessage.content]);
+
+
+        console.log(messageList.content);
+
     };
+
+
+
     socket.onclose = () => {
       console.log('WebSocket Connection Closed.');
     };
@@ -112,18 +129,27 @@ function App() {
     };
   }, []); 
 
+  
+  const [name ,setName] =useRecoilState(nameState);
+  //const [positionName ,setPositionName] =useRecoilState();
+
+
 
 
 
   const chatMessage = (message) => {
-
+    const userNo = user.substring(6)
     const data = {
       type: 'message',
-      content: message
+      empNo: userNo,
+      content: message,
+      date :moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+      roomNo : roomNo,
     };
 
     console.log("전송?", data);
     socket.send(JSON.stringify(data));
+    console.log(name)
     // 여기서 message를 처리하거나 다른 로직을 수행할 수 있습니다.
   };
 
@@ -136,7 +162,7 @@ function App() {
 
     const data = {
       type: 'enter',
-      content: no
+      chatRoomNo: no
 
     };
     console.log("입장?", data);
@@ -149,6 +175,8 @@ function App() {
 
   const [company, setCompany] = useRecoilState(companyState);
   const navigate = useNavigate();
+
+
 
   const loadInfo = () => {
 
