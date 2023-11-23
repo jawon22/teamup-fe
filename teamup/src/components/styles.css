@@ -342,7 +342,6 @@ li {
   .graybox {
     box-shadow: 0px 0px 5px 0px #b2bec3;
     border-radius: 10px;
-    /* font-family: "nanum"; */
   }
 
   /* 가운데 정렬 */
@@ -491,6 +490,7 @@ body {
 }
 
 
+
 /*메인 버튼 폰트 사이즈*/
 .font-mian-btn{
     font-size: 12px;
@@ -506,3 +506,26 @@ body {
 .font-main-content{
     font-size: 14px;
 }
+
+.org-chart li > p:hover {
+    color: #218C74; 
+    cursor: pointer;
+}
+
+.hover {
+    cursor: pointer;
+}
+  
+.primary {
+    color: #218C74; 
+}
+
+.green-border {
+    border: 1px solid #218C74; 
+    border-radius: 20px;
+}
+
+h4 {
+    font-family: "nanum";
+}
+

@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
+import { Pagination } from "react-bootstrap";
 
 const Board =(props)=>{
     const [user, setUser] = useRecoilState(userState);
@@ -20,23 +21,46 @@ const Board =(props)=>{
     const handleShow = () => setShow(true);
     //모달---------------------------------
     const [boardList, setBoardList] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10); // 페이지당 항목 수
+    const [totalPages, setTotalPages] = useState(1);
 
-    useEffect(()=>{
+    useEffect(() => {
+        // 화면 실행시, 페이지별 게시물 목록 및 전체 게시물 수를 가져오는 함수 호출
         boardListByCom();
-    },[]);
+        fetchTotalCount();
+    }, [currentPage, pageSize]);
 
-    //화면 실행시 회사별 공지사항 리스트 출력
-    const boardListByCom = ()=>{
-        axios({
-            url:`${process.env.REACT_APP_REST_API_URL}/board/list/${comId}`,
-            method: "get"
-        })
-        .then(response=>{
-            setBoardList(response.data);
-        }).catch(error => {
-            console.error("공지사항 목록을 가져오는 중 오류가 발생", error);
-        });
-    };
+        // 백엔드에서 전체 게시물 수를 가져오는 함수
+        const fetchTotalCount = () => {
+            axios({
+                url: `${process.env.REACT_APP_REST_API_URL}/board/totalCount/${comId}`,
+                method: "get"
+            })
+            .then(response => {
+                console.log("전체 게시물 수:", response.data);
+                setTotalPages(Math.ceil(response.data / pageSize));
+            })
+            .catch(error => {
+                console.error("전체 게시물 수를 가져오는 중 오류가 발생", error);
+            });
+        };
+
+        // 화면 실행시 회사별 공지사항 리스트 출력
+        const boardListByCom = () => {
+            axios({
+                url: `${process.env.REACT_APP_REST_API_URL}/board/listPaged/${comId}?page=${currentPage}&size=${pageSize}`,
+                method: "get"
+            })
+            .then(response => {
+                console.log("응답 데이터:", response.data);
+                setBoardList(response.data);
+            })
+            .catch(error => {
+                console.error("공지사항 목록을 가져오는 중 오류가 발생", error);
+            });
+        };
+
 
     //등록과 관련된 state
     const [board, setBoard] = useState({
@@ -98,6 +122,45 @@ const Board =(props)=>{
     handleClose();
 };
 
+const renderPagination = () => {
+    if (totalPages <= 1) {
+        return null; // 페이지가 1개 이하면 페이지네이션을 표시하지 않음
+    }
+    let items = [];
+    for (let number = 1; number <= totalPages; number++) {
+        items.push(
+            <Pagination.Item key={number} active={number === currentPage} onClick={() => setCurrentPage(number)}>
+                {number}
+            </Pagination.Item>,
+        );
+    }
+
+    return (
+        <Pagination>
+        {currentPage > 1 && (
+            <Pagination.Prev
+                onClick={() => setCurrentPage(currentPage - 1)}
+            />
+        )}
+
+        {[...Array(totalPages).keys()].map((number) => (
+            <Pagination.Item
+                key={number + 1}
+                active={number + 1 === currentPage}
+                onClick={() => setCurrentPage(number + 1)}
+            >
+                {number + 1}
+            </Pagination.Item>
+        ))}
+
+        {currentPage < totalPages && (
+            <Pagination.Next
+                onClick={() => setCurrentPage(currentPage + 1)}
+            />
+        )}
+    </Pagination>
+    );
+};
     
 
 
@@ -146,6 +209,12 @@ const Board =(props)=>{
                     </table>
 
                 </div></div>
+                <div className="row">
+                    <div className="col d-flex justify-content-center">
+                    {renderPagination()}
+
+                    </div>
+                </div>
             
 
             <Modal show={show} onHide={handleModalClose}>

@@ -53,13 +53,14 @@ const Login = () => {
                         }).then(response => {
                             console.log(response.data);
                             setCompany(response.data.comId);
+                            setTimeout(() => {
+                                navigate('/home');
+                            }, 5000);  // 1초 후에 '/home'으로 이동
                         });
                     }
                 });
 
-                setTimeout(() => {
-                    navigate('/home');
-                }, 500);  // 1초 후에 '/home'으로 이동
+   
             } else {
                 alert("실패");
             }
@@ -169,7 +170,7 @@ const Login = () => {
                         {/* 회사가입 링크 / 링크 추가해야함 */}
                         <div className="row">
                             <div className="col-ms-6 offset-ms-3 mt-2" style={{ textAlign: "right" }}>
-                                <NavLink to="#" className="ms-1 link">회사가입</NavLink>
+                                <NavLink to="/com" className="ms-1 link">회사가입</NavLink>
                             </div>
                         </div>
 

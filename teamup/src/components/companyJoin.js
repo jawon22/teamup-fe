@@ -49,26 +49,30 @@ const CompanyJoin = ()=>{
 
         <>
         <div className="container">
-            <div className="row mt-4">
-                <div className="col-8 offset-2">
-                    <h1>회사 로그인</h1>
+            <div className="row mt-5 pt-5">
+                <div className="col-4 offset-4">
+                    <div className="mb-3" style={{ textAlign: "center" }}>
+                        <img src="img/TeamUpLogo.png" style={{ width: "25%", height: "20%" }} alt="TeamUp Logo" />
+                    </div>
                 </div>
             </div>
 
 
-            <div className="row mt-4">
-                <div className="col-8 offset-2">
-                    아이디 <input type="text" className="form-control" name="comId" onChange={changeInfo} value={companyInfo.comId}/>
+            <div className="row mt-5">
+                <div className="col-4 offset-4">
+                    <span>아이디</span> 
+                    <input type="text" className="form-control" name="comId" onChange={changeInfo} value={companyInfo.comId}/>
                 </div>
             </div>
             <div className="row mt-4">
-                <div className="col-8 offset-2">
-                    비밀번호 <input type="text" className="form-control" name="comPw" onChange={changeInfo} value={companyInfo.comPw}/>
+                <div className="col-4 offset-4">
+                    <span>비밀번호</span> 
+                    <input type="text" className="form-control" name="comPw" onChange={changeInfo} value={companyInfo.comPw}/>
                 </div>
             </div>
             <div className="row mt-4">
-                <div className="col-8 offset-2">
-                   <button className="btn btn-primary w-100" onClick={login}>로그인</button>
+                <div className="col-4 offset-4">
+                   <button className="btn btn-primary w-100" onClick={login}>회사 로그인</button>
                 </div>
             </div>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import { userState } from "../recoil";
+import { deptNoState, nameState, userState } from "../recoil";
 import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
 import surf from "./images/profileImage.png";
@@ -19,6 +19,8 @@ const Home = () => {
 
   const [user, setUser] = useRecoilState(userState);
 
+
+
   //강사님이 알려주신 거
   // const [empNo, setEmpNo] = useState('');
 
@@ -27,6 +29,11 @@ const Home = () => {
 
   //상태판정
   const [flag, setFlag] = useState("출근전");
+
+
+  const [name ,setName] =useRecoilState(nameState);
+  //const [positionName ,setPositionName] =useRecoilState();
+  const [deptNo ,setDeptNo] =useRecoilState(deptNoState);
 
   //사원 
   const [empInfo, setEmpInfo] = useState({
@@ -39,6 +46,8 @@ const Home = () => {
     empTel: '',
     empJoin: ''
 });
+
+
 
   //출퇴근 버튼 활성화&비활성화
   useEffect(() => {
@@ -147,6 +156,11 @@ const Home = () => {
     }).then(response => {
         console.log(response.data);
         setEmpInfo(response.data);
+
+        setName(empInfo.empName);
+        setDeptNo(empInfo.deptNo);
+        console.log(name)
+        
     });
 };
 
