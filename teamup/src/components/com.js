@@ -111,8 +111,6 @@ const Com = ()=>{
       const pwReMatch = com.pwRe.length === 0 ? null :
       com.pwRe.length > 0 && com.comPw === com.pwRe;
       const isOverlap = companyList.some(company => company.comId === com.comId);
-      console.log( com.comid)
-      console.log(isOverlap)
 
       setResult({
           id: idMatch,
