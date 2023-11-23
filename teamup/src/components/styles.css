@@ -403,19 +403,50 @@ element.style {
 }
 
 /*큰 마진탑이 필요했어여.... align-items-center 안먹더라고?*/
-.mt-150{
+/* .mt-150{
     margin-top: 150px;
 }
 .ms-130{
     margin-left: 130px;
-}
+} */
 .ms-6{
     margin-left: 60px;
 }
 
-.btn-icon{
+/*프로필 이미지 수정 버튼*/
+.image-edit-btn{
+    background-color: #218C74;
+    cursor: pointer;
     border-radius: 50px;
-} 
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top:-45px;
+    left:130px;
+}
+.image-delete-btn{
+    background-color: #ea868f;
+    cursor: pointer;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top:-87px;
+    left:163px;
+}
+
+
+.mypage-btn-icon{
+    background-color: #218C74;
+    cursor: pointer;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    top:150px;
+    left:-30px;
+}
+
 
 .link {
     color: #a4b0be;
@@ -443,15 +474,7 @@ element.style {
 }
 
 
-/*프로필 이미지 수정 버튼*/
-.image-edit-btn{
-    color: #218C74;
-    cursor: pointer;
-}
-.image-delete-btn{
-    color: #ea868f;
-    cursor: pointer;
-}
+
 
 .white {
     color:white;
@@ -467,3 +490,19 @@ body {
     background-color: #d1e7dd;
 }
 
+
+/*메인 버튼 폰트 사이즈*/
+.font-mian-btn{
+    font-size: 12px;
+}
+
+/*메인 타이틀 폰트 사이즈*/
+.font-mian-title{
+    font-size: 14px;
+    font-weight: bolder;
+}
+
+/*메인 내용 폰트 사이즈*/
+.font-main-content{
+    font-size: 14px;
+}

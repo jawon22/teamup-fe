@@ -314,7 +314,7 @@ const ApproveList = (props)=>{
 
                     <div className="btn-group text-start" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" className="btn-check" name="btnradio" id="btnradio1"/>
-                        <label className="btn btn-outline-primary" for="btnradio1" onClick={susinButton}>수신</label>
+                        <label className="btn btn-outline-primary rounded-start" for="btnradio1" onClick={susinButton}>수신</label>
                         <input type="radio" className="btn-check" name="btnradio" id="btnradio2"/>
                         <label className="btn btn-outline-primary" for="btnradio2" onClick={barsinButton}>발신</label>
                         <input type="radio" className="btn-check" name="btnradio" id="btnradio3"/>
@@ -338,7 +338,7 @@ const ApproveList = (props)=>{
                                 </thead>
                                 <tbody>
                                     {apprList.map((appr,index)=>(
-                                        <tr key={index} onClick={e=>approveOneClick(appr)}>
+                                        <tr key={index} onClick={e=>approveOneClick(appr)} style={{cursor: "pointer"}}>
                                             <td className='text-start'>
                                                 {appr.approveDto.apprTitle}
                                             </td>
