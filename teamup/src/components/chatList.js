@@ -7,6 +7,7 @@ import SockJS from "sockjs-client";
 
 const ChatList =(props)=>{
    const  {roomNo, setRoomNo} =props;
+   
     const [user, setUser] = useRecoilState(userState);
     const [company, setCompany] = useRecoilState(companyState);
 
@@ -23,7 +24,7 @@ const ChatList =(props)=>{
     
       // Log the updated value inside a useEffect or another callback
       // since setRoomNo is asynchronous
-      props.onRoomNoChange();
+      props.onRoomNoChange(e);
      // console.log(newRoomNo);
     };
 

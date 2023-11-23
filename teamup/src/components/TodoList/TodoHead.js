@@ -27,7 +27,6 @@ const TodoHeadBlock = styled.div`
 function TodoHead() {
     // Recoil 상태 및 디스패치
     const [todos, setTodos] = useRecoilState(todosState);
-    console.log(todos);
     const undoneTasks = todos.filter(todo => !todo.todoDone);
     
 
