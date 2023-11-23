@@ -252,6 +252,14 @@ const Search = () => {
     const displayImage = imgSrc || surf;
 
 
+    //입사일 날짜까지만
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const formattedDate = new Date(dateString).toLocaleDateString('ko-KR', options);
+        return formattedDate.replace(/\.$/, ''); // 맨 뒤의 . 제거
+      };
+
+
 
     return (
         <>
@@ -341,65 +349,89 @@ const Search = () => {
                 aria-labelledby="contained-modal-title-vcenter">
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        <h5 className="modal-title text-green text-bold">{profile.empName}님의 프로필</h5>
+                        <h5 className="modal-title text-green text-bold ms-3">{profile.empName}님의 프로필</h5>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="grid-example mt-1">
                     <Container>
+                        <Row className="justify-content-md-center">
+                            <Col xs={11} md={11}>
                         <Row>
-                            <Col xs={6} md={6}>
-                                <row>
-                                    <label className="d-flex justify-content-center align-items-center" for="changeImage">
-                                        <img src={displayImage} alt="profileImage" className="rounded-circle object-fit-cover" 
-                                            style={{width:"180px", height:"180px"}}/>
-                                    </label>
-                                </row>
+                            <Col xs={6} md={6} className="d-flex justify-content-center align-self-center">
+                                <label for="changeImage">
+                                    <img src={displayImage} alt="profileImage" className="rounded-circle object-fit-cover" 
+                                        style={{width:"180px", height:"180px"}}/>
+                                </label>
                             </Col>
-                            <Col xs={2} md={2} className="text-center mt-2">
-                                <p>부서</p>
-                                <p>직위</p>
-                                <p>이름</p>
-                                <p>입사일</p>
-                            </Col>
-                            <Col xs={4} md={4} className="mt-2">
-                                <p>{profile.deptName}</p>
-                                <p>{profile.empPositionName}</p>
-                                <p>{profile.empName}</p>
-                                <p>{profile.empJoin}</p>
+                            <Col>
+                                <Row className="border border-success mt-3 rounded-top">
+                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                        부서
+                                    </Col>
+                                    <Col xs={12} md={7} className="py-2">
+                                        {profile.deptName}
+                                    </Col>
+                                </Row>
+                                <Row className="border border-success border-top-0">
+                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                        직급
+                                    </Col>
+                                    <Col xs={12} md={7} className="py-2">
+                                        {profile.empPositionName}
+                                    </Col>
+                                </Row>
+                                <Row className="border border-success border-top-0">
+                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                        이름
+                                    </Col>
+                                    <Col xs={12} md={7} className="py-2">
+                                        {profile.empName}
+                                    </Col>
+                                </Row>
+                                <Row className='border border-success border-top-0 rounded-bottom'>
+                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                        입사일
+                                    </Col>
+                                    <Col xs={12} md={7} className="py-2">
+                                        {formatDate(profile.empJoin)}
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
     
-                        <Row>
-                            <Col xs={4} md={3} className="text-center mt-2">
-                              <p>연락처</p>
+                        <Row className="border border-success rounded-top mt-3">
+                            <Col xs={12} md={3} className='border-bg-color text-center text-bold text-green py-2'>
+                                연락처
                             </Col>
-                            <Col xs={8} md={9} className="mt-2">
-                              <p>{profile.empTel}</p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col xs={4} md={3} className="text-center">
-                              <p>이메일</p>
-                            </Col>
-                            <Col xs={8} md={9}>
-                              <p>{profile.empEmail}</p>
+                            <Col xs={12} md={9} className="py-2">
+                                {profile.empTel}
                             </Col>
                         </Row>
-                        <Row>
-                            <Col xs={4} md={3} className="text-center">
-                              <p>소개</p>
+                        <Row className="border border-success border-top-0">
+                            <Col xs={12} md={3} className='border-bg-color text-center text-bold text-green py-2'>
+                                이메일
                             </Col>
-                            <Col xs={8} md={9}>
-                              <p>{profile.profileTitle}</p>
+                            <Col xs={12} md={9} className="py-2">
+                                {profile.empEmail}
                             </Col>
                         </Row>
-                        <Row>
-                            <Col xs={4} md={3} className="text-center">
-                              <p>내용</p>
+                        <Row className="border border-success border-top-0">
+                            <Col xs={12} md={3} className='border-bg-color text-center text-bold text-green py-2'>
+                                소개
                             </Col>
-                            <Col xs={8} md={9}>
-                              <p>{profile.profileContent}</p>
+                            <Col xs={12} md={9} className="py-2">
+                                {profile.profileTitle}
                             </Col>
+                        </Row>
+                        <Row className="border border-success border-top-0 rounded-bottom">
+                            <Col xs={12} md={3} className='border-bg-color text-center text-bold text-green py-2'>
+                                내용
+                            </Col>
+                            <Col xs={12} md={9} className="py-2">
+                                {profile.profileContent}
+                            </Col>
+                        </Row>
+                        </Col>
                         </Row>
                     </Container>
                 </Modal.Body>

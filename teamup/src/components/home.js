@@ -172,12 +172,12 @@ useEffect(() => {
 
   return (
 
-    <div className="container-fluid">
+    <div className="container">
       <div className="row ms-2 mp">
 
 
         {/* 세로로 첫 번째 줄 */}
-        <div className="home-profile col-3">
+        <div className="home-profile col-lg-3 col-md-5">
 
           {/* 프로필과 출퇴근 버튼 */}
           <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
@@ -195,18 +195,18 @@ useEffect(() => {
 
             {/* 출근 */}
             <div className="d-flex ms-4">
-              <div className="m-1 me-3 text-bold">출근시간</div>
-              <div className="m-1">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-              <button className="ms-2 btn btn-primary custom-btn" onClick={attendStartClick}
-                disabled={flag !== "근무전"}>출근하기</button>
+              <div className="m-1 me-3 font-mian-title">출근시간</div>
+              <div className="m-1 font-main-content">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
+              <button className="ms-2 btn btn-primary custom-btn font-mian-btn" onClick={attendStartClick}
+                disabled={flag !== "근무전"}>출근</button>
             </div>
 
             {/* 퇴근 */}
             <div className="d-flex ms-4">
-              <div className="m-1 me-3 text-bold">퇴근시간</div>
-              <div className="m-1">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-              <button className="ms-2 btn btn-primary custom-btn" onClick={attendEndClick}
-                disabled={flag === "근무전"}>퇴근하기</button>
+              <div className="ms-1 me-3 font-mian-title">퇴근시간</div>
+              <div className="ms-1 font-main-content">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
+              <button className="ms-2 btn btn-primary custom-btn font-mian-btn" onClick={attendEndClick}
+                disabled={flag === "근무전"}>퇴근</button>
             </div>
 
           </div>
@@ -225,7 +225,7 @@ useEffect(() => {
         </div>
 
         {/* 세로로 두 번째 줄 */}
-        <div className="home-center col-5 ">
+        <div className="home-center col-lg-5">
           <div className="row graybox border-primary h-50">
             공지사항
           </div>
@@ -235,14 +235,14 @@ useEffect(() => {
         </div>
 
         {/* 세로로 세 번째 줄 */}
-        <div className="col-4">
+        <div className="col-lg-4 col-md-7">
           {/* 캘린더 */}
           <div className="home-calendar graybox border-primary h-50 p-3">
             <Calendar />
           </div>
 
           {/* 날씨 */}
-          <div className="graybox border-primary h-50 p-4 mt-3 custom-background text-bold white" style={{ backgroundImage: 'url("img/cloud.jpg")', backgroundSize: 'cover' }}>
+          <div className="home-weather graybox border-primary h-50 p-4 mt-3 custom-background text-bold white" style={{ backgroundImage: 'url("img/cloud.jpg")', backgroundSize: 'cover' }}>
               <Weather />
           </div>
         </div>

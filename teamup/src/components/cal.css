@@ -48,6 +48,7 @@ body.modal-open .modal {
  /* 이전 버튼 */
 .fc-prev-button {
   background-color: #218C74;
+  margin-right: 10px;
 }
 
 /* 다음 버튼 */
@@ -58,11 +59,13 @@ body.modal-open .modal {
 /* 오늘 버튼 */
 .fc-today-button {
   background-color: #218C74;
+  margin-left: 10px;
 }
 
 /* 월간 보기 버튼 */
 .fc-month-button {
   background-color: #218C74;
+  
 }
 
 /* 주간 보기 버튼 */
@@ -224,11 +227,15 @@ body.modal-open .modal {
   margin: 0px;
 }
 .fc {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   font-size: 0.8em;
 }
 .fc .fc-toolbar-title {
-  font-size: 1.6em;
+  font-size: 1.5em;
   margin: 5px;
+}
+
+.parent-container {
+  overflow: hidden;
 }

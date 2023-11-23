@@ -229,6 +229,9 @@ const Calendar = () => {
 
   return (
     <>
+    
+    <div className="row">
+      <div className="col">
       <FullCalendar
         // height={} // 높이 지정
         plugins={plugin}
@@ -237,6 +240,7 @@ const Calendar = () => {
           left: "today prev,next",
           center: "title",
           right: "dayGridMonth,dayGridWeek,dayGridDay"
+          // right: 'month,agendaWeek,agendaDay'
         }}
 
         // footerToolbar={{
@@ -254,6 +258,7 @@ const Calendar = () => {
           day: "일별",
           list: "리스트"
         }}
+        className="parent-container"
         /* 버튼 텍스트 default {{
             prev: "<",
             next: ">",
@@ -356,6 +361,8 @@ const Calendar = () => {
         </div>
 
       </div>
+      </div>
+    </div>
     </>
     //모달 만들어서  모달 띄우고 state 설정해서 추가
   );
