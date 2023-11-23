@@ -112,8 +112,7 @@ const ApproveWrite = (props)=>{
             !appr.apprDateStart ||
             !appr.apprDateEnd ||
             !isEndDateValid() ||
-            savedValues.length === 0 ||
-            savedValues2.length === 0
+            savedValues.length === 0
         ) {
             // 필수 값이 없으면 알림 처리 또는 다른 작업 수행
             alert('모든 입력값을 작성해주세요.');
@@ -138,7 +137,7 @@ const ApproveWrite = (props)=>{
         } catch (error) {
             // 오류 발생 시 알림 처리 또는 다른 작업 수행
             alert('기안 등록 중 오류가 발생했습니다.');
-            console.error('Error during approval registration:', error);
+            console.error('Error: ', error);
         }
     };
 
