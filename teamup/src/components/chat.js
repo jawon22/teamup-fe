@@ -7,7 +7,9 @@ import axios from "axios";
 
 
 
-const Chat = () => {
+const Chat = (props) => {
+
+  const roomNo = props.roomNo;
   //user로 내 정보 끌어오기
   const [user, setUser] = useRecoilState(userState);
   const [company, setCompany] = useRecoilState(companyState);
@@ -16,6 +18,24 @@ const Chat = () => {
   const [room , setRoom] = useRecoilState(roomState);
 
   //회사내 전체 리스트 끌어오기 
+
+
+  const { messages, setMessages, newMessage, setNewMessage } = props;
+
+  const messageChange = (e) => {
+    let msg = e.target.value;
+    setNewMessage(msg);
+  };
+  
+  const sendMessage = () => {
+    if (newMessage.trim() !== '') {
+      props.setMessages((prevMessages) => [...prevMessages, newMessage]);
+      props.setNewMessage(''); // 오타 수정: propesetNewMessage -> setNewMessage
+      props.chatMessage(newMessage);
+    }
+  };
+
+
 
 
 
@@ -66,19 +86,6 @@ const Chat = () => {
 
 
 
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-
-  const messageChange = (e) => {
-    setNewMessage(e.target.value);
-  };
-
-  const sendMessage = () => {
-    if (newMessage.trim() !== '') {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setNewMessage('');
-    }
-  };
 
 
 
