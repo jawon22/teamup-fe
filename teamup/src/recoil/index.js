@@ -53,7 +53,18 @@ const referrerState  = atom({
     key:'roomState',
     default:'',
    })
-  
 
 
-export {userState, levelState, roomState,tokenState, receiverState, referrerState,companyState, todosState, loadingState};
+
+   const nameState =atom({
+    key:'nameState',
+    default:'',
+   })
+   const deptNoState =atom({
+    key:'deptNoState',
+    default:'',
+   })
+
+
+
+export {userState, levelState, roomState,tokenState, nameState,deptNoState,receiverState, referrerState,companyState, todosState, loadingState};
