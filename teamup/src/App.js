@@ -43,6 +43,7 @@ import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
 
+import { FaPeopleGroup } from "react-icons/fa6";
 
 
 
@@ -328,7 +329,7 @@ useEffect((props) => {
               <div className='col-10 offset-1'>
                 <Offcanvas show={show} onHide={handleClose} placement='end'>
                   <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>조직도</Offcanvas.Title>
+                    <Offcanvas.Title><div style={{ fontSize: '2.5em', color: '#218C74', paddingLeft:'20px' }}><FaPeopleGroup /></div></Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                     <Emp />

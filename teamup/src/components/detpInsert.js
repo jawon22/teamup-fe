@@ -468,7 +468,7 @@ const DeptInsert = () => {
         <>
             <div className="container">
 
-                <div className="row mt-4">
+                <div className="row">
                     <div className="col-10 offset-1 item-center">
                         <h1>부서관리</h1>
                     </div>
@@ -499,7 +499,7 @@ const DeptInsert = () => {
                 <div className="row mt-4">
 
                     {/* 첫 번째 테이블 */}
-                    <div className="col-5 item-center">
+                    <div className="col-5 item-center mb-5">
                         <table className="table wtable">
                             <thead className="table-primary">
                                 <tr>
@@ -513,7 +513,7 @@ const DeptInsert = () => {
                                     <tr key={dept.deptNo} className="text-center">
 
 
-                                        <td onClick={e => cellClick(dept)}>{dept.deptName}</td>
+                                        <td className="hover" onClick={e => cellClick(dept)}>{dept.deptName}</td>
                                         <td>{dept.empCount} 명</td>
                                         <td>
                                             <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
@@ -530,7 +530,7 @@ const DeptInsert = () => {
                     </div>
 
                     {/* 두 번째 테이블 */}
-                    <div className="col-7 item-center">
+                    <div className="col-7 item-center mb-5">
                         <table className="table wtable">
                             <thead className=" table-primary">
                                 <tr>

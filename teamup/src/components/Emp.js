@@ -8,6 +8,9 @@ import './modal.css';
 import Button from 'react-bootstrap/Button';
 import { Modal } from "bootstrap";
 import Chat from "./chat";
+
+
+
 const Emp = () => {
     const [user, setUser] = useRecoilState(userState);
     const [company, setCompany] = useRecoilState(companyState)
@@ -99,12 +102,12 @@ const Emp = () => {
                     <div className="col">
 
 
-                        <div className="org-chart">
+                        <div className="org-chart green-border">
                             <ul >
                                 {deptList.map((dept, index) => (
                                     <ul key={index} >
-                                        <li className="deptName" onClick={() => spreadDept(dept.deptNo)}>
-                                            <span>{dept.deptName}</span>
+                                        <li className="deptName mb-1" onClick={() => spreadDept(dept.deptNo)}>
+                                            <p className="text-bold p-1 ps-2">{dept.deptName}</p>
                                             {openDept === dept.deptNo && (
                                                 <ul >
                                                     {empList.map((emp, index2) => (
