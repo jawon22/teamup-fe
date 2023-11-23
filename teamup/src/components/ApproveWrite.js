@@ -19,6 +19,19 @@ const ApproveWrite = (props)=>{
     const empNo = parseInt(user.substring(6)); // 202302032
     const navigate = useNavigate(); // 리다이렉트용
 
+    // 현재 날짜를 가져오는 함수
+    const getCurrentDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const isEndDateValid = () => { //마감일이 작성일보다 이른지 확인하는 함수
+        return !appr.apprDateEnd || appr.apprDateEnd >= appr.apprDateStart;
+    };
+
     useEffect(()=>{
         const emp = empList.find(em =>em.empNo === parseInt(empNo));
         setAppr({
@@ -26,7 +39,7 @@ const ApproveWrite = (props)=>{
             deptNo: emp ? emp.deptNo:"",
             apprTitle:"",
             apprContent:"",
-            apprDateStart:"",
+            apprDateStart: getCurrentDate(), // 오늘 날짜로 초기화
             apprDateEnd:"",
             apprDivision:"결재"
         })
@@ -92,18 +105,41 @@ const ApproveWrite = (props)=>{
 
     //기안 등록(최종)
     const saveAppr = async()=>{
+        // 필수 값들이 존재하는지 확인
+        if (
+            !appr.apprTitle ||
+            !appr.apprDivision ||
+            !appr.apprDateStart ||
+            !appr.apprDateEnd ||
+            !isEndDateValid() ||
+            savedValues.length === 0 ||
+            savedValues2.length === 0
+        ) {
+            // 필수 값이 없으면 알림 처리 또는 다른 작업 수행
+            alert('모든 입력값을 작성해주세요.');
+            return;
+        }
+
         const dataAll = {
             approveDto:appr,
             receiversDtoList:savedValues.map(receiver => ({receiversReceiver : receiver.empNo})),
             referrersDtoList:savedValues2.map(referer => ({referrersReferrer : referer.empNo}))
         };
+
+        try {
         const response = await axios({
-            url:`${process.env.REACT_APP_REST_API_URL}/approve/`,
-            method:"post",
-            data: dataAll
+            url: `${process.env.REACT_APP_REST_API_URL}/approve/`,
+            method: "post",
+            data: dataAll,
         });
-        // 등록 완료 알림?? 코드 작성하면 좋을듯  or  결재리스트로 이동?
-        navigate("/approveList");
+            // 등록 완료 알림 또는 다른 작업 수행
+            alert('기안이 등록되었습니다.');
+            navigate("/approveList"); // 혹은 다른 페이지로 이동
+        } catch (error) {
+            // 오류 발생 시 알림 처리 또는 다른 작업 수행
+            alert('기안 등록 중 오류가 발생했습니다.');
+            console.error('Error during approval registration:', error);
+        }
     };
 
     //처음 페이지에서만 사원 정보 불어오기
@@ -217,7 +253,7 @@ const ApproveWrite = (props)=>{
                                     <th scope="row">작성일</th>
                                     <td>
                                         <input type="date" className="form-control" name="apprDateStart"
-                                            value={appr.apprDateStart} onChange={changeappr}/>
+                                            value={appr.apprDateStart} onChange={changeappr} readOnly/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -225,6 +261,9 @@ const ApproveWrite = (props)=>{
                                     <td>
                                         <input type="date" className="form-control" name="apprDateEnd"
                                             value={appr.apprDateEnd} onChange={changeappr}/>
+                                            {!isEndDateValid() &&(
+                                                <div style={{color:'red'}}>마감일은 작성일 이후로 설정해주세요</div>
+                                            )}
                                     </td>
                                 </tr>
                                 <tr>
@@ -307,7 +346,8 @@ const ApproveWrite = (props)=>{
                         </div>
 
                         <div className="col text-end">
-                            <button className="btn btn-primary" onClick={saveAppr}>
+                            <button className="btn btn-primary" onClick={saveAppr} 
+                                disabled={!isEndDateValid()}>
                                 기안등록
                             </button>
                         </div>
