@@ -342,7 +342,6 @@ li {
   .graybox {
     box-shadow: 0px 0px 5px 0px #b2bec3;
     border-radius: 10px;
-    /* font-family: "nanum"; */
   }
 
   /* 가운데 정렬 */
@@ -430,13 +429,6 @@ element.style {
   box-shadow: none;
 }
 
-.btn.active,
-.btn:active,
-.btn:focus {
-  background-color: #165849;
-  color: #fff;
-}
-
 .white {
     color:white;
 }
@@ -446,3 +438,8 @@ body {
     font-family: "nanum";
 }
 
+.wtable{
+    table {
+        width: 1000px;
+    }
+}

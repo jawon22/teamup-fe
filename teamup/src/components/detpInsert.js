@@ -94,8 +94,8 @@ const DeptInsert = () => {
     //--------------모달 열고 닫기 
     const bsModal = useRef();
     const bsModal2 = useRef();
-    const deletModal =useRef();
-    const updateModal =useRef();
+    const deletModal = useRef();
+    const updateModal = useRef();
     const openModal = () => {
         const modal = new Modal(bsModal.current);
         modal.show();
@@ -156,16 +156,16 @@ const DeptInsert = () => {
     //회사아이디는 세션에ㅐ 있는 값을 가져와서 하고 
     //dept는 클릭했을때 번호가 생성이 되고 
     const deptDelete = (target) => {
-        setDept({...target})
+        setDept({ ...target })
         openDeletModal();
     }
-    const removeDept =()=>{
+    const removeDept = () => {
         axios({
-            url:`http://localhost:8080/dept/deleteDept/${dept.deptNo}`,
-            method:'delete'
-        }).then(response=>{
-            if(response.data ==null){alert("실패")}
-            else{alert("삭제되었습니다")}
+            url: `http://localhost:8080/dept/deleteDept/${dept.deptNo}`,
+            method: 'delete'
+        }).then(response => {
+            if (response.data == null) { alert("실패") }
+            else { alert("삭제되었습니다") }
             closeDeletModal();
             setDept('');
 
@@ -226,13 +226,13 @@ const DeptInsert = () => {
     };
 
 
-    
 
 
-    
 
 
-    
+
+
+
 
 
 
@@ -345,49 +345,50 @@ const DeptInsert = () => {
         empId: "",
         deptNo: '',
         empExit: '',
-        empName:"",
-        salAnnual:0
+        empName: "",
+        salAnnual: 0
     });
     const [isUpdate, setIsUpdate] = useState(false);
     const changeEmpDept = (target) => {
         setEmpInfo({ ...target })
         setIsDropdownOpen((prevId) => (prevId === target.empId ? null : target.empId));
     };
-    
-    const nameSalupdate =()=>{
+
+    const nameSalupdate = () => {
         let No = empInfo.empId.substring(6);
 
         axios({
-            url:`http://localhost:8080/emp/adminEmpUpdate/${No}`,
-            method:'put',
-            data:{
+            url: `http://localhost:8080/emp/adminEmpUpdate/${No}`,
+            method: 'put',
+            data: {
                 empDto: {
-                  empName: empInfo.empName
+                    empName: empInfo.empName
                 },
                 salDto: {
-                  salAnnual: empInfo.salAnnual
+                    salAnnual: empInfo.salAnnual
                 }
-              }
-        }).then( res=>{
+            }
+        }).then(res => {
             closeUpdateModal();
-             setEmpInfo([])
-        }  );
+            setEmpInfo([])
+        });
 
     }
 
 
 
 
-    const empInfoChange=(target)=>{
+    const empInfoChange = (target) => {
         setEmpInfo({ ...target })
         setIsUpdate((prevId) => (prevId === target.empId ? null : target.empId));
         opneUpdateModal();
     };
 
 
-    const change=(e)=>{
-        setEmpInfo({...empInfo,
-            [e.target.name]:e.target.value
+    const change = (e) => {
+        setEmpInfo({
+            ...empInfo,
+            [e.target.name]: e.target.value
         })
 
         console.log(empInfo.salAnnual)
@@ -411,11 +412,11 @@ const DeptInsert = () => {
             }
         }).then(response => {
             console.log(response.data)
-            if(response.data === null){alert("실패했습니다")}
-            else{alert("성공")}
+            if (response.data === null) { alert("실패했습니다") }
+            else { alert("성공") }
             loadDetpList();
             setEmpInfo("");
-           
+
         });
     };
     const [isEmpLeave, setIsEmpLeave] = useState(false);
@@ -466,13 +467,14 @@ const DeptInsert = () => {
 
         <>
             <div className="container">
+
                 <div className="row mt-4">
-                    <div className="col-10 offset-1">
+                    <div className="col-10 offset-1 item-center">
                         <h1>부서관리</h1>
                     </div>
                 </div>
 
-                <div className="row mt-4">
+                <div className="row mt-5">
                     <div className="col-3 ">
                         부서명 <input className="form-control" name="deptName" onChange={changeInfo} />
                     </div>
@@ -491,11 +493,15 @@ const DeptInsert = () => {
                 </div>
 
 
-                {/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 */}
+                {/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 -하지 말죠? */}
+
+                
                 <div className="row mt-4">
-                    <div className="col-6">
-                        <tabel className="table table-border">
-                            <thead>
+
+                    {/* 첫 번째 테이블 */}
+                    <div className="col-5 item-center">
+                        <table className="table wtable">
+                            <thead className="table-primary">
                                 <tr>
                                     <th>부서명</th>
                                     <th>부서인원</th>
@@ -504,15 +510,15 @@ const DeptInsert = () => {
                             </thead>
                             <tbody>
                                 {deptList.map((dept) => (
-                                    <tr key={dept.deptNo}>
+                                    <tr key={dept.deptNo} className="text-center">
 
 
                                         <td onClick={e => cellClick(dept)}>{dept.deptName}</td>
-                                        <td>{dept.empCount}</td>
+                                        <td>{dept.empCount} 명</td>
                                         <td>
                                             <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
                                             <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
-                                            <button className="btn btn-outline-primary" onClick={e=>deptDelete(dept)}>삭제</button>
+                                            <button className="btn btn-outline-primary" onClick={e => deptDelete(dept)}>삭제</button>
                                         </td>
 
 
@@ -520,11 +526,13 @@ const DeptInsert = () => {
 
                                 ))}
                             </tbody>
-                        </tabel>
+                        </table>
                     </div>
-                    <div className="col-6 ">
-                        <tabel className="table table-border">
-                            <thead>
+
+                    {/* 두 번째 테이블 */}
+                    <div className="col-7 item-center">
+                        <table className="table wtable">
+                            <thead className=" table-primary">
                                 <tr>
                                     <th>직급</th>
                                     <th>사원명</th>
@@ -543,13 +551,13 @@ const DeptInsert = () => {
                                             <td>{emp.empId}</td>
                                             <td>{emp.empEmail}</td>
                                             <td>
-                                            <button className="btn btn-outline-primary me-2" onClick={e => empInfoChange(emp)}>정보수정</button>
+                                                <button className="btn btn-outline-primary me-2" onClick={e => empInfoChange(emp)}>정보수정</button>
                                                 <button className="btn btn-outline-primary me-2" onClick={e => changeEmpDept(emp)}>부서이동</button>
                                                 <button className="btn btn-outline-primary" onClick={e => opneDateInput(emp)}>퇴사처리</button>
 
-                                                
+
                                                 {isEmpLeave === emp.empId && (
-                                                    <div className="row">
+                                                    <div className="row mt-3">
                                                         <div className="col-7">
                                                             <input type="date" className="form-control" onChange={dateChange} value={leaveData.empExit} />
                                                         </div>
@@ -569,7 +577,7 @@ const DeptInsert = () => {
                                                             </select>
                                                         </div>
                                                         <div className="col-4">
-                                                            <button className="mt-2 me-2 btn btn-sm btn-outline-primary" onClick={transDept}>변경</button>
+                                                            <button className="mt-2 btn btn-sm btn-outline-primary" onClick={transDept}>변경</button>
                                                         </div>
                                                     </div>
                                                 )}
@@ -577,10 +585,8 @@ const DeptInsert = () => {
                                         </tr>
                                     ))}
                             </tbody>
-                        </tabel>
+                        </table>
                     </div>
-                </div>
-                <div className="row mt-4">
 
                 </div>
 
@@ -597,8 +603,8 @@ const DeptInsert = () => {
 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={updateDept}>Save changes</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal}>취소</button>
+                                <button type="button" className="btn btn-primary" onClick={updateDept}>등록</button>
                             </div>
                         </div>
                     </div>
@@ -613,13 +619,13 @@ const DeptInsert = () => {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-
-                                이름<input className="form-control" name="empName" value={empData.empName} onChange={changeEmpChange} />
-
-                                전화번호<input  className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
+                                <label>이름</label>
+                                <input className="form-control" name="empName" value={empData.empName} onChange={changeEmpChange} />
+                                <label className="mt-1">전화번호</label>
+                                <input className="form-control" name="empTel" value={empData.empTel} onChange={changeEmpChange} />
                                 <input type="hidden" className="form-control" name="empPw" value={empData.pw} onChange={changeEmpChange} />
-
-                                직급선택<select className="form-control" name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange}>
+                                <label className="mt-1">직급선택</label>
+                                <select className="form-control" name="empPositionNo" value={empData.empPositionNo} onChange={changeEmpChange}>
                                     {positionList.map((position) => (
 
                                         <option key={position.empPositionNo} value={position.empPositionNo}>{position.empPositionName}</option>
@@ -629,14 +635,16 @@ const DeptInsert = () => {
 
 
                                 </select>
-                                email<input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
-                                연봉<input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
+                                    <label className="mt-1">이메일</label>
+                                    <input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
+                                    <label className="mt-1">연봉</label>
+                                    <input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
 
 
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal2}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={addEmployee}>Save changes</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal2}>취소</button>
+                                <button type="button" className="btn btn-primary" onClick={addEmployee}>등록</button>
                             </div>
                         </div>
                     </div>
@@ -644,7 +652,7 @@ const DeptInsert = () => {
 
 
 
-         
+
 
                 <div className="modal fade" ref={deletModal} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div className="modal-dialog">
@@ -654,12 +662,13 @@ const DeptInsert = () => {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                               {dept.empCount}{dept.deptNo}{dept.deptName}삭제하시겠습니까?
+                            {/* -{dept.empCount} {dept.deptNo}-  */}
+                                {dept.deptName} 삭제하시겠습니까?
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeDeletModal}>Close</button>
-                                
-                                <button type="button" className={`btn btn-danger ${dept.empCount !==0? 'disabled': ''}`} onClick={removeDept}>확인</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeDeletModal}>취소</button>
+
+                                <button type="button" className={`btn btn-danger ${dept.empCount !== 0 ? 'disabled' : ''}`} onClick={removeDept}>확인</button>
                             </div>
                         </div>
                     </div>
@@ -669,32 +678,32 @@ const DeptInsert = () => {
 
 
             <div className="modal fade" ref={updateModal} id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="staticBackdropLabel">부서 삭제</h1>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                                        <div className="row">
-                                            <div className="col-10 offset -1">
-                                                <label className="form-label">이름</label>
-                                                 <input className="form-control" name="empName" onChange={change} value={empInfo.empName}/>
-                                                 <label className="form-label">급여</label>
-                                                 <input className="form-control" name="salAnnual" onChange={change} value={empInfo.salAnnual}/>
-                                            </div>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">부서 삭제</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="row">
+                                <div className="col-10 offset -1">
+                                    <label className="form-label">이름</label>
+                                    <input className="form-control" name="empName" onChange={change} value={empInfo.empName} />
+                                    <label className="form-label mt-1">급여</label>
+                                    <input className="form-control" name="salAnnual" onChange={change} value={empInfo.salAnnual} />
+                                </div>
 
-                                        </div>
-                                    
                             </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeUpdateModal}>Close</button>
-                                
-                                <button type="button" className={` btn btn-danger `} onClick={nameSalupdate}>수정</button>
-                            </div>
+
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeUpdateModal}>취소</button>
+
+                            <button type="button" className={` btn btn-primary `} onClick={nameSalupdate}>수정</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
 
         </>
