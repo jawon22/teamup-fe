@@ -67,6 +67,8 @@ const Board =(props)=>{
         empNo:empNo, 
         comId:comId,  
         deptNo:deptNo,
+        empName:"",
+        deptName:"",
         boardTitle:"", boardContent:""
     });
     const changeBoard = (e) => {
@@ -79,7 +81,7 @@ const Board =(props)=>{
     //등록창 초기화
     const clearBoard = () =>{
         setBoard({
-            boardNo:"", empNo:"", comId:"",  deptNo:"",boardTitle:"", boardContent:"", boardWriteDate:"", boardUpdateDate:"",
+            boardNo:"", empNo:"", comId:"",  deptNo:"",empName:"",deptName:"", boardTitle:"", boardContent:"", boardWriteDate:"", boardUpdateDate:"",
             boardReadCount:""
         });
     }
@@ -93,6 +95,8 @@ const Board =(props)=>{
             empNo: empNo,
             comId: comId,
             deptNo: deptNo,
+            empName:board.empName,
+            deptName:board.deptName,
             boardTitle: board.boardTitle,
             boardContent: board.boardContent,
             boardWriteDate: "",
@@ -197,8 +201,8 @@ const renderPagination = () => {
                             {boardList.map(board=>(
                             <tr key={board.boardNo}>
                                 <td>{board.boardNo}</td>
-                                <td>{board.empNo}</td>
-                                <td>{board.deptNo}</td>
+                                <td>{board.empName}</td>
+                                <td>{board.deptName}</td>
                                 <td><Link to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link></td>
                                 <td>{board.boardWriteDate}</td>
                                 <td>{board.boardUpdateDate}</td>

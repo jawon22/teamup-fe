@@ -23,7 +23,7 @@ const BoardDetail=(props)=>{
                     empNo: empNo
                 }
             });
-    
+            console.log("상세",response.data);
             setBoard(response.data);
             setLoading(false);
         } catch (error) {
@@ -45,7 +45,8 @@ const BoardDetail=(props)=>{
                 <BoardOne
                     idx={board.boardNo}
                     writer={board.empNo}
-                    dept={board.deptNo}
+                    writeName={board.empName}
+                    dept={board.deptName}
                     title={board.boardTitle}
                     contents={board.boardContent}
                     writeDate={board.boardWriteDate}
