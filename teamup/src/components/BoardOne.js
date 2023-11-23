@@ -11,6 +11,13 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
     const deptNo = user.substring(4, 6);
     const [comId] = useRecoilState(companyState);
 
+    // 수정 버튼 렌더링을 위한 조건 추가
+    const empNoWithoutLeadingZero = String(Number(empNo));
+    const isAuthor = empNoWithoutLeadingZero === String(writer);
+
+    console.log("writer",writer);
+    console.log("empNo",empNo);
+
     //목록버튼을 누르면 목록페이지로 이동
     const moveToBoard = ()=>{
       navigate('/board');
@@ -31,6 +38,7 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
     };
 
 
+
   return (
     <div className="row">
     <div className="col-md-10 offset-md-1">
@@ -42,10 +50,17 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         <div className="col-6 text-end">
                 <button className="btn btn-primary text-white"
                                onClick={moveToBoard}>목록</button>
-                <button className="btn btn-success text-white ms-1"
-                             onClick={moveToUpdate} >수정</button>
-                <button className="btn btn-danger text-white ms-1"
-                           onClick={deleteBoard}>삭제</button>
+                                {console.log('isAuthor:', isAuthor)}
+                         {isAuthor && (
+                            <>
+                              <button className="btn btn-success text-white ms-1" onClick={moveToUpdate}>
+                                수정
+                              </button>
+                              <button className="btn btn-danger text-white ms-1" onClick={deleteBoard}>
+                                삭제
+                              </button>
+                            </>
+                          )}
         </div>
     </div>
 

@@ -19,6 +19,7 @@ const Mypage = () => {
     const [empInfo, setEmpInfo] = useState({
         comId: '',
         deptNo: '',
+        deptName:'',
         empId: '',
         empName: '',
         empEmail: '',
@@ -316,6 +317,15 @@ const Mypage = () => {
     };
     const handleShow = () => setShow(true);
 
+    //입사일 날짜까지만
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const formattedDate = new Date(dateString).toLocaleDateString('ko-KR', options);
+        return formattedDate.replace(/\.$/, ''); // 맨 뒤의 . 제거
+      };
+
+
+
     return (
         <>
             <div className="container m-5 ps-5 pe-5">
@@ -323,19 +333,26 @@ const Mypage = () => {
                 {/* 마이페이지 상세 */}
                 <div className="row mt-4 mp-bg text-green">
 
-                    <div className="col-5 d-flex justify-content-center align-items-center">
+                    <div className="col-5 image-fix d-flex justify-content-center align-self-center"
+                            onClick={()=>editProfile(loggedInEmpNo)}>
                         <img src={displayImage} alt="profileImage" id="previewImage2"
-                            className="rounded-circle object-fit-cover"
-                            style={{ width: "220px", height: "220px" }} />
-                        <FaEdit size="30px" className="image-edit-btn mt-150"
-                            onClick={() => editProfile(loggedInEmpNo)} />
+                                className="rounded-circle object-fit-cover img-responsive" 
+                                style={{width:"220px", height:"220px"}}/>
+                        <div>
+                            <FaEdit className="mypage-btn-icon text-white"
+                                style={{width:"35px", height:"35px", padding:"7px"}}/>
+                        </div>
                     </div>
 
                     <div className="col-7 p-4">
 
                         <div className="row mt-3">
-                            <div className="col-4 text-bold">부서번호</div>
-                            <div className="col-8">{empInfo.deptNo}</div>
+                            <div className="col-4 text-bold">부서명</div>
+                            <div className="col-8">{profile.deptName}</div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-4 text-bold">직급</div>
+                            <div className="col-8">{profile.empPositionName}</div>
                         </div>
                         <div className="row mt-2">
                             <div className="col-4 text-bold">사원번호</div>
@@ -352,10 +369,6 @@ const Mypage = () => {
                         <div className="row mt-2">
                             <div className="col-4 text-bold">이메일</div>
                             <div className="col-8">{empInfo.empEmail}</div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-4 text-bold">직급</div>
-                            <div className="col-8">{empInfo.empPositionNo}</div>
                         </div>
                         <div className="row mt-2">
                             <div className="col-4 text-bold">가입일</div>
@@ -383,7 +396,7 @@ const Mypage = () => {
                     aria-labelledby="contained-modal-title-vcenter">
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            <h5 className="modal-title">프로필</h5>
+                            <h5 className="modal-title">내 프로필</h5>
                             {/* <button type="button" className="btn-close" data-dismiss="modal" onClick={closeModal}>
                               <span aria-hidden="true">&times;</span>
                             </button> */}
@@ -391,71 +404,100 @@ const Mypage = () => {
                     </Modal.Header>
                     <Modal.Body className="grid-example mt-3">
                         <Container>
-                            <Row>
-                                <Col xs={6} md={6}>
-                                    <row>
-                                        <label className="input-file-button justify-content-end" for="changeImage">
-                                            <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover"
-                                                style={{ width: "180px", height: "180px" }} />
-                                        </label>
-                                    </row>
-                                    <row>
-                                        <label>
-                                            <input type="file" name="attach" id="changeImage" style={{ display: "none" }} onChange={updateImagePreview} />
-                                            <IoCamera className="image-edit-btn ms-130" style={{ width: "30px", height: "30px" }} />
-                                        </label>
-                                        <label>
-                                            <RiDeleteBin6Fill className="image-delete-btn" style={{ width: "30px", height: "30px" }}
-                                                onClick={deleteImage} />
-                                        </label>
-                                    </row>
-                                </Col>
-                                <Col xs={6} md={6}>
-                                    <p>부서 : {profile.deptName}</p>
-                                    <p>직위 : {profile.empPositionName}</p>
-                                    <p>이름 : {profile.empName}</p>
-                                    <p>입사일 : {profile.empJoin}</p>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col xs={4} md={3} className="text-center">
-                                    < p>연락처</p>
-                                </Col>
-                                <Col xs={8} md={9}>
-                                    <input type="tel" name="empTel" className="form-control"
-                                        value={profile.empTel} onChange={changeProfile} />
-                                </Col>
-                            </Row>
-
-
-                            <Row>
-                                <Col xs={4} md={3} className="text-center">
-                                    <p>이메일</p>
-                                </Col>
-                                <Col xs={8} md={9}>
-                                    <input type="email" name="empEmail" className="form-control"
-                                        value={profile.empEmail} onChange={changeProfile} />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col xs={4} md={3} className="text-center">
-                                    <p>소개</p>
-                                </Col>
-                                <Col xs={8} md={9}>
-                                    <input type="text" name="profileTitle" className="form-control"
-                                        value={profile.profileTitle} onChange={changeProfile} />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col xs={4} md={3} className="text-center">
-                                    <p>내용</p>
-                                </Col>
-                                <Col xs={8} md={9}>
-                                    <textarea name="profileContent" className="form-control" rows="4"
-                                        value={profile.profileContent} onChange={changeProfile} />
+                            <Row className="justify-content-md-center">
+                                <Col xs={11} md={11}>
+                                    <Row>
+                                        <Col xs={6} md={6}>
+                                            <Row className="d-flex justify-content-center align-self-center">
+                                                <label className="input-file-button" for="changeImage">
+                                                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover" 
+                                                        style={{width:"180px", height:"180px"}}/>
+                                                </label>
+                                            </Row>
+                                            <Row>
+                                                <label>
+                                                    <input type="file" name="attach" id="changeImage" style={{display:"none"}} onChange={updateImagePreview}/>
+                                                    <IoCamera className="image-edit-btn text-white ms-1 mt-1" style={{width:"30px", height:"30px", padding:"3px"}}/>
+                                                </label>
+                                                <label>
+                                                    <RiDeleteBin6Fill className="image-delete-btn text-white ms-1 mt-1" style={{width:"30px", height:"30px", padding:"3px"}}
+                                                            onClick={deleteImage}/>
+                                                </label>
+                                
+                                            </Row>
+                                        </Col>
+                                        <Col>
+                                            <Row className="border border-success mt-3 rounded-top">
+                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                    부서
+                                                </Col>
+                                                <Col xs={12} md={7} className="py-2">
+                                                    {profile.deptName}
+                                                </Col>
+                                            </Row>
+                                            <Row className="border border-success border-top-0">
+                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                    직급
+                                                </Col>
+                                                <Col xs={12} md={7} className="py-2">
+                                                    {profile.empPositionName}
+                                                </Col>
+                                            </Row>
+                                            <Row className="border border-success border-top-0">
+                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                    이름
+                                                </Col>
+                                                <Col xs={12} md={7} className="py-2">
+                                                    {profile.empName}
+                                                </Col>
+                                            </Row>
+                                            <Row className='border border-success border-top-0 rounded-bottom'>
+                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                    입사일
+                                                </Col>
+                                                <Col xs={12} md={7} className="py-2">
+                                                    {formatDate(profile.empJoin)}
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Row>
+                            
+                                    <Row>
+                                        <Col xs={4} md={3} className="border border-success border-bg-color text-center text-bold text-green py-2 rounded-top">
+                                          연락처
+                                        </Col>
+                                        <Col xs={8} md={9}>
+                                            <input type="tel" name="empTel" className="form-control" 
+                                                  value={profile.empTel} onChange={changeProfile}/>
+                                        </Col>
+                                        <Col xs={4} md={3} className="border border-success border-bg-color 
+                                                text-center text-bold text-green py-2 border-top-0">
+                                            이메일
+                                        </Col>
+                                        <Col xs={8} md={9}>
+                                            <input type="email" name="empEmail" className="form-control" 
+                                                  value={profile.empEmail} onChange={changeProfile}/>
+                                        </Col>
+                                
+                                        <Col xs={4} md={3} className="border border-success border-bg-color 
+                                                text-center text-bold text-green py-2 border-top-0">
+                                            소개
+                                        </Col>
+                                        <Col xs={8} md={9}>
+                                            <input type="text" name="profileTitle" className="form-control" 
+                                                  value={profile.profileTitle} onChange={changeProfile}/>
+                                        </Col>
+                                    
+                                        <Col xs={4} md={3} className="border border-success border-bg-color 
+                                                text-center text-bold text-green border-top-0 rounded-bottom align-self-center" 
+                                                style={{height:"86px"}}>
+                                            <p className="mt-4">내용</p>
+                                        </Col>
+                                        <Col xs={8} md={9}>
+                                            <textarea name="profileContent" className="form-control" rows="3"
+                                                      value={profile.profileContent} onChange={changeProfile}/>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                         </Container>

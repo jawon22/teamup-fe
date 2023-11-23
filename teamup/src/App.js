@@ -44,6 +44,7 @@ import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
 import moment, { now } from 'moment';
 
+import { FaPeopleGroup } from "react-icons/fa6";
 
 
 
@@ -258,8 +259,8 @@ function App() {
           <div className='col-md-10 offset-md-1 me-5'>
 
             {/* 헤더 */}
-            <div className='row '>
-              <div className='col-8 me-auto'>
+            <div className='row'>
+              <div className="home-profile col-lg-3 col-md-5">
                 <Navbar.Brand href="#home" className='logo'>
                   <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
                   <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
@@ -274,10 +275,15 @@ function App() {
 
                 </Navbar.Brand>
               </div>
-              <div className='col-4'>
+                {/* 가운데 */}
+              <div className="home-center col-lg-5">
+
+              </div>
+              {/* 오른쪽 */}
+              <div className="col-lg-4 col-md-7">
 
                 <div className='row'>
-                  <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
+                  <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container home-calendar'>
                     <div className='col-2 offset-6 mt-1 me-1'>
                       {/* 모달로채팅방 */}
                       <RiKakaoTalkFill onClick={openModal} className="me-2" size="45" style={{ color: '#218C74' }} />
@@ -285,8 +291,9 @@ function App() {
                     <div className='col-2 mt-1'>
                       <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
                     </div>
+
                     <div className='col-2'>
-                      <Navbar expand="sm" className="bg-body-white ">
+                      <Navbar expand="sm" className="bg-body-white me-5">
                         <Nav className="bg-body-primary ">
 
 
@@ -309,6 +316,10 @@ function App() {
                 </div>
               </div>
             </div>
+
+          
+
+
             {/* 본문 */}
             {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
 
@@ -362,7 +373,7 @@ function App() {
               <div className='col-10 offset-1'>
                 <Offcanvas show={show} onHide={handleClose} placement='end'>
                   <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>조직도</Offcanvas.Title>
+                    <Offcanvas.Title><div style={{ fontSize: '2.5em', color: '#218C74', paddingLeft:'20px' }}><FaPeopleGroup /></div></Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                     <Emp />
