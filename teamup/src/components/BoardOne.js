@@ -12,7 +12,8 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
     const [comId] = useRecoilState(companyState);
 
     // 수정 버튼 렌더링을 위한 조건 추가
-    const isAuthor = empNo === String(writer);
+    const empNoWithoutLeadingZero = String(Number(empNo));
+    const isAuthor = empNoWithoutLeadingZero === String(writer);
 
     console.log("writer",writer);
     console.log("empNo",empNo);
