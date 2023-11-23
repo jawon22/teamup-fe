@@ -53,13 +53,14 @@ const Login = () => {
                         }).then(response => {
                             console.log(response.data);
                             setCompany(response.data.comId);
+                            setTimeout(() => {
+                                navigate('/home');
+                            }, 5000);  // 1초 후에 '/home'으로 이동
                         });
                     }
                 });
 
-                setTimeout(() => {
-                    navigate('/home');
-                }, 5000);  // 1초 후에 '/home'으로 이동
+   
             } else {
                 alert("실패");
             }
