@@ -16,14 +16,25 @@ const BoardDetail=(props)=>{
     const [board, setBoard] = useState({});
 
 
-    const getBoard = async ()=>{
-        const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/board/read/${idx}`);
-        setBoard(response.data); // 추가: board 상태 업데이트
-        setLoading(false); // 추가: 데이터 로딩 완료 시 loading 상태 업데이트
+    const getBoard = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/board/read/${idx}`, {
+                params: {
+                    empNo: empNo
+                }
+            });
+    
+            setBoard(response.data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching board:", error);
+        }
     };
-    useEffect(()=>{
+    
+    useEffect(() => {
         getBoard();
-    },[]);
+    }, []);
+    
 
 
     return(
