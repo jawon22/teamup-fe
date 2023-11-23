@@ -404,6 +404,7 @@ const DeptInsert = () => {
     };
 
     const transDept = () => {
+        console.log(empInfo.deptNo)
         axios({
             url: `http://localhost:8080/emp/updateDept/${empInfo.empId}`,
             method: 'put',
@@ -572,7 +573,7 @@ const DeptInsert = () => {
                                                         <div className="col-7">
                                                             <select className="mt-2 form-control" name="deptNo" value={empInfo.deptNo} onChange={changeEmp}>
                                                                 {deptList.map((dept, index) => (
-                                                                    <option key={dept.deptNo} value={dept.deptNo}>{index + 1}.{dept.deptName}</option>
+                                                                    <option key={dept.deptNo} value={dept.deptNo}>{dept.deptNo}.{dept.deptName}</option>
                                                                 ))}
                                                             </select>
                                                         </div>
