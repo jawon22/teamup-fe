@@ -2,11 +2,17 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
-import { Modal } from "bootstrap";
 import surf from "./images/profileImage.png";
 import { useRecoilState } from "recoil";
 import { companyState, userState } from "../recoil";
 import { Pagination } from "react-bootstrap";
+
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import { RiDeleteBin6Fill } from "react-icons/ri";
 
 const Search = () => {
     const location = useLocation();
@@ -192,21 +198,19 @@ const Search = () => {
         openModal();
     };
 
-    
-
 
 
     //모달 관련 처리
-    const bsModal = useRef();
-    const openModal = () => {
-        const modal = new Modal(bsModal.current);
-        modal.show();
-    };
-    const closeModal = () => {
-        const modal = Modal.getInstance(bsModal.current);
-        modal.hide();
-        // clearProfile();
-    };
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () =>{
+        setShowModal(true);
+      };
+      const closeModal = () =>{
+        setShowModal(false);
+      };
+
+
 
     // const getCount = ()=>{
     //     axios({
@@ -300,7 +304,8 @@ const Search = () => {
                     </thead>
                     <tbody>
                         {searchList.map(list => (
-                            <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)}>
+                            <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)} 
+                                    style={{cursor: "pointer"}}>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empId}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.deptName}</td>
                                 <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empPositionName}</td>
@@ -327,66 +332,81 @@ const Search = () => {
 
 
             {/* Modal */}
-            <div className="modal fade" ref={bsModal}
-                data-bs-backdrop="static" tabIndex="-1" role="dialog" aria-hidden="true">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">프로필</h5>
-                            <button type="button" className="btn-close" data-dismiss="modal" onClick={closeModal}>
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="row">
-                                            <div className="col-6">
-                                                {/* <p>일단이미지번호들어오나보자 : 
-                                                    {profile.attachNo}
-                                                </p> */}
-                                                <img src={displayImage} alt="profileImage" className="rounded-circle"
-                                                        style={{width:"180px", height:"180px", objectFit:"cover"}}/>
-                                            </div>
-                                            <div className="col-6 mt-5">
-                                                <p>부서 : {profile.deptName}</p>
-                                                <p>직위 : {profile.empPositionName}</p>
-                                                <p>이름 : {profile.empName}</p>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col">
-                                                <p>연락처 : {profile.empTel}</p>
-                                                <p>이메일 : {profile.empEmail}</p>
-                                                <p>입사일 : {profile.empJoin}</p>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col">
-                                                <p>소개 : {profile.profileTitle}</p>
-                                                <p>내용 : {profile.profileContent}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-                        </div>
-                        <div className="modal-footer">
-                            <div className="row">
-                                <div className="col">
-                                    <button className="btn btn-secondary ms-1" onClick={closeModal}>닫기</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Modal 
+                show={showModal}
+                onHide={closeModal} 
+                backdrop="static"
+                size="md"
+                centered={true}
+                aria-labelledby="contained-modal-title-vcenter">
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        <h5 className="modal-title text-green text-bold">{profile.empName}님의 프로필</h5>
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="grid-example mt-1">
+                    <Container>
+                        <Row>
+                            <Col xs={6} md={6}>
+                                <row>
+                                    <label className="d-flex justify-content-center align-items-center" for="changeImage">
+                                        <img src={displayImage} alt="profileImage" className="rounded-circle object-fit-cover" 
+                                            style={{width:"180px", height:"180px"}}/>
+                                    </label>
+                                </row>
+                            </Col>
+                            <Col xs={2} md={2} className="text-center mt-2">
+                                <p>부서</p>
+                                <p>직위</p>
+                                <p>이름</p>
+                                <p>입사일</p>
+                            </Col>
+                            <Col xs={4} md={4} className="mt-2">
+                                <p>{profile.deptName}</p>
+                                <p>{profile.empPositionName}</p>
+                                <p>{profile.empName}</p>
+                                <p>{profile.empJoin}</p>
+                            </Col>
+                        </Row>
+    
+                        <Row>
+                            <Col xs={4} md={3} className="text-center mt-2">
+                              <p>연락처</p>
+                            </Col>
+                            <Col xs={8} md={9} className="mt-2">
+                              <p>{profile.empTel}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={4} md={3} className="text-center">
+                              <p>이메일</p>
+                            </Col>
+                            <Col xs={8} md={9}>
+                              <p>{profile.empEmail}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={4} md={3} className="text-center">
+                              <p>소개</p>
+                            </Col>
+                            <Col xs={8} md={9}>
+                              <p>{profile.profileTitle}</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={4} md={3} className="text-center">
+                              <p>내용</p>
+                            </Col>
+                            <Col xs={8} md={9}>
+                              <p>{profile.profileContent}</p>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeModal}>닫기</Button>
+            </Modal.Footer>
+            </Modal>
         </>
     );
 

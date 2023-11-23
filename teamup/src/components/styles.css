@@ -409,10 +409,12 @@ element.style {
 .ms-130{
     margin-left: 130px;
 }
+.ms-6{
+    margin-left: 60px;
+}
 
 .btn-icon{
     border-radius: 50px;
-
 } 
 
 .link {
@@ -458,5 +460,10 @@ element.style {
 /* 글씨체 나눔고딕으로 바꾸기 */
 body {
     font-family: "nanum";
+}
+
+/*border background color*/
+.border-bg-color{
+    background-color: #d1e7dd;
 }
 
