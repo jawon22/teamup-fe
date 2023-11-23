@@ -59,7 +59,7 @@ const Login = () => {
 
                 setTimeout(() => {
                     navigate('/home');
-                }, 500);  // 1초 후에 '/home'으로 이동
+                }, 5000);  // 1초 후에 '/home'으로 이동
             } else {
                 alert("실패");
             }

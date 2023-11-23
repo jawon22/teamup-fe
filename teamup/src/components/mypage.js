@@ -35,7 +35,7 @@ const Mypage = () => {
             url: `http://localhost:8080/emp/mypage/${empNo}`,
             method: 'get',
         }).then(response => {
-            console.log(response.data);
+            console.log("정보={}",response.data);
             setEmpInfo(response.data);
         });
     };
@@ -46,14 +46,14 @@ const Mypage = () => {
 
 
 
-//로그인한 회원의 마이페이지 프로필이미지
-const [profile, setProfile] = useState({
-    attach:"",
-    empTel:"",
-    empEmail:"",
-    profileTitle:"",
-    profileContent:""
-  });
+    //로그인한 회원의 마이페이지 프로필이미지
+    const [profile, setProfile] = useState({
+        attach: "",
+        empTel: "",
+        empEmail: "",
+        profileTitle: "",
+        profileContent: ""
+    });
     // console.log(profile);
 
     const loggedInEmpNo = parseInt(user.substring(6));
@@ -64,41 +64,41 @@ const [profile, setProfile] = useState({
 
     //프로필 조회
     const loadProfile = (empNo) => {
-        axios ({
-            url:`http://localhost:8080/profile/${empNo}`,
-            method:"get",
+        axios({
+            url: `http://localhost:8080/profile/${empNo}`,
+            method: "get",
         })
-        .then(response =>{//성공
-            // console.log(response);
-            setProfile(response.data);
-            // 이미지 정보 업데이트
-            updateImagePreview();
+            .then(response => {//성공
+                // console.log(response);
+                setProfile(response.data);
+                // 이미지 정보 업데이트
+                updateImagePreview();
 
-            // 프로필 로드가 완료된 후에 모달 열기
-            // openModal();
-        })
-        .catch(err=>{//실패
-            console.error(err);
-        });
+                // 프로필 로드가 완료된 후에 모달 열기
+                // openModal();
+            })
+            .catch(err => {//실패
+                console.error(err);
+            });
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         loadProfile(loggedInEmpNo);
-    },[]);
+    }, []);
 
 
 
     //이미지 미리보기 업데이트
-    const updateImagePreview = ()=>{
+    const updateImagePreview = () => {
         const changeImage = document.getElementById("changeImage");
         const previewImage = document.getElementById("previewImage");
         const previewImage2 = document.getElementById("previewImage2");
 
-        if(changeImage && changeImage.files && changeImage.files[0]){
-        
+        if (changeImage && changeImage.files && changeImage.files[0]) {
+
             const file = changeImage.files[0];
-            
-             // 미리보기 업데이트
+
+            // 미리보기 업데이트
             previewImage.src = URL.createObjectURL(file);
             previewImage2.src = URL.createObjectURL(file);
 
@@ -108,133 +108,213 @@ const [profile, setProfile] = useState({
 
 
     // 프로필 수정창 열기
-    const editProfile = () =>{
-    
+    const editProfile = () => {
+
         openModal();
     };
 
 
-  //수정한 값 처리
-  const changeProfile = (e)=>{
-    if (e.target.type === "file") {
-        // 파일 업로드 시
-        const file = e.target.files[0];
-        setProfile({
-            ...profile,
-            attach: file,
-        });
-        updateImagePreview(file);
-    } else {
-        // 텍스트 입력 시
-        setProfile({
-            ...profile,
-            [e.target.name]: e.target.value,
-        });
-    }
-  };
+    //수정한 값 처리
+    const changeProfile = (e) => {
+        if (e.target.type === "file") {
+            // 파일 업로드 시
+            const file = e.target.files[0];
+            setProfile({
+                ...profile,
+                attach: file,
+            });
+            updateImagePreview(file);
+        } else {
+            // 텍스트 입력 시
+            setProfile({
+                ...profile,
+                [e.target.name]: e.target.value,
+            });
+        }
+    };
 
 
-  //프로필 수정 처리
-  const updateProfile = async()=>{
+    //프로필 수정 처리
+    const updateProfile = async () => {
 
-    //이미지 파일 가져가기(input[type="file"]을 사용한다고 가정)
-    const changeImage = document.getElementById("changeImage");
+        //이미지 파일 가져가기(input[type="file"]을 사용한다고 가정)
+        const changeImage = document.getElementById("changeImage");
         // console.log(changeImage);
         const attach = changeImage.files[0];
         // console.log(attach);
-    
-    //프로필 데이터를 FormData로 만듦
-    const formData = new FormData();
-    formData.append("empTel", profile.empTel);
-    formData.append("empEmail", profile.empEmail);
-    formData.append("profileTitle", profile.profileTitle);
-    formData.append("profileContent", profile.profileContent);
-    // formData.append("attach", attach);
 
-    // 이미지 파일이 있는 경우에만 FormData에 추가
-    if (attach) {
-        formData.append("attach", attach);
-    }
+        //프로필 데이터를 FormData로 만듦
+        const formData = new FormData();
+        formData.append("empTel", profile.empTel);
+        formData.append("empEmail", profile.empEmail);
+        formData.append("profileTitle", profile.profileTitle);
+        formData.append("profileContent", profile.profileContent);
+        // formData.append("attach", attach);
 
-    try{
-        //서버로 업데이트 요청 전송
-        await axios({
-            url:`http://localhost:8080/profile/${loggedInEmpNo}`,
-            method:"put",
-            data: formData,
-            headers:{
-              "Content-Type": "multipart/form-data",
-            },
-        });
+        // 이미지 파일이 있는 경우에만 FormData에 추가
+        if (attach) {
+            formData.append("attach", attach);
+        }
 
-      
-        // FormData에 파일을 추가하고 나서 프로필 상태 업데이트
-        setProfile({
-            ...profile,
-            attach: attach,
-        });
+        try {
+            //서버로 업데이트 요청 전송
+            await axios({
+                url: `http://localhost:8080/profile/${loggedInEmpNo}`,
+                method: "put",
+                data: formData,
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
 
-        //업데이트 성공 시 모달 닫기
-        closeModal();
-    }
-    catch(error){
-        console.error("프로필 업데이트 에러", error);
-        //수정한 이미지 파일이 없는 경우에도 모달 닫기
-        closeModal();
-    }
-  };
-
-  //프로필 이미지 삭제
-  const deleteImage = async ()=>{
-    try{
-        // 백엔드에 이미지 삭제를 처리하는 API 호출
-        await axios({
-            url:`http://localhost:8080/profile/image/${empNo}`,
-            method:"delete"
-        });
-
-        // 이미지 삭제 성공 시, 기본 이미지로 설정 또는 다른 작업 수행
-        setImgSrc(surf);
-
-        // 모달 닫기
-        closeModal();
-    }
-    catch (error) {
-        console.error("프로필 이미지 삭제 에러", error);
-    }
-  };
+            // FormData에 파일을 추가하고 나서 프로필 상태 업데이트
+            setProfile({
+                ...profile,
+                attach: attach,
+            });
 
 
+            //업데이트 성공 시 모달 닫기
+            closeModal();
+        }
+        catch (error) {
+            console.error("프로필 업데이트 에러", error);
+            //수정한 이미지 파일이 없는 경우에도 모달 닫기
+            closeModal();
+        }
+    };
 
-  //모달 관련 처리
+    //프로필 이미지 삭제
+    const deleteImage = async () => {
+        try {
+            // 백엔드에 이미지 삭제를 처리하는 API 호출
+            await axios({
+                url: `http://localhost:8080/profile/image/${empNo}`,
+                method: "delete"
+            });
 
-  const openModal = () =>{
-    setShowModal(true);
-  };
-  const closeModal = () =>{
-    setShowModal(false);
-  };
+            // 이미지 삭제 성공 시, 기본 이미지로 설정 또는 다른 작업 수행
+            setImgSrc(surf);
 
-  //이미지를 만들기 위해서 필요한 것은 사번
-  //사번만 알면 <img src="http://localhost:8080/image/profile/사번">으로 이미지를 출력할 수 있다
-  const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
-  useEffect(()=>{
-    axios({
-      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
-      method:"get"
-    })
-    .then(response=>{
-      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
-    })
-    .catch(err=>{
-      setImgSrc(surf);
+            // 모달 닫기
+            closeModal();
+        }
+        catch (error) {
+            console.error("프로필 이미지 삭제 에러", error);
+        }
+    };
+
+
+
+    //모달 관련 처리
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    //이미지를 만들기 위해서 필요한 것은 사번
+    //사번만 알면 <img src="http://localhost:8080/image/profile/사번">으로 이미지를 출력할 수 있다
+    const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
+    useEffect(() => {
+        axios({
+            url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
+            method: "get"
+        })
+            .then(response => {
+                setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+            })
+            .catch(err => {
+                setImgSrc(surf);
+            });
+    }, []);
+
+    //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
+    const displayImage = imgSrc || surf;
+
+
+
+
+
+
+
+
+    ////비밀번호 수정 개인정보 수정
+
+    const [empInfomation, setEmpInfomation] = useState({
+        empName: '',
+        empTel: '',
+        empEmail: '',
+        empPw: '',
+        empPwCheck:'',
+        myEmpPw:'',
     });
-  }, []);
 
-  //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
-  const displayImage = imgSrc || surf;
+    const [result, setResult] = useState({
+        pw:null,
+        pwCheck:null,
+    });
 
+    const check =()=>{
+
+        const checkPw = /^[A-Z][a-z0-9!@#$]{8,16}$/;
+        const pwMatch = empInfomation.empPw.length === 0 ? null : checkPw.test(empInfomation.empPw);
+
+        const match = empInfomation.empPwCheck.length=== 0 ? null :
+         empInfomation.pwCheck === empInfomation.empPw && empInfomation.empPwCheck.length>0;
+
+        setResult({
+            pw:pwMatch,
+            pwCheck:match,
+        })
+        
+
+    };
+
+
+
+    const changeData=(e)=>{
+        setEmpInfomation({...empInfomation,
+            [e.target.name]:e.target.value}
+            )
+
+            console.log(empInfomation.empPwCheck)
+
+    }
+
+
+    const handleClickChange = () => {
+        handleShow();
+    };
+
+    const changePw = () => {
+        axios({
+            url: `http://localhost:8080/emp/changePw/${empNo}`,
+            method: 'put',
+            data:{ empPw:empInfomation.empPw}
+        }).then(res => {
+            console.log(res.data)
+
+        });
+    };
+
+
+
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () =>{ setShow(false)
+        setEmpInfomation({});
+        
+        setResult({
+            pw:null,
+            pwCheck:null,
+        });
+    };
+    const handleShow = () => setShow(true);
 
     return (
         <>
@@ -245,10 +325,10 @@ const [profile, setProfile] = useState({
 
                     <div className="col-5 d-flex justify-content-center align-items-center">
                         <img src={displayImage} alt="profileImage" id="previewImage2"
-                                className="rounded-circle object-fit-cover" 
-                                style={{width:"220px", height:"220px"}}/>
-                        <FaEdit size="30px" className="image-edit-btn mt-150" 
-                                onClick={()=>editProfile(loggedInEmpNo)}/>
+                            className="rounded-circle object-fit-cover"
+                            style={{ width: "220px", height: "220px" }} />
+                        <FaEdit size="30px" className="image-edit-btn mt-150"
+                            onClick={() => editProfile(loggedInEmpNo)} />
                     </div>
 
                     <div className="col-7 p-4">
@@ -259,12 +339,12 @@ const [profile, setProfile] = useState({
                         </div>
                         <div className="row mt-2">
                             <div className="col-4 text-bold">사원번호</div>
-                            <div className="col-8">{empInfo.empNo}</div>
+                            <div className="col-8">{empInfo.empId}</div>
                         </div>
                         <div className="row mt-2">
                             <div className="col-4 text-bold">이름</div>
                             <div className="col-8">{empInfo.empName}</div>
-                        </div> 
+                        </div>
                         <div className="row mt-2">
                             <div className="col-4 text-bold">연락처</div>
                             <div className="col-8">{empInfo.empTel}</div>
@@ -287,13 +367,16 @@ const [profile, setProfile] = useState({
                         </div>
 
                     </div>
+                    <div className="col-1 offset-11">
+                        <button className="btn btn-sm btn-secondary" value={empInfo.empNo} onClick={handleClickChange}>개인정보수정</button>
+                    </div>
                 </div>
 
 
                 {/* Modal */}
-                <Modal 
+                <Modal
                     show={showModal}
-                    onHide={closeModal} 
+                    onHide={closeModal}
                     backdrop="static"
                     size="md"
                     centered={true}
@@ -312,19 +395,19 @@ const [profile, setProfile] = useState({
                                 <Col xs={6} md={6}>
                                     <row>
                                         <label className="input-file-button justify-content-end" for="changeImage">
-                                            <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover" 
-                                                style={{width:"180px", height:"180px"}}/>
+                                            <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover"
+                                                style={{ width: "180px", height: "180px" }} />
                                         </label>
                                     </row>
                                     <row>
                                         <label>
-                                            <input type="file" name="attach" id="changeImage" style={{display:"none"}} onChange={updateImagePreview}/>
-                                            <IoCamera className="image-edit-btn ms-130" style={{width:"30px", height:"30px"}}/>
+                                            <input type="file" name="attach" id="changeImage" style={{ display: "none" }} onChange={updateImagePreview} />
+                                            <IoCamera className="image-edit-btn ms-130" style={{ width: "30px", height: "30px" }} />
                                         </label>
                                         <label>
-                                            <RiDeleteBin6Fill className="image-delete-btn" style={{width:"30px", height:"30px"}}
-                                                onClick={deleteImage}/>
-                                        </label>    
+                                            <RiDeleteBin6Fill className="image-delete-btn" style={{ width: "30px", height: "30px" }}
+                                                onClick={deleteImage} />
+                                        </label>
                                     </row>
                                 </Col>
                                 <Col xs={6} md={6}>
@@ -334,67 +417,125 @@ const [profile, setProfile] = useState({
                                     <p>입사일 : {profile.empJoin}</p>
                                 </Col>
                             </Row>
-                        
+
                             <Row>
                                 <Col xs={4} md={3} className="text-center">
-                                  < p>연락처</p>
+                                    < p>연락처</p>
                                 </Col>
                                 <Col xs={8} md={9}>
-                                    <input type="tel" name="empTel" className="form-control" 
-                                          value={profile.empTel} onChange={changeProfile}/>
+                                    <input type="tel" name="empTel" className="form-control"
+                                        value={profile.empTel} onChange={changeProfile} />
                                 </Col>
                             </Row>
-                        
-                        
+
+
                             <Row>
                                 <Col xs={4} md={3} className="text-center">
                                     <p>이메일</p>
                                 </Col>
                                 <Col xs={8} md={9}>
-                                    <input type="email" name="empEmail" className="form-control" 
-                                          value={profile.empEmail} onChange={changeProfile}/>
+                                    <input type="email" name="empEmail" className="form-control"
+                                        value={profile.empEmail} onChange={changeProfile} />
                                 </Col>
                             </Row>
-                        
+
                             <Row>
                                 <Col xs={4} md={3} className="text-center">
                                     <p>소개</p>
                                 </Col>
                                 <Col xs={8} md={9}>
-                                    <input type="text" name="profileTitle" className="form-control" 
-                                          value={profile.profileTitle} onChange={changeProfile}/>
+                                    <input type="text" name="profileTitle" className="form-control"
+                                        value={profile.profileTitle} onChange={changeProfile} />
                                 </Col>
                             </Row>
-                        
+
                             <Row>
                                 <Col xs={4} md={3} className="text-center">
                                     <p>내용</p>
                                 </Col>
                                 <Col xs={8} md={9}>
                                     <textarea name="profileContent" className="form-control" rows="4"
-                                              value={profile.profileContent} onChange={changeProfile}/>
+                                        value={profile.profileContent} onChange={changeProfile} />
                                 </Col>
                             </Row>
                         </Container>
                     </Modal.Body>
                     <Modal.Footer>
-                      <Button variant="secondary" onClick={closeModal}>닫기</Button>
-                      <Button variant="primary" onClick={updateProfile}>수정</Button>
+                        <Button variant="secondary" onClick={closeModal}>닫기</Button>
+                        <Button variant="primary" onClick={updateProfile}>수정</Button>
                     </Modal.Footer>
                 </Modal>
 
-                        
+
                 <div className="row mt-5 text-green">
                     {/* 근태 관리 */}
                     <div className="text-center text-green">
                         <div className="row mp-bg mb-4 p-4">
                             <div className="col-12">
-                            <Attend/>   
+                                <Attend />
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
+
+
+
+
+
+
+
+
+
+
+
+                <Button variant="primary" onClick={handleShow}>
+                    Launch demo modal
+                </Button>
+
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>비밀번호 수정</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                        <label className="form-label">새비밀번호</label>
+                        <input type="password" onBlur={check} className={`form-control  ${result.pw === true? 'is-valid':''}
+                      ${result.pw === false? 'is-invalid':''}`} name="empPw" value={empInfomation.empPw} onChange={changeData}/>
+                        <label className="form-label">비밀번호확인</label>
+                        <input type="password" onBlur={check} className={`form-control   ${result.pwCheck === true? 'is-valid':''}
+                      ${result.pwCheck === false? 'is-invalid':''}`}  name="empPwCheck" value={empInfomation.empPwCheck}  onChange={changeData}/>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={changePw}>
+                            Save Changes
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
         </>
     );
