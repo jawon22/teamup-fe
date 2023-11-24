@@ -268,6 +268,7 @@ useEffect(()=>{
                 </Navbar.Brand>
               </div>
 
+              <div className='col-4 app-center'>아오</div>
 
               <div className='col-4 app-end'>
 
