@@ -4,7 +4,7 @@ import { companyState, userState } from '../recoil';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
-const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, count }) => {
+const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, count, writeName }) => {
     const navigate = useNavigate();
     const [user, setUser] = useRecoilState(userState);
     const empNo = user.substring(6)
@@ -73,7 +73,7 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
           <th colSpan={1}>부서</th>
           <td colSpan={1}>{dept}</td>
           <th colSpan={1}>작성자</th>
-          <td colSpan={1}>{writer}</td>
+          <td colSpan={1}>{writeName}</td>
           <th colSpan={1}>조회수</th>
           <td colSpan={1}>{count}</td>
       </tr>
