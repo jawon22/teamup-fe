@@ -171,10 +171,10 @@ const renderPagination = () => {
     return(
 
         <div className="row">
-        <div className="col-md-10 offset-md-1">
+        <div className="col-md-10 offset-md-1 mt-5">
 
             <div className="row mb-2">
-                <div className="col-6">
+                <div className="col-6 mb-3 mt-4">
                         <h2>공지사항</h2>
                 </div>
                 <div className="col-6 text-end">
@@ -184,10 +184,10 @@ const renderPagination = () => {
                 
             <div className="row">
                 <div className="col">
-                    <table className="table table-bordered ">
+                    <table className="table item-center">
                         
                         <thead>
-                            <tr>
+                            <tr className="table-primary">
                                 <th>번호</th>
                                 <th>작성자</th>
                                 <th>부서</th>
@@ -203,7 +203,9 @@ const renderPagination = () => {
                                 <td>{board.boardNo}</td>
                                 <td>{board.empName}</td>
                                 <td>{board.deptName}</td>
-                                <td><Link to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link></td>
+                                <td>
+                                    <Link className="custom-link" to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link>
+                                </td>
                                 <td>{board.boardWriteDate}</td>
                                 <td>{board.boardUpdateDate}</td>
                                 <td>{board.boardReadCount}</td>
@@ -213,8 +215,10 @@ const renderPagination = () => {
                     </table>
 
                 </div></div>
+
+                {/* 페이지네이션 */}
                 <div className="row">
-                    <div className="col d-flex justify-content-center">
+                    <div className="col d-flex justify-content-center mt-4">
                     {renderPagination()}
 
                     </div>
@@ -241,13 +245,13 @@ const renderPagination = () => {
                 <Form.Control
                 name="boardContent"
                 value={board.boardContent} onChange={changeBoard}
-                as="textarea" rows={10 } />
+                as="textarea" rows={10} style={{ resize: 'none' }} />
                 </Form.Group>
             </Form>
             </Modal.Body>
             <Modal.Footer>
             <Button variant="secondary" onClick={handleModalClose}>
-                Close
+                취소
             </Button>
             <Button variant="primary" onClick={addBoard}>
                 등록

@@ -519,6 +519,10 @@ body {
 .primary {
     color: #218C74; 
 }
+.primary-bg {
+    background-color: #218C74; 
+    color: white;
+}
 
 .green-border {
     border: 1px solid #218C74; 
@@ -529,3 +533,21 @@ h4 {
     font-family: "nanum";
 }
 
+/* 링크 css */
+.custom-link {
+    text-decoration: none;
+    color:black;
+
+}
+
+.custom-link:hover {
+    color: #218C74;
+    font-style: bold;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #218C74;
+    border-color: #218C74;
+}
