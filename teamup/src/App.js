@@ -238,10 +238,17 @@ useEffect(()=>{
 
   return (
     <>
+    
+    <Routes>
+      <Route path="/login" element={<Login style={{ margin: 0 }} />} />
+    </Routes>
+    
       <div className='main-content container-fluid'>
+        
 
         {user ===''? '': <Sidebar />}
-        <div className='row ms-15 mt-3'>
+        {/* <div className='row ms-15 mt-3'> */}
+        <div className='row ms-15'>
           <div className='col-md-10 offset-md-1'>
 
             {/* 헤더 */}
@@ -313,7 +320,9 @@ useEffect(()=>{
 
 
 
-            <div className='mt-3'>
+
+            {/* <div className='mt-3'> */}
+            <div>
               <Routes>
                 {/* 각종 라우터 */}
                 <Route path="/approveList" element={<ApproveList />}></Route>
@@ -321,7 +330,6 @@ useEffect(()=>{
                 <Route path='/com' element={<Com />} ></Route>
                 <Route path='/search' element={<Search user={user} />}></Route>
                 <Route path='/home' element={<Home  user={user}/>}></Route>
-                <Route path='/login' element={<Login />}></Route>
                 <Route path="/mypage" element={<Mypage user={user} />}></Route>
                 <Route path="/deptInsert" element={<DeptInsert />}></Route>
                 <Route path="/calendar" element={<Calendar />}></Route>
