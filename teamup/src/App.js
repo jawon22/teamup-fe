@@ -192,6 +192,14 @@ function App() {
 }, [company, user]);
 
 
+useEffect(()=>{
+  if(user===''){
+    navigate("/login");
+  }
+
+},[])
+
+
 
 
 
@@ -231,13 +239,21 @@ function App() {
 
   return (
     <>
-      <div className='main-content container-fluid'>
-        <Sidebar />
+      <div className='main-content container-fluid parent-container'>
+
+        {user ===''? '': <Sidebar />}
+        
+
 
         <div className='row ms-15 mt-3'>
           <div className='col-md-10 offset-md-1'>
 
             {/* 헤더 */}
+
+            {user ===''?'':(
+
+
+
             <div className='row'>
               <div className='col-4 me-auto app-start'>
                 <Navbar.Brand href="#home" className='logo'>
@@ -283,6 +299,7 @@ function App() {
                 </div>
               </div>
             </div>
+            )}
             {/* 본문 */}
             {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
 

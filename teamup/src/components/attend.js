@@ -283,8 +283,8 @@ const Attend = (props) => {
               </tr>
             </thead>
             <tbody>
-              {attendList.map((attendLists) => (
-                <tr key={attendLists.empNo}>
+              {attendList.map((attendLists,index) => (
+                <tr key={index}>
                   <td>{attendLists.dt}</td>
                   <td>
                     {attendLists.attendStart

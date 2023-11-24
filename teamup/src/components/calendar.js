@@ -234,6 +234,7 @@ const Calendar = () => {
       <div className="col">
       <FullCalendar
         // height={} // 높이 지정
+        
         plugins={plugin}
         initialView="dayGridMonth" // 초기뷰 dayGridMonth or timeGridWeek
         headerToolbar={{ // 띄어쓰면 갭이 생기고, 콤마가 있으면 그룹으로 묶는 형태
@@ -258,6 +259,7 @@ const Calendar = () => {
           day: "일별",
           list: "리스트"
         }}
+        
         className="parent-container"
         /* 버튼 텍스트 default {{
             prev: "<",
@@ -295,6 +297,21 @@ const Calendar = () => {
       // calTitle:"",
       // calContent:"",
       // calColor:""
+      locale="ko"
+      monthNames={[
+        "1월",
+        "2월",
+        "3월",
+        "4월",
+        "5월",
+        "6월",
+        "7월",
+        "8월",
+        "9월",
+        "10월",
+        "11월",
+        "12월"
+      ]}
       />
 
       <div>
