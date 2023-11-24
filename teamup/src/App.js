@@ -41,6 +41,7 @@ import BoardDetail from './components/BoardDetail';
 import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
+import MainBoard from './components/MainBoard';
 
 
 
@@ -247,9 +248,11 @@ useEffect(()=>{
         
 
         {user ===''? '': <Sidebar />}
+
         {/* <div className='row ms-15 mt-3'> */}
         <div className='row ms-15'>
           <div className='col-md-10 offset-md-1'>
+
 
             {/* 헤더 */}
 
@@ -258,7 +261,7 @@ useEffect(()=>{
 
 
             <div className='row'>
-              <div className='col-4 me-auto app-start'>
+              <div className='col-4 app-start'>
                 <Navbar.Brand href="#home" className='logo'>
                   <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
                   <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
@@ -340,6 +343,7 @@ useEffect(()=>{
                 <Route path='/empTree' element={<Emp />} />
                 <Route path='/board/find/:idx' element={<BoardDetail />} />
                 <Route path='/board/update/:idx' element={<BoardUpdate />} />
+                <Route path='/mainBoard' element={<MainBoard />} />
 
 
 

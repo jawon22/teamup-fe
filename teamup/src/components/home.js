@@ -14,6 +14,7 @@ import TodoList from "./TodoList/TodoList";
 import TodoCreate from "./TodoList/TodoCreate";
 import { TodoProvider } from "../TodoContext";
 import Weather from "./weather";
+import MainBoard from "./MainBoard";
 
 const Home = (props) => {
 
@@ -170,12 +171,11 @@ useEffect(() => {
 
   return (
 
-    <div>
-      <div className="row ms-4 mt-2 mp">
+      <div className="row ms-4 mt-2 mp space">
 
 
         {/* 세로로 첫 번째 줄 */}
-        <div className="home-profile col-lg-3 col-md-4">
+        <div className="home-profile col-3">
 
           {/* 프로필과 출퇴근 버튼 */}
           <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
@@ -223,9 +223,9 @@ useEffect(() => {
         </div>
 
         {/* 세로로 두 번째 줄 */}
-        <div className="home-center col-lg-5">
+        <div className="col-5 home-center">
           <div className="row graybox border-primary h-50">
-            공지사항
+            <MainBoard/>
           </div>
           <div className="row graybox border-primary h-50 mt-3">
             전자결재
@@ -233,7 +233,7 @@ useEffect(() => {
         </div>
 
         {/* 세로로 세 번째 줄 */}
-        <div className="home-calendar col-lg-4 col-md-8">
+        <div className="home-calendar col-4">
           {/* 캘린더 */}
           <div className="home-calendar graybox border-primary h-50 p-3">
             <Calendar />
@@ -246,7 +246,6 @@ useEffect(() => {
         </div>
 
       </div>
-    </div>
   );
 };
 
