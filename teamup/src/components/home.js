@@ -172,12 +172,12 @@ useEffect(() => {
 
   return (
 
-    <div className="container">
-      <div className="row ms-2 mp">
+    <div className="parent-container">
+      <div className="row ms-4 mt-2 mp">
 
 
         {/* 세로로 첫 번째 줄 */}
-        <div className="home-profile col-lg-3 col-md-5">
+        <div className="home-profile col-lg-3 col-md-3">
 
           {/* 프로필과 출퇴근 버튼 */}
           <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
@@ -225,7 +225,7 @@ useEffect(() => {
         </div>
 
         {/* 세로로 두 번째 줄 */}
-        <div className="home-center col-lg-5">
+        <div className="home-center col-lg-5 col-md-5">
           <div className="row graybox border-primary h-50">
             공지사항
           </div>
@@ -235,7 +235,7 @@ useEffect(() => {
         </div>
 
         {/* 세로로 세 번째 줄 */}
-        <div className="col-lg-4 col-md-7">
+        <div className="col-lg-4 col-md-4">
           {/* 캘린더 */}
           <div className="home-calendar graybox border-primary h-50 p-3">
             <Calendar />
