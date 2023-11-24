@@ -171,7 +171,7 @@ useEffect(() => {
 
   return (
 
-      <div className="row ms-4 mt-2 mp space">
+      <div className="row ms-13 mt-2 mp space">
 
 
         {/* 세로로 첫 번째 줄 */}
