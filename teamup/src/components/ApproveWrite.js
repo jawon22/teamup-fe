@@ -7,11 +7,8 @@ import { BsX } from "react-icons/bs";
 
 const ApproveWrite = (props)=>{
     const [user, setUser] = useRecoilState(userState);
-    // const [receiver, setReceiver] = useRecoilState(receiverState);
-    // const [referrer, setReferrer] = useRecoilState(referrerState);
     const [company, setCompany] = useRecoilState(companyState);
 
-    const [empList, setEmpList] = useState([]); //모든 사원 정보
     const [receiverList, setReceiverList] = useState([]); //결재자 처음 복제 리스트
     const [refererList, setRefererList] = useState([]); // 참조자 처음 복제
     const [list, setList] = useState([]);
@@ -33,7 +30,7 @@ const ApproveWrite = (props)=>{
     };
 
     useEffect(()=>{
-        const emp = empList.find(em =>em.empNo === parseInt(empNo));
+        const emp = list.find(em =>em.empNo === parseInt(empNo));
         setAppr({
             apprSender:empNo,
             deptNo: emp ? emp.deptNo:"",
@@ -43,7 +40,7 @@ const ApproveWrite = (props)=>{
             apprDateEnd:"",
             apprDivision:"결재"
         })
-    },[empList])
+    },[list])
 
     const [appr, setAppr] = useState({});
 
@@ -73,35 +70,24 @@ const ApproveWrite = (props)=>{
     // });
 
     // 같은 회사로 조회
-    // const selectCom = ()=>{
-    //     axios({
-    //         url:`${process.env.REACT_APP_REST_API_URL}/emp/complexSearch/`,
-    //         method:"post",
-    //         data:{
-    //         comId: company}
-    //     })
-    //     .then(response=>{
-    //         setList(response.data);
-    //     })
-    // }
-    // useEffect(()=>{selectCom()},[])
-    // console.log(list);
-
-
-    // 사원 정보 조회
-    const loadEmp = ()=>{
+    const selectCom = ()=>{
         axios({
-            url:`${process.env.REACT_APP_REST_API_URL}/emp/`,
-            method:"get"
+            url:`${process.env.REACT_APP_REST_API_URL}/emp/complexSearch/`,
+            method:"post",
+            data:{
+            comId: company}
         })
         .then(response=>{
-            setEmpList(response.data);
+            setList(response.data);
 
             const removeMy = response.data.filter(receiver => receiver.empNo !== empNo && receiver.comId === company);
             setReceiverList(removeMy);
             setRefererList(removeMy);
         })
-    };
+    }
+    useEffect(()=>{selectCom()},[])
+    console.log(list);
+    console.log(receiverList);
 
     //기안 등록(최종)
     const saveAppr = async()=>{
@@ -140,11 +126,6 @@ const ApproveWrite = (props)=>{
             console.error('Error: ', error);
         }
     };
-
-    //처음 페이지에서만 사원 정보 불어오기
-    useEffect(()=>{
-        loadEmp()
-    },[]);
 
     const [selectedValue, setSelectedValue] = useState(null); //승인자 값 저장
     const [savedValues, setSavedValues] = useState([]); //승인자 전체 저장
@@ -207,6 +188,7 @@ const ApproveWrite = (props)=>{
         setRefererList([...refererList, {...removeFilterList[0]}]);
 
     };
+
     // 선택된 참조자 삭제 (위에랑 같음)
     const removeReferer = (empNo)=>{
         const removeFilterList = savedValues2.filter(referer=>referer.empNo === parseInt(empNo));
@@ -217,7 +199,6 @@ const ApproveWrite = (props)=>{
         setReceiverList([...receiverList,{...removeFilterList[0]}]);
         setRefererList([...refererList,{...removeFilterList[0]}]);
     }
-
 
     return(
         <div className="container-fluid">
@@ -269,7 +250,7 @@ const ApproveWrite = (props)=>{
                                     <th scope="row">내용</th>
                                     <td>
                                         <textarea type="text" className="form-control" name="apprContent"
-                                            value={appr.apprContent} onChange={changeappr}/>
+                                            rows={10} value={appr.apprContent} onChange={changeappr}/>
                                     </td>
                                 </tr>
 
@@ -287,7 +268,9 @@ const ApproveWrite = (props)=>{
                                         {/* map 함수를 이용해 option 태그 반복 생성 */}
                                             {receiverList.map(emp => (
                                                 <option key={emp.empNo} value={emp.empNo}>
-                                                    부서:{emp.deptNo} 직급:{emp.empPositionNo} 사원:{emp.empName}
+                                                    {/* 부서:{emp.deptName}  */}
+                                                    {emp.empPositionName} -
+                                                    {emp.empName}
                                                 </option>
                                             ))}
                                         </select>
@@ -303,7 +286,9 @@ const ApproveWrite = (props)=>{
                                 {/* 저장을 누르면 추가되는 영역 */}
                                     {savedValues.map((receiver,index)=>(
                                         <div key={receiver.empNo}>
-                                            {receiver.empNo} 
+                                            <span class="badge bg-primary">{receiver.deptName}</span>
+                                            <span class="badge bg-primary">{receiver.empPositionName}</span>
+                                            <span class="badge bg-primary">{receiver.empName}</span>
                                             <BsX onClick={()=>removeReceiver(receiver.empNo)}/>
                                         </div>
                                     ))}
@@ -319,7 +304,8 @@ const ApproveWrite = (props)=>{
                                         {/* map 함수를 이용해 option 태그 반복 생성 */}
                                             {refererList.map(emp => (
                                                 <option key={emp.empNo} value={emp.empNo}>
-                                                    부서:{emp.deptNo} 직급:{emp.empPositionNo} 사원번호:{emp.empNo}
+                                                    {emp.empPositionName} -
+                                                    {emp.empName}
                                                 </option>
                                             ))}
                                         </select>
@@ -335,7 +321,9 @@ const ApproveWrite = (props)=>{
                                     {/* 저장을 누르면 추가되는 영역 */}
                                     {savedValues2.map((referer,index)=>(
                                         <div key={referer.empNo}>
-                                            {referer.empNo}
+                                            <span class="badge bg-primary">{referer.deptName}</span>
+                                            <span class="badge bg-primary">{referer.empPositionName}</span>
+                                            <span class="badge bg-primary">{referer.empName}</span>
                                             <BsX onClick={()=>removeReferer(referer.empNo)}/>
                                         </div>
                                     ))}
@@ -343,13 +331,13 @@ const ApproveWrite = (props)=>{
 
                             </div>
                         </div>
-
                         <div className="col text-end">
                             <button className="btn btn-primary" onClick={saveAppr} 
                                 disabled={!isEndDateValid()}>
                                 기안등록
                             </button>
                         </div>
+
                         
                     </div>
                 </div>
