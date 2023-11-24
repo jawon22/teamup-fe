@@ -14,6 +14,7 @@ import TodoList from "./TodoList/TodoList";
 import TodoCreate from "./TodoList/TodoCreate";
 import { TodoProvider } from "../TodoContext";
 import Weather from "./weather";
+import MainBoard from "./MainBoard";
 
 const Home = (props) => {
 
@@ -225,7 +226,7 @@ useEffect(() => {
         {/* 세로로 두 번째 줄 */}
         <div className="home-center col-lg-5">
           <div className="row graybox border-primary h-50">
-            공지사항
+            <MainBoard/>
           </div>
           <div className="row graybox border-primary h-50 mt-3">
             전자결재
