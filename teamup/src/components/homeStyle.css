@@ -1,22 +1,90 @@
-/* 최소 크기를 고정하려는 클래스에 적용 */
-
-.parent-container {
-  min-width: 1000px;
-}
-
 /* 1600px 이하일 때의 스타일 */
-@media (max-width: 1000px) {
+@media (max-width: 1320px) {
   .home-center {
     display: none; /* 해당 클래스의 엘리먼트를 숨김 */
   }
   .home-profile{
-    width: 30%;
+    width: 40%;
+  }
+  .home-todo{
+    width: 100%;
   }
   .home-calendar {
-    width: 100%; /* 100%의 너비를 가지도록 함 */
+    width: 450px; 
+  }
+  .home-weather {
+    width: 450px;
+  }
+  .space {
+    margin-left: 30px;
+  }
+
+
+}
+
+@media (max-width: 1200px) {
+  .home-profile{
+    width: 320px;
+  }
+  .home-todo{
+    width: 305px;
+  }
+  .home-calendar {
+    width: 320px; 
+  }
+  .home-weather {
+    width: 320px;
+  }
+  /* .space{
+    margin-left: 30px;
+  } */
+
+}
+
+@media (max-width: 9800px) {
+  .home-profile{
+    width: 250px;
+  }
+  .home-todo{
+    width: 250px;
+  }
+
+  .home-calendar {
+    width: 300px; 
+  }
+  .home-weather {
+    width: 300px;
   }
 
 }
+
+@media (max-width: 805px) {
+  .home-profile{
+    width: 470px;
+    height: 800px;
+    margin-bottom: 0px;
+  }
+  .home-calendar {
+    width: 450px; 
+    height: 850px;
+  }
+  .home-todo{
+    display: none;
+  }
+  .home-weather {
+    display: none;
+  }
+  .row.h-50.mb-3.p-3.me-1.d-flex.graybox.justify-content-center.align-items-center {
+    margin-bottom: 0 !important; /* margin-bottom 제거 */
+  }
+  .mb-3{
+    margin-bottom: 0 !important;
+  }
+
+
+}
+
+
 
 
 
