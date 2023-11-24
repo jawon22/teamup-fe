@@ -70,6 +70,8 @@ function App() {
 
   //user로 내 정보 끌어오기
 
+
+
   const [room, setRoom] = useRecoilState(roomState);
 
   const [roomNo, setRoomNo] = useState("");
@@ -209,9 +211,19 @@ function App() {
     )
   }
 
+
+  const sessionId = sessionStorage.getItem("comId");
+
+  useEffect(() => {
+    setCompany(sessionId)
+    console.log("세션아이디::",sessionId)
+  }, [])
+
+
   useEffect(() => {
     loadInfo();
-  }, [])
+}, [company, user]);
+
 
 
 
@@ -239,7 +251,7 @@ function App() {
       .catch(err => {
         setImgSrc(surf);
       });
-  });
+  },[user]);
 
 
   //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
@@ -304,7 +316,7 @@ function App() {
                             {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
                             {/* <img src={imgSrc} alt="profileImage" className="rounded-circle" 
                                   style={{width:"45px", height:"45px", objectFit:"cover"}}/> */}
-                            <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
+                            <NavDropdown.Item href="#mypage"  >마이페이지</NavDropdown.Item>
 
 
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
@@ -343,10 +355,10 @@ function App() {
                 <Route path="/approveList" element={<ApproveList />}></Route>
                 <Route path="/approveWrite" element={<ApproveWrite />}></Route>
                 <Route path='/com' element={<Com />} ></Route>
-                <Route path='/search' element={<Search />}></Route>
-                <Route path='/home' element={<Home />}></Route>
+                <Route path='/search' element={<Search user={user} />}></Route>
+                <Route path='/home' element={<Home  user={user}/>}></Route>
                 <Route path='/login' element={<Login />}></Route>
-                <Route path="/mypage" element={<Mypage />}></Route>
+                <Route path="/mypage" element={<Mypage user={user} />}></Route>
                 <Route path="/deptInsert" element={<DeptInsert />}></Route>
                 <Route path="/calendar" element={<Calendar />}></Route>
                 <Route path='/companyJoin' element={<CompanyJoin />}></Route>
@@ -390,7 +402,7 @@ function App() {
 
 
 
-
+{/* 
       {showModal && (
         <div className="chat-modal-background" >
           <div className="chat-modal-content">
@@ -422,7 +434,7 @@ function App() {
           <div>
           </div>
         </div>
-      )}
+      )} */}
 
     </>
   );

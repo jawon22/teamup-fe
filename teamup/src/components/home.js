@@ -15,7 +15,7 @@ import TodoCreate from "./TodoList/TodoCreate";
 import { TodoProvider } from "../TodoContext";
 import Weather from "./weather";
 
-const Home = () => {
+const Home = (props) => {
 
   const [user, setUser] = useRecoilState(userState);
 
@@ -71,7 +71,7 @@ const Home = () => {
   //페이지가 로드 될 때마다 attend 객체 조회
   useEffect(() => {
     loadAttend();
-  }, [empNo]);
+  }, [props.user]);
 
   //조회 (오늘 출퇴근버튼 누른 시간)
   const loadAttend = () => {
@@ -141,32 +141,31 @@ const Home = () => {
       .catch(err => {
         setImgSrc(surf);
       });
-  }, []);
+  }, [props.user]);
 
 
   //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
   const displayImage = imgSrc || surf;
 
 
-  //이름과 직급을 찍기 위해 사원정보를 불러옴
-  const myInfo = () => {
-    axios({
-        url: `http://localhost:8080/emp/mypage/${empNo}`,
-        method: 'get',
-    }).then(response => {
-        console.log(response.data);
-        setEmpInfo(response.data);
+ // 이름과 직급을 찍기 위해 사원정보를 불러옴
+ const myInfo = async () => {
+  try {
+      const response = await axios.get(`http://localhost:8080/emp/mypage/${empNo}`);
+      console.log(response.data);
+      setEmpInfo(response.data);
 
-        setName(empInfo.empName);
-        setDeptNo(empInfo.deptNo);
-        console.log(name)
-        
-    });
+      setName(response.data.empName);
+      setDeptNo(response.data.deptNo);
+      console.log(name);
+  } catch (error) {
+      console.error('Error fetching data:', error);
+  }
 };
 
 useEffect(() => {
-    myInfo();
-}, []);
+  myInfo();
+}, [props.user]);
 
 
 
