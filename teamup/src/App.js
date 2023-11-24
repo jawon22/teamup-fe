@@ -16,7 +16,6 @@ import CompanyJoin from './components/companyJoin';
 import Board from './components/Board';
 import TeamUpLogo from './components/images/TeamUpLogo.png';
 
-import { CgProfile } from "react-icons/cg";
 import { BsFillBellFill } from "react-icons/bs";
 import { RiKakaoTalkFill } from "react-icons/ri";
 

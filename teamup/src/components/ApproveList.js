@@ -8,11 +8,13 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { Pagination } from "react-bootstrap";
 import { FaRegCheckSquare } from "react-icons/fa";
 import { FaRegSquare } from "react-icons/fa6";
+import { FiXSquare } from "react-icons/fi";
 
 import { useRecoilState } from 'recoil';
-import { userState } from '../recoil';
+import { companyState, userState } from '../recoil';
 import { useEffect, useRef, useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 import { copy } from 'stylis';
@@ -21,6 +23,8 @@ import moment from 'moment';
 const ApproveList = (props)=>{
     const location = useLocation();
     const [user,setUser] = useRecoilState(userState);
+    const [company, setCompany] = useRecoilState(companyState);
+
     const [apprList,setApprList] = useState([]); //결재 계층형 데이터(처음에 오는 것)
     const [apprData, setApprData] = useState([]); // 클릭한 결재 정보
     const [receiver, setReceiver] = useState([]); //승인자만 저장
@@ -163,8 +167,10 @@ const ApproveList = (props)=>{
     //회원의 정보
     const listEmp = ()=>{
         axios({
-            url:`${process.env.REACT_APP_REST_API_URL}/emp/`,
-            method:"get"
+            url:`${process.env.REACT_APP_REST_API_URL}/emp/complexSearch/`,
+            method:"post",
+            data:{
+            comId: company}
         })
         .then(response =>{
             setEmpList(response.data);
@@ -269,6 +275,7 @@ const ApproveList = (props)=>{
 
         })
     };
+    console.log(myApprInfo);
     
     //승인자 결재 반려 처리
     const cancelAppr = () =>{
@@ -345,7 +352,10 @@ const ApproveList = (props)=>{
                                             <td>{appr.empName}</td>
                                             <td>{appr.approveDto.apprDateStart}</td>
                                             <td>{appr.approveDto.apprDateEnd}</td>
-                                            <td>{appr.status}</td>
+                                            <td style={{color: appr.status === "승인" ? "green" 
+                                                : appr.status === "반려" ? "red" : "inherit"}}>
+                                                    {appr.status}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -403,7 +413,8 @@ const ApproveList = (props)=>{
                                            
                                                 {apprData.receiversDtoList.map((receiver,index)=>(
                                                     <span key={index} className='mx-4' style={{display:'inline'}}>
-                                                        {receiver.receiversStatus === 'Y' ? <FaRegCheckSquare /> : <FaRegSquare />}
+                                                        {receiver.receiversStatus === 'Y' ? <FaRegCheckSquare /> : 
+                                                            (receiver.receiversStatus === 'N' ? <FiXSquare /> : <FaRegSquare />)}
                                                     </span> 
                                                 ))}
                                             </Col>
@@ -421,7 +432,7 @@ const ApproveList = (props)=>{
                                                 직위
                                             </Col>
                                             <Col xs={4} md={4} className='py-2'>
-                                                {emp.empPositionNo}
+                                                {emp.empPositionName}
                                             </Col>
                                         </Row>
 
