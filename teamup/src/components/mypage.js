@@ -15,7 +15,8 @@ import Row from 'react-bootstrap/Row';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
 
-const Mypage = () => {
+const Mypage = (props) => {
+    const AppUser = props.user;
     const [empInfo, setEmpInfo] = useState({
         comId: '',
         deptNo: '',
@@ -42,8 +43,12 @@ const Mypage = () => {
     };
 
     useEffect(() => {
+
+        console.log("????",AppUser)
         myInfo();
-    }, []);
+        loadProfile(loggedInEmpNo);
+        
+    }, [props.user]);
 
 
 
@@ -231,7 +236,7 @@ const Mypage = () => {
             .catch(err => {
                 setImgSrc(surf);
             });
-    }, []);
+    }, [props.user]);
 
     //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
     const displayImage = imgSrc || surf;
@@ -514,7 +519,7 @@ const Mypage = () => {
                     <div className="text-center text-green">
                         <div className="row mp-bg mb-4 p-4">
                             <div className="col-12">
-                                <Attend />
+                                <Attend user={user} />
                             </div>
                         </div>
                     </div>
