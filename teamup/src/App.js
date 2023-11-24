@@ -242,8 +242,7 @@ useEffect(()=>{
       <div className='main-content container-fluid parent-container'>
 
         {user ===''? '': <Sidebar />}
-        
-=======
+
 
         <div className='row ms-15 mt-3'>
           <div className='col-md-10 offset-md-1'>
