@@ -18,20 +18,22 @@ const BoardDetail=(props)=>{
 
     const getBoard = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/board/read/${idx}`, {
-                params: {
-                    empNo: empNo
-                }
-            });
-            setBoard(response.data);
-             // 조회 이력 업데이트
+            // 조회 이력 업데이트
             setUserReadHistory((prevHistory) => [...prevHistory, idx]);
-            
+    
+            const response = await axios.post(`${process.env.REACT_APP_REST_API_URL}/board/read/${idx}`, {
+                empNo: empNo,
+                userReadHistory: [...userReadHistory, idx],  // boardNo를 추가
+            });
+            console.log("응답 데이터:", response.data);
+            setBoard(response.data);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching board:", error);
         }
     };
+    
+    
     
     useEffect(() => {
         getBoard();
