@@ -241,8 +241,8 @@ useEffect(()=>{
       <div className='main-content container-fluid'>
 
         {user ===''? '': <Sidebar />}
-        <div className='row ms-15 mt-3'>
-          <div className='col-md-10 offset-md-1'>
+        <div className='row ms-15 mt-3 space'>
+          <div className='col ms-15'>
 
             {/* 헤더 */}
 
@@ -251,7 +251,7 @@ useEffect(()=>{
 
 
             <div className='row'>
-              <div className='col-4 me-auto app-start'>
+              <div className='col-4 app-start'>
                 <Navbar.Brand href="#home" className='logo'>
                   <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
                   <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
