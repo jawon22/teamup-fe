@@ -238,7 +238,7 @@ useEffect(()=>{
 
   return (
     <>
-      <div className='main-content container-fluid parent-container'>
+      <div className='main-content container-fluid'>
 
         {user ===''? '': <Sidebar />}
         <div className='row ms-15 mt-3'>
