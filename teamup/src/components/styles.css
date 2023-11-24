@@ -412,6 +412,10 @@ element.style {
     margin-left: 60px;
 }
 
+.ms-15{
+    margin-left: 150px;
+  }
+
 /*프로필 이미지 수정 버튼*/
 .image-edit-btn{
     background-color: #218C74;
@@ -528,4 +532,5 @@ body {
 h4 {
     font-family: "nanum";
 }
+
 

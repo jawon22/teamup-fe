@@ -243,9 +243,10 @@ useEffect(()=>{
 
         {user ===''? '': <Sidebar />}
         
+=======
 
-        <div className='row ms-5 mt-3'>
-          <div className='col-md-10 offset-md-1 me-5'>
+        <div className='row ms-15 mt-3'>
+          <div className='col-md-10 offset-md-1'>
 
             {/* 헤더 */}
 
@@ -273,14 +274,8 @@ useEffect(()=>{
               <div className='col-4 app-end'>
 
                 <div className='row'>
-                  <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
-                    <div className='col-2 offset-6 mt-1 me-1'>
-                      {/* 모달로채팅방 */}
-                      <RiKakaoTalkFill onClick={openModal} className="me-2" size="45" style={{ color: '#218C74' }} />
-                    </div>
-                    <div className='col-2 mt-1'>
-                      <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
-                    </div>
+                  <div className='col text-end'>
+               
                     <div className='col-2'>
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
