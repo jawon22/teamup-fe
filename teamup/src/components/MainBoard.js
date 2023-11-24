@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import { companyState, userState } from "../recoil";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const MainBoard=(props)=>{
 
@@ -32,6 +33,26 @@ const MainBoard=(props)=>{
             });
         };
 
+        // 타임스탬프를 날짜로 변환하는 함수
+        const formatDate = (timestamp) => {
+            const date = new Date(timestamp);
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
+            // 현재 날짜와 비교하여 오늘 작성된 경우 시간까지 표시, 그렇지 않은 경우 날짜만 표시
+            const today = new Date();
+            if (
+                date.getDate() === today.getDate() &&
+                date.getMonth() === today.getMonth() &&
+                date.getFullYear() === today.getFullYear()
+            ) {
+                // 오늘 작성된 경우
+                return date.toLocaleString('ko-KR', { hour: 'numeric', minute: 'numeric' });
+            } else {
+                // 오늘이 아닌 경우
+                return moment(timestamp).format('YYYY-MM-DD');
+            }
+        };
+        
     return(
 
         <div className="">
@@ -47,7 +68,7 @@ const MainBoard=(props)=>{
                 <div className="col">
                     <table className="table"style={{ fontSize: '15px' }}>                       
                         <thead>
-                            <tr className="table-primary">
+                            <tr className="table-primary item-center">
                                 <th>번호</th>
                                 <th>부서</th>
                                 <th>제목</th>
@@ -62,7 +83,7 @@ const MainBoard=(props)=>{
                                 <td>
                                     <Link className="custom-link" to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link>
                                 </td>
-                                <td>{board.boardWriteDate}</td>
+                                <td>{formatDate(board.boardWriteDate)}</td>
                             </tr>
                             ))}
                         </tbody>

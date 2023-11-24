@@ -54,6 +54,12 @@ const referrerState  = atom({
     default:'',
    })
 
+   //공지사항 저장소
+   export const userReadHistoryState = atom({
+    key: 'userReadHistory',
+    default: [], // 사용자의 조회 이력을 저장할 배열
+  });
+
 
 
    const nameState =atom({
