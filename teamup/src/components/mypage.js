@@ -15,11 +15,12 @@ import Row from 'react-bootstrap/Row';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
 
-const Mypage = () => {
+const Mypage = (props) => {
+    const AppUser = props.user;
     const [empInfo, setEmpInfo] = useState({
         comId: '',
         deptNo: '',
-        deptName:'',
+        deptName: '',
         empId: '',
         empName: '',
         empEmail: '',
@@ -31,19 +32,20 @@ const Mypage = () => {
 
     const empNo = user.substring(6);
 
-    const myInfo = () => {
-        axios({
-            url: `http://localhost:8080/emp/mypage/${empNo}`,
-            method: 'get',
-        }).then(response => {
-            console.log("정보={}",response.data);
+
+    const myInfo = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/emp/mypage/${empNo}`);
+            console.log("정보={}", response.data);
             setEmpInfo(response.data);
-        });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
 
     useEffect(() => {
         myInfo();
-    }, []);
+    }, [props.user]);
 
 
 
@@ -85,7 +87,7 @@ const Mypage = () => {
 
     useEffect(() => {
         loadProfile(loggedInEmpNo);
-    }, []);
+    }, [props.user]);
 
 
 
@@ -112,6 +114,7 @@ const Mypage = () => {
     const editProfile = () => {
 
         openModal();
+        loadProfile(loggedInEmpNo);
     };
 
 
@@ -188,22 +191,24 @@ const Mypage = () => {
 
     //프로필 이미지 삭제
     const deleteImage = async () => {
-        try {
-            // 백엔드에 이미지 삭제를 처리하는 API 호출
-            await axios({
-                url: `http://localhost:8080/profile/image/${empNo}`,
-                method: "delete"
-            });
+        if (window.confirm("프로필 이미지를 삭제하시겠습니까?")) {
+            try {
+                // 백엔드에 이미지 삭제를 처리하는 API 호출
+                await axios({
+                    url: `http://localhost:8080/profile/image/${empNo}`,
+                    method: "delete"
+                });
 
-            // 이미지 삭제 성공 시, 기본 이미지로 설정 또는 다른 작업 수행
-            setImgSrc(surf);
+                // 이미지 삭제 성공 시, 기본 이미지로 설정 또는 다른 작업 수행
+                setImgSrc(surf);
 
-            // 모달 닫기
-            closeModal();
-        }
-        catch (error) {
-            console.error("프로필 이미지 삭제 에러", error);
-        }
+                // 모달 닫기
+                closeModal();
+            }
+            catch (error) {
+                console.error("프로필 이미지 삭제 에러", error);
+            }
+        };
     };
 
 
@@ -231,7 +236,7 @@ const Mypage = () => {
             .catch(err => {
                 setImgSrc(surf);
             });
-    }, []);
+    }, [props.user]);
 
     //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
     const displayImage = imgSrc || surf;
@@ -250,39 +255,41 @@ const Mypage = () => {
         empTel: '',
         empEmail: '',
         empPw: '',
-        empPwCheck:'',
-        myEmpPw:'',
+        empPwCheck: '',
+        myEmpPw: '',
     });
 
     const [result, setResult] = useState({
-        pw:null,
-        pwCheck:null,
+        pw: null,
+        pwCheck: null,
     });
 
-    const check =()=>{
+    const check = () => {
 
         const checkPw = /^[A-Z][a-z0-9!@#$]{8,16}$/;
         const pwMatch = empInfomation.empPw.length === 0 ? null : checkPw.test(empInfomation.empPw);
 
-        const match = empInfomation.empPwCheck.length=== 0 ? null :
-         empInfomation.pwCheck === empInfomation.empPw && empInfomation.empPwCheck.length>0;
+        const match = empInfomation.empPwCheck.length === 0 ? null :
+            empInfomation.pwCheck === empInfomation.empPw && empInfomation.empPwCheck.length > 0;
 
         setResult({
-            pw:pwMatch,
-            pwCheck:match,
+            pw: pwMatch,
+            pwCheck: match,
         })
-        
+
 
     };
 
 
 
-    const changeData=(e)=>{
-        setEmpInfomation({...empInfomation,
-            [e.target.name]:e.target.value}
-            )
+    const changeData = (e) => {
+        setEmpInfomation({
+            ...empInfomation,
+            [e.target.name]: e.target.value
+        }
+        )
 
-            console.log(empInfomation.empPwCheck)
+        console.log(empInfomation.empPwCheck)
 
     }
 
@@ -295,7 +302,7 @@ const Mypage = () => {
         axios({
             url: `http://localhost:8080/emp/changePw/${empNo}`,
             method: 'put',
-            data:{ empPw:empInfomation.empPw}
+            data: { empPw: empInfomation.empPw }
         }).then(res => {
             console.log(res.data)
 
@@ -307,12 +314,13 @@ const Mypage = () => {
 
     const [show, setShow] = useState(false);
 
-    const handleClose = () =>{ setShow(false)
+    const handleClose = () => {
+        setShow(false)
         setEmpInfomation({});
-        
+
         setResult({
-            pw:null,
-            pwCheck:null,
+            pw: null,
+            pwCheck: null,
         });
     };
     const handleShow = () => setShow(true);
@@ -322,7 +330,7 @@ const Mypage = () => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = new Date(dateString).toLocaleDateString('ko-KR', options);
         return formattedDate.replace(/\.$/, ''); // 맨 뒤의 . 제거
-      };
+    };
 
 
 
@@ -334,13 +342,13 @@ const Mypage = () => {
                 <div className="row mt-4 mp-bg text-green">
 
                     <div className="col-5 image-fix d-flex justify-content-center align-self-center"
-                            onClick={()=>editProfile(loggedInEmpNo)}>
+                        onClick={() => editProfile(loggedInEmpNo)}>
                         <img src={displayImage} alt="profileImage" id="previewImage2"
-                                className="rounded-circle object-fit-cover img-responsive" 
-                                style={{width:"220px", height:"220px"}}/>
+                            className="rounded-circle object-fit-cover img-responsive"
+                            style={{ width: "220px", height: "220px" }} />
                         <div>
                             <FaEdit className="mypage-btn-icon text-white"
-                                style={{width:"35px", height:"35px", padding:"7px"}}/>
+                                style={{ width: "35px", height: "35px", padding: "7px" }} />
                         </div>
                     </div>
 
@@ -410,20 +418,20 @@ const Mypage = () => {
                                         <Col xs={6} md={6}>
                                             <Row className="d-flex justify-content-center align-self-center">
                                                 <label className="input-file-button" for="changeImage">
-                                                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover" 
-                                                        style={{width:"180px", height:"180px"}}/>
+                                                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover"
+                                                        style={{ width: "180px", height: "180px" }} />
                                                 </label>
                                             </Row>
                                             <Row>
                                                 <label>
-                                                    <input type="file" name="attach" id="changeImage" style={{display:"none"}} onChange={updateImagePreview}/>
-                                                    <IoCamera className="image-edit-btn text-white ms-1 mt-1" style={{width:"30px", height:"30px", padding:"3px"}}/>
+                                                    <input type="file" name="attach" id="changeImage" style={{ display: "none" }} onChange={updateImagePreview} />
+                                                    <IoCamera className="image-edit-btn text-white ms-1 mt-1" style={{ width: "30px", height: "30px", padding: "3px" }} />
                                                 </label>
                                                 <label>
-                                                    <RiDeleteBin6Fill className="image-delete-btn text-white ms-1 mt-1" style={{width:"30px", height:"30px", padding:"3px"}}
-                                                            onClick={deleteImage}/>
+                                                    <RiDeleteBin6Fill className="image-delete-btn text-white ms-1 mt-1" style={{ width: "30px", height: "30px", padding: "3px" }}
+                                                        onClick={deleteImage} />
                                                 </label>
-                                
+
                                             </Row>
                                         </Col>
                                         <Col>
@@ -461,41 +469,41 @@ const Mypage = () => {
                                             </Row>
                                         </Col>
                                     </Row>
-                            
+
                                     <Row>
                                         <Col xs={4} md={3} className="border border-success border-bg-color text-center text-bold text-green py-2 rounded-top">
-                                          연락처
+                                            연락처
                                         </Col>
                                         <Col xs={8} md={9}>
-                                            <input type="tel" name="empTel" className="form-control" 
-                                                  value={profile.empTel} onChange={changeProfile}/>
+                                            <input type="tel" name="empTel" className="form-control"
+                                                value={profile.empTel} onChange={changeProfile} />
                                         </Col>
                                         <Col xs={4} md={3} className="border border-success border-bg-color 
                                                 text-center text-bold text-green py-2 border-top-0">
                                             이메일
                                         </Col>
                                         <Col xs={8} md={9}>
-                                            <input type="email" name="empEmail" className="form-control" 
-                                                  value={profile.empEmail} onChange={changeProfile}/>
+                                            <input type="email" name="empEmail" className="form-control"
+                                                value={profile.empEmail} onChange={changeProfile} />
                                         </Col>
-                                
+
                                         <Col xs={4} md={3} className="border border-success border-bg-color 
                                                 text-center text-bold text-green py-2 border-top-0">
                                             소개
                                         </Col>
                                         <Col xs={8} md={9}>
-                                            <input type="text" name="profileTitle" className="form-control" 
-                                                  value={profile.profileTitle} onChange={changeProfile}/>
+                                            <input type="text" name="profileTitle" className="form-control"
+                                                value={profile.profileTitle} onChange={changeProfile} />
                                         </Col>
-                                    
+
                                         <Col xs={4} md={3} className="border border-success border-bg-color 
-                                                text-center text-bold text-green border-top-0 rounded-bottom align-self-center" 
-                                                style={{height:"86px"}}>
+                                                text-center text-bold text-green border-top-0 rounded-bottom align-self-center"
+                                            style={{ height: "86px" }}>
                                             <p className="mt-4">내용</p>
                                         </Col>
                                         <Col xs={8} md={9}>
                                             <textarea name="profileContent" className="form-control" rows="3"
-                                                      value={profile.profileContent} onChange={changeProfile}/>
+                                                value={profile.profileContent} onChange={changeProfile} />
                                         </Col>
                                     </Row>
                                 </Col>
@@ -514,7 +522,7 @@ const Mypage = () => {
                     <div className="text-center text-green">
                         <div className="row mp-bg mb-4 p-4">
                             <div className="col-12">
-                                <Attend />
+                                <Attend user={user} />
                             </div>
                         </div>
                     </div>
@@ -542,11 +550,23 @@ const Mypage = () => {
                     <Modal.Body>
 
                         <label className="form-label">새비밀번호</label>
-                        <input type="password" onBlur={check} className={`form-control  ${result.pw === true? 'is-valid':''}
-                      ${result.pw === false? 'is-invalid':''}`} name="empPw" value={empInfomation.empPw} onChange={changeData}/>
+                        <input
+                            type="password"
+                            onBlur={check}
+                            className={`form-control  ${result.pw === true ? 'is-valid' : ''} ${result.pw === false ? 'is-invalid' : ''}`}
+                            name="empPw"
+                            value={empInfomation.empPw}
+                            onChange={changeData}
+                        />
                         <label className="form-label">비밀번호확인</label>
-                        <input type="password" onBlur={check} className={`form-control   ${result.pwCheck === true? 'is-valid':''}
-                      ${result.pwCheck === false? 'is-invalid':''}`}  name="empPwCheck" value={empInfomation.empPwCheck}  onChange={changeData}/>
+                        <input
+                            type="password"
+                            onBlur={check}
+                            className={`form-control   ${result.pwCheck === true ? 'is-valid' : ''} ${result.pwCheck === false ? 'is-invalid' : ''}`}
+                            name="empPwCheck"
+                            value={empInfomation.empPwCheck}
+                            onChange={changeData}
+                        />
 
                     </Modal.Body>
                     <Modal.Footer>

@@ -67,63 +67,65 @@ function App() {
 
 //user로 내 정보 끌어오기
 
-const [socket, setSocket] = useState();
-const [room , setRoom] = useRecoilState(roomState);
-
-const [roomNo, setRoomNo] = useState("");
 
 
+// const [socket, setSocket] = useState();
+// const [room , setRoom] = useRecoilState(roomState);
 
-const onRoomNoChange = () => {
-  //채팅방 번호 전달하기
-
-  console.log(roomNo);
-
-  console.log('useEffect in App.js triggered!');
-};
+// const [roomNo, setRoomNo] = useState("");
 
 
 
+// const onRoomNoChange = () => {
+//   //채팅방 번호 전달하기
 
-useEffect((props) => {
-  // SockJS를 사용하여 WebSocket에 연결
-  const socket = new SockJS('http://localhost:8080/ws/sockjs');
+//   console.log(roomNo);
 
-  // 연결 성공 시 실행되는 콜백
-  socket.onopen = () => {
-    console.log('WebSocket Connected!');
-    const data = {
-      type: 'enterRoom',
-      chatRoomNo: roomNo
-    };
+//   console.log('useEffect in App.js triggered!');
+// };
+
+
+
+
+// useEffect((props) => {
+//   // SockJS를 사용하여 WebSocket에 연결
+//   const socket = new SockJS('http://localhost:8080/ws/sockjs');
+
+//   // 연결 성공 시 실행되는 콜백
+//   socket.onopen = () => {
+//     console.log('WebSocket Connected!');
+//     const data = {
+//       type: 'enterRoom',
+//       chatRoomNo: roomNo
+//     };
     
-    // 보낼 데이터를 정의
+//     // 보낼 데이터를 정의
 
     
-    // 데이터를 JSON 문자열로 변환하여 서버로 전송
-  };
+//     // 데이터를 JSON 문자열로 변환하여 서버로 전송
+//   };
 
-  console.log('App.js의 useEffect가 트리거되었습니다!');
+//   console.log('App.js의 useEffect가 트리거되었습니다!');
 
-  // 메시지를 받았을 때 실행되는 콜백
-  socket.onmessage = (event) => {
-    const message = JSON.parse(event.data);
-    console.log('Received message:', message);
-    // 메시지 처리 로직을 추가하세요.
-  };
+//   // 메시지를 받았을 때 실행되는 콜백
+//   socket.onmessage = (event) => {
+//     const message = JSON.parse(event.data);
+//     console.log('Received message:', message);
+//     // 메시지 처리 로직을 추가하세요.
+//   };
 
-  // 연결이 닫힌 경우 실행되는 콜백
-  socket.onclose = () => {
-    console.log('WebSocket Connection Closed.');
-  };
+//   // 연결이 닫힌 경우 실행되는 콜백
+//   socket.onclose = () => {
+//     console.log('WebSocket Connection Closed.');
+//   };
 
-  // 컴포넌트가 언마운트되면 연결 종료
-  return () => {
-    if (socket.readyState === SockJS.OPEN) {
-      socket.close();
-    }
-  };
-}, []); // 컴포넌트가 처음 마운트될 때만 실행
+//   // 컴포넌트가 언마운트되면 연결 종료
+//   return () => {
+//     if (socket.readyState === SockJS.OPEN) {
+//       socket.close();
+//     }
+//   };
+// }, []); // 컴포넌트가 처음 마운트될 때만 실행
 
 
 
@@ -175,9 +177,27 @@ useEffect((props) => {
     )
   }
 
+
+  const sessionId = sessionStorage.getItem("comId");
+
+  useEffect(() => {
+    setCompany(sessionId)
+    console.log("세션아이디::",sessionId)
+  }, [])
+
+
   useEffect(() => {
     loadInfo();
-  }, [])
+}, [company, user]);
+
+
+useEffect(()=>{
+  if(user===''){
+    navigate("/login");
+  }
+
+},[])
+
 
 
 
@@ -205,7 +225,7 @@ useEffect((props) => {
       .catch(err=>{
         setImgSrc(surf);
       });
-  });
+  },[user]);
 
 
   //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
@@ -219,12 +239,19 @@ useEffect((props) => {
   return (
     <>
       <div className='main-content container-fluid parent-container'>
-        <Sidebar />
 
-        <div className='row ms-5 mt-3'>
-          <div className='col-md-10 offset-md-1 me-5'>
+        {user ===''? '': <Sidebar />}
+
+
+        <div className='row ms-15 mt-3'>
+          <div className='col-md-10 offset-md-1'>
 
             {/* 헤더 */}
+
+            {user ===''?'':(
+
+
+
             <div className='row'>
               <div className='col-4 me-auto app-start'>
                 <Navbar.Brand href="#home" className='logo'>
@@ -245,14 +272,8 @@ useEffect((props) => {
               <div className='col-4 app-end'>
 
                 <div className='row'>
-                  <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
-                    <div className='col-2 offset-6 mt-1 me-1'>
-                      {/* 모달로채팅방 */}
-                      <RiKakaoTalkFill onClick={openModal} className="me-2" size="45" style={{ color: '#218C74' }} />
-                    </div>
-                    <div className='col-2 mt-1'>
-                      <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
-                    </div>
+                  <div className='col text-end'>
+               
                     <div className='col-2'>
                       <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
@@ -265,8 +286,7 @@ useEffect((props) => {
                             {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
                             {/* <img src={imgSrc} alt="profileImage" className="rounded-circle" 
                                   style={{width:"45px", height:"45px", objectFit:"cover"}}/> */}
-                           <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
-
+                            <NavDropdown.Item href="#mypage"  >마이페이지</NavDropdown.Item>
 
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
@@ -277,6 +297,7 @@ useEffect((props) => {
                 </div>
               </div>
             </div>
+            )}
             {/* 본문 */}
             {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
 
@@ -293,27 +314,26 @@ useEffect((props) => {
 
 
 
-              
-                <div className='mt-3'>
-                  <Routes>
-                    {/* 각종 라우터 */}
-                    <Route path="/approveList" element={<ApproveList/>}></Route> 
-                    <Route path="/approveWrite" element={<ApproveWrite/>}></Route>
-                    <Route path='/com' element={<Com/>} ></Route>
-                    <Route path='/search' element={<Search/>}></Route>
-                    <Route path='/home' element={<Home/>}></Route>
-                    <Route path='/login' element={<Login/>}></Route>
-                    <Route path="/mypage" element={<Mypage/>}></Route>
-                    <Route path="/deptInsert" element={<DeptInsert/>}></Route>
-                    <Route path="/calendar" element={<Calendar/>}></Route>
-                    <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
-                    <Route path='/salList' element={<SalList/>}></Route>
-                    <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
-                    <Route path="/Board" element={<Board/>} ></Route>
-                    <Route path='/empTree' element={<Emp/>}/>
-                    <Route path='/board/find/:idx' element={<BoardDetail/>}/>
-                    <Route path='/board/update/:idx' element={<BoardUpdate/>}/>
 
+            <div className='mt-3'>
+              <Routes>
+                {/* 각종 라우터 */}
+                <Route path="/approveList" element={<ApproveList />}></Route>
+                <Route path="/approveWrite" element={<ApproveWrite />}></Route>
+                <Route path='/com' element={<Com />} ></Route>
+                <Route path='/search' element={<Search user={user} />}></Route>
+                <Route path='/home' element={<Home  user={user}/>}></Route>
+                <Route path='/login' element={<Login />}></Route>
+                <Route path="/mypage" element={<Mypage user={user} />}></Route>
+                <Route path="/deptInsert" element={<DeptInsert />}></Route>
+                <Route path="/calendar" element={<Calendar />}></Route>
+                <Route path='/companyJoin' element={<CompanyJoin />}></Route>
+                <Route path='/salList' element={<SalList />}></Route>
+                <Route path="/deptCalendar" element={<DeptCalendar />} ></Route>
+                <Route path="/Board" element={<Board />} ></Route>
+                <Route path='/empTree' element={<Emp />} />
+                <Route path='/board/find/:idx' element={<BoardDetail />} />
+                <Route path='/board/update/:idx' element={<BoardUpdate />} />
 
 
 
@@ -347,7 +367,7 @@ useEffect((props) => {
 
 
 
-
+{/* 
       {showModal && (
         <div className="chat-modal-background" >
           <div className="chat-modal-content">
@@ -374,7 +394,7 @@ useEffect((props) => {
           <div>
           </div>
         </div>
-      )}
+      )} */}
 
     </>
   );

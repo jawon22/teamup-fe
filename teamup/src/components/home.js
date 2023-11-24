@@ -15,7 +15,7 @@ import TodoCreate from "./TodoList/TodoCreate";
 import { TodoProvider } from "../TodoContext";
 import Weather from "./weather";
 
-const Home = () => {
+const Home = (props) => {
 
   const [user, setUser] = useRecoilState(userState);
 
@@ -71,7 +71,7 @@ const Home = () => {
   //페이지가 로드 될 때마다 attend 객체 조회
   useEffect(() => {
     loadAttend();
-  }, [empNo]);
+  }, [props.user]);
 
   //조회 (오늘 출퇴근버튼 누른 시간)
   const loadAttend = () => {
@@ -141,43 +141,42 @@ const Home = () => {
       .catch(err => {
         setImgSrc(surf);
       });
-  }, []);
+  }, [props.user]);
 
 
   //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
   const displayImage = imgSrc || surf;
 
 
-  //이름과 직급을 찍기 위해 사원정보를 불러옴
-  const myInfo = () => {
-    axios({
-        url: `http://localhost:8080/emp/mypage/${empNo}`,
-        method: 'get',
-    }).then(response => {
-        console.log(response.data);
-        setEmpInfo(response.data);
+ // 이름과 직급을 찍기 위해 사원정보를 불러옴
+ const myInfo = async () => {
+  try {
+      const response = await axios.get(`http://localhost:8080/emp/mypage/${empNo}`);
+      console.log(response.data);
+      setEmpInfo(response.data);
 
-        setName(empInfo.empName);
-        setDeptNo(empInfo.deptNo);
-        console.log(name)
-        
-    });
+      setName(response.data.empName);
+      setDeptNo(response.data.deptNo);
+      console.log(name);
+  } catch (error) {
+      console.error('Error fetching data:', error);
+  }
 };
 
 useEffect(() => {
-    myInfo();
-}, []);
+  myInfo();
+}, [props.user]);
 
 
 
   return (
 
-    <div className="parent-container">
+    <div>
       <div className="row ms-4 mt-2 mp">
 
 
         {/* 세로로 첫 번째 줄 */}
-        <div className="home-profile col-lg-3 col-md-3">
+        <div className="home-profile col-lg-3 col-md-4">
 
           {/* 프로필과 출퇴근 버튼 */}
           <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
@@ -212,7 +211,7 @@ useEffect(() => {
           </div>
 
           {/* 투두리스트 */}
-          <div className="row h-50 me-1">
+          <div className="row h-50 me-1 home-todo">
             <TodoProvider>
             <TodoTemplate style={{ width: '100%', height: '100%' }}>
                 <TodoHead />
@@ -225,7 +224,7 @@ useEffect(() => {
         </div>
 
         {/* 세로로 두 번째 줄 */}
-        <div className="home-center col-lg-5 col-md-5">
+        <div className="home-center col-lg-5">
           <div className="row graybox border-primary h-50">
             공지사항
           </div>
@@ -235,7 +234,7 @@ useEffect(() => {
         </div>
 
         {/* 세로로 세 번째 줄 */}
-        <div className="col-lg-4 col-md-4">
+        <div className="home-calendar col-lg-4 col-md-8">
           {/* 캘린더 */}
           <div className="home-calendar graybox border-primary h-50 p-3">
             <Calendar />
