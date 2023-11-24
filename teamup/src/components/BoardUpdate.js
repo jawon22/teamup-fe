@@ -54,9 +54,9 @@ const BoardUpdate =()=> {
 
     return(
         <div className="row">
-    <div className="col-md-10 offset-md-1">
+    <div className="col-md-10 offset-md-1 mt-5">
 
-    <table className='table table-bordered'>
+    <table className='table table-bordered mt-4'>
       <tr>
           <th colSpan={1}>제목</th>
           <td colSpan={5}><input className="w-100" type="text" name="boardTitle"
@@ -83,9 +83,9 @@ const BoardUpdate =()=> {
           name="boardContent"
           className="w-100"
           cols="50"
-          rows="10"
+          rows="15"
           value={board.boardContent}
-          style={{ border: 'none', boxShadow: 'none',outline: 'none' }}
+          style={{ border: 'none', boxShadow: 'none',outline: 'none',resize:'none' }}
           onChange={onChange}
         ></textarea>
         </td>

@@ -41,11 +41,11 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
 
   return (
     <div className="row">
-    <div className="col-md-10 offset-md-1">
+    <div className="col-md-10 offset-md-1 ps-5 pe-5">
 
     <div className="row mb-2">
-        <div className="col-6 ">
-                <h4>공지사항 상세</h4>
+        <div className="col-6 mt-5 mb-3">
+                <h3>공지사항 상세</h3>
         </div>
         <div className="col-6 text-end">
                 <button className="btn btn-primary text-white"
@@ -83,10 +83,18 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
           <th colSpan={1}>수정일</th>
           <td colSpan={2}>{updateDate}</td>
       </tr>
-      <tr>
+      {/* <tr>
         <td colSpan={6}>{contents}</td>
-      </tr>
+      </tr> */}
+      
     </table>
+
+    {/* 내용 부분 */}
+    <div className="row">
+      <div className="col-12 p-4">
+        {contents}
+      </div>
+    </div>
 
 
     </div></div>
