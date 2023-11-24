@@ -32,7 +32,7 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
-import { companyState, deptNoState, nameState, roomState, userState } from './recoil';
+import { companyState, roomState, userState } from './recoil';
 import Emp from './components/Emp';
 import surf from "./components/images/profileImage.png";
 import Chat from './components/chat';
@@ -42,9 +42,7 @@ import BoardDetail from './components/BoardDetail';
 import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
-import moment, { now } from 'moment';
 
-import { FaPeopleGroup } from "react-icons/fa6";
 
 
 
@@ -68,116 +66,85 @@ function App() {
   //------------------------------조직도 끝---
 
 
-  //user로 내 정보 끌어오기
+//user로 내 정보 끌어오기
 
-  const [room, setRoom] = useRecoilState(roomState);
+const [socket, setSocket] = useState();
+const [room , setRoom] = useRecoilState(roomState);
 
-  const [roomNo, setRoomNo] = useState("");
-
-
-
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+const [roomNo, setRoomNo] = useState("");
 
 
 
+const onRoomNoChange = () => {
+  //채팅방 번호 전달하기
 
-  const [socket, setSocket] = useState();
+  console.log(roomNo);
 
-
-  const [ messageList,setMessageList ] = useState([]);
-
-///웹소켓
-  useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws/sockjs');
-
-    setSocket(socket)
-
-    socket.onopen = () => {
-      console.log('WebSocket Connected!');
-      const data = {
-        type: 'enterRoom',
-        chatRoomNo: roomNo
-      };
-    };
-
-    console.log('App.js의 useEffect가 트리거되었습니다!');
-
-    socket.onmessage = (event) => {
-      const getMessage = JSON.parse(event.data);
-      console.log('Received message:', getMessage);
-      console.log("메세지", messages);
-
-
-      console.log(getMessage.content);
-      
-      setMessages([...messages,getMessage.content]);
-
-
-        console.log(messageList.content);
-
-    };
-
-
-
-    socket.onclose = () => {
-      console.log('WebSocket Connection Closed.');
-    };
-    return () => {
-      if (socket.readyState === SockJS.OPEN) {
-        socket.close();
-      }
-    };
-  }, []); 
-
-  
-  const [name ,setName] =useRecoilState(nameState);
-  //const [positionName ,setPositionName] =useRecoilState();
+  console.log('useEffect in App.js triggered!');
+};
 
 
 
 
+useEffect((props) => {
+  // SockJS를 사용하여 WebSocket에 연결
+  const socket = new SockJS('http://localhost:8080/ws/sockjs');
 
-  const chatMessage = (message) => {
-    const userNo = user.substring(6)
+  // 연결 성공 시 실행되는 콜백
+  socket.onopen = () => {
+    console.log('WebSocket Connected!');
     const data = {
-      type: 'message',
-      empNo: userNo,
-      content: message,
-      date :moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
-      roomNo : roomNo,
+      type: 'enterRoom',
+      chatRoomNo: roomNo
     };
+    
+    // 보낼 데이터를 정의
 
-    console.log("전송?", data);
-    socket.send(JSON.stringify(data));
-    console.log(name)
-    // 여기서 message를 처리하거나 다른 로직을 수행할 수 있습니다.
+    
+    // 데이터를 JSON 문자열로 변환하여 서버로 전송
   };
 
+  console.log('App.js의 useEffect가 트리거되었습니다!');
 
-  
-  const onRoomNoChange = (e) => {
-    // 채팅방 번호 전달하기
-    //type, 방번호만 
-    const no = e.target.value; 
+  // 메시지를 받았을 때 실행되는 콜백
+  socket.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    console.log('Received message:', message);
+    // 메시지 처리 로직을 추가하세요.
+  };
 
-    const data = {
-      type: 'enter',
-      chatRoomNo: no
+  // 연결이 닫힌 경우 실행되는 콜백
+  socket.onclose = () => {
+    console.log('WebSocket Connection Closed.');
+  };
 
-    };
-    console.log("입장?", data);
+  // 컴포넌트가 언마운트되면 연결 종료
+  return () => {
+    if (socket.readyState === SockJS.OPEN) {
+      socket.close();
+    }
+  };
+}, []); // 컴포넌트가 처음 마운트될 때만 실행
 
-    socket.send(JSON.stringify(data));
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
   const [company, setCompany] = useRecoilState(companyState);
   const navigate = useNavigate();
-
-
 
   const loadInfo = () => {
 
@@ -227,16 +194,16 @@ function App() {
   const loggedInEmpNo = parseInt(user.substring(6));
 
   const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
-  useEffect(() => {
+  useEffect(()=>{
 
-    axios({
-      url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
-      method: "get"
-    })
-      .then(response => {
+      axios({
+        url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+        method:"get"
+      })
+      .then(response=>{
         setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
       })
-      .catch(err => {
+      .catch(err=>{
         setImgSrc(surf);
       });
   });
@@ -252,7 +219,7 @@ function App() {
 
   return (
     <>
-      <div className='main-content container-fluid'>
+      <div className='main-content container-fluid parent-container'>
         <Sidebar />
 
         <div className='row ms-5 mt-3'>
@@ -260,12 +227,10 @@ function App() {
 
             {/* 헤더 */}
             <div className='row'>
-              <div className="home-profile col-lg-3 col-md-5">
+              <div className='col-4 me-auto app-start'>
                 <Navbar.Brand href="#home" className='logo'>
                   <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
                   <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
-                  {roomNo}
-
 
                   <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
                   {/* <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink> */}
@@ -275,15 +240,13 @@ function App() {
 
                 </Navbar.Brand>
               </div>
-                {/* 가운데 */}
-              <div className="home-center col-lg-5">
 
-              </div>
-              {/* 오른쪽 */}
-              <div className="col-lg-4 col-md-7">
+              <div className='col-4 app-center'>아오</div>
+
+              <div className='col-4 app-end'>
 
                 <div className='row'>
-                  <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container home-calendar'>
+                  <div className='col d-flex ml-auto justify-content-between align-items-center text-end icons-container'>
                     <div className='col-2 offset-6 mt-1 me-1'>
                       {/* 모달로채팅방 */}
                       <RiKakaoTalkFill onClick={openModal} className="me-2" size="45" style={{ color: '#218C74' }} />
@@ -291,20 +254,19 @@ function App() {
                     <div className='col-2 mt-1'>
                       <BsFillBellFill className="me-2" size="40" style={{ color: '#218C74' }} />
                     </div>
-
                     <div className='col-2'>
-                      <Navbar expand="sm" className="bg-body-white me-5">
+                      <Navbar expand="sm" className="bg-body-white ">
                         <Nav className="bg-body-primary ">
 
 
 
 
-                          <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle"
-                            style={{ width: "45px", height: "45px", objectFit: "cover" }} />} id="basic-nav-dropdown">
+                          <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle" 
+                                  style={{width:"45px", height:"45px", objectFit:"cover"}}/>} id="basic-nav-dropdown">  
                             {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
                             {/* <img src={imgSrc} alt="profileImage" className="rounded-circle" 
                                   style={{width:"45px", height:"45px", objectFit:"cover"}}/> */}
-                            <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
+                           <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
 
 
                             <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
@@ -316,10 +278,6 @@ function App() {
                 </div>
               </div>
             </div>
-
-          
-
-
             {/* 본문 */}
             {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
 
@@ -336,26 +294,26 @@ function App() {
 
 
 
-
-            <div className='mt-3'>
-              <Routes>
-                {/* 각종 라우터 */}
-                <Route path="/approveList" element={<ApproveList />}></Route>
-                <Route path="/approveWrite" element={<ApproveWrite />}></Route>
-                <Route path='/com' element={<Com />} ></Route>
-                <Route path='/search' element={<Search />}></Route>
-                <Route path='/home' element={<Home />}></Route>
-                <Route path='/login' element={<Login />}></Route>
-                <Route path="/mypage" element={<Mypage />}></Route>
-                <Route path="/deptInsert" element={<DeptInsert />}></Route>
-                <Route path="/calendar" element={<Calendar />}></Route>
-                <Route path='/companyJoin' element={<CompanyJoin />}></Route>
-                <Route path='/salList' element={<SalList />}></Route>
-                <Route path="/deptCalendar" element={<DeptCalendar />} ></Route>
-                <Route path="/Board" element={<Board />} ></Route>
-                <Route path='/empTree' element={<Emp />} />
-                <Route path='/board/find/:idx' element={<BoardDetail />} />
-                <Route path='/board/update/:idx' element={<BoardUpdate />} />
+              
+                <div className='mt-3'>
+                  <Routes>
+                    {/* 각종 라우터 */}
+                    <Route path="/approveList" element={<ApproveList/>}></Route> 
+                    <Route path="/approveWrite" element={<ApproveWrite/>}></Route>
+                    <Route path='/com' element={<Com/>} ></Route>
+                    <Route path='/search' element={<Search/>}></Route>
+                    <Route path='/home' element={<Home/>}></Route>
+                    <Route path='/login' element={<Login/>}></Route>
+                    <Route path="/mypage" element={<Mypage/>}></Route>
+                    <Route path="/deptInsert" element={<DeptInsert/>}></Route>
+                    <Route path="/calendar" element={<Calendar/>}></Route>
+                    <Route path='/companyJoin' element={<CompanyJoin/>}></Route>
+                    <Route path='/salList' element={<SalList/>}></Route>
+                    <Route path="/deptCalendar" element={<DeptCalendar/>} ></Route>
+                    <Route path="/Board" element={<Board/>} ></Route>
+                    <Route path='/empTree' element={<Emp/>}/>
+                    <Route path='/board/find/:idx' element={<BoardDetail/>}/>
+                    <Route path='/board/update/:idx' element={<BoardUpdate/>}/>
 
 
 
@@ -373,7 +331,7 @@ function App() {
               <div className='col-10 offset-1'>
                 <Offcanvas show={show} onHide={handleClose} placement='end'>
                   <Offcanvas.Header closeButton>
-                    <Offcanvas.Title><div style={{ fontSize: '2.5em', color: '#218C74', paddingLeft:'20px' }}><FaPeopleGroup /></div></Offcanvas.Title>
+                    <Offcanvas.Title>조직도</Offcanvas.Title>
                   </Offcanvas.Header>
                   <Offcanvas.Body>
                     <Emp />
@@ -401,16 +359,11 @@ function App() {
             <div className='chat-container'>
               <div className='row'>
                 <div className='col-4' >
-                  <ChatList setRoomNo={setRoomNo} roomNo={roomNo} onRoomNoChange={onRoomNoChange} />
+                  <ChatList setRoomNo={setRoomNo}   list={roomNo}  onRoomNoChange={onRoomNoChange}/>
                 </div>
-                <div className='col-8'  >
-                  <Chat
-                    messages={messages}
-                    setMessages={setMessages}
-                    newMessage={newMessage}
-                    setNewMessage={setNewMessage}
-                    chatMessage={chatMessage} // chatMessage 함수를 전달
-                  />                </div>
+                <div className='col-8'>
+                  <Chat/>
+                </div>
               </div>
             </div>
 

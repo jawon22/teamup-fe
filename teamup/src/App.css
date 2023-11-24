@@ -1,39 +1,16 @@
 /* 1600px 이하일 때의 스타일 */
-@media (max-width: 1320px) {
-  .home-profile{
+@media (max-width: 1000px) {
+  .app-start{
     width: 30%;
   }
-  .home-center {
-    width: 20%; /* 해당 클래스의 엘리먼트를 숨김 */
+  .app-center {
+    display: none; /* 해당 클래스의 엘리먼트를 숨김 */
   }
-  .home-calendar {
+  .app-end {
     width: 100%; /* 100%의 너비를 가지도록 함 */
   }
 
 }
 
-@media (max-width: 1000px) {
-  .home-center {
-    display: none; /* 해당 클래스의 엘리먼트를 숨김 */
-  }
-  .home-profile{
-      width: 40%;
-  }
-  
-
-}
 
 
-
-@media (max-width: 600px) {
-  .home-center {
-    display: none; /* 해당 클래스의 엘리먼트를 숨김 */
-  }
-  .home-profile{
-      width: 90%;
-  }
-  .home-calendar {
-      display: none; /* 해당 클래스의 엘리먼트를 숨김 */
-    }
-
-}
