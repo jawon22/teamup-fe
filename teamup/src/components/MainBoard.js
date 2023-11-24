@@ -66,21 +66,23 @@ const MainBoard=(props)=>{
                 
             <div className="row">
                 <div className="col">
-                    <table className="table"style={{ fontSize: '15px' }}>                       
+                    <table className="table main-board-font" style={{ fontSize: '15px' }}>                       
                         <thead>
-                            <tr className="table-primary item-center">
-                                <th>번호</th>
-                                <th>부서</th>
-                                <th>제목</th>
-                                <th>작성일</th>
+
+                            <tr className="table-primary text-center">
+                                <th width="15%">번호</th>
+                                <th width="20%">부서</th>
+                                <th width="40%">제목</th>
+                                <th width="25%">작성일</th>
+
                             </tr>
                         </thead> 
-                        <tbody>
+                        <tbody className="text-center main-board-font">
                             {boardList.map(board=>(
                             <tr key={board.boardNo}>
                                 <td>{board.boardNo}</td>
                                 <td>{board.deptName}</td>
-                                <td>
+                                <td className="text-start">
                                     <Link className="custom-link" to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link>
                                 </td>
                                 <td>{formatDate(board.boardWriteDate)}</td>
