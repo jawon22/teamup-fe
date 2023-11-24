@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
-const Search = () => {
+const Search = (props) => {
     const location = useLocation();
     const [searchList, setSearchList] = useState([]);
     const [addressList, setAddressList] = useState([]);
@@ -140,10 +140,11 @@ const Search = () => {
     useEffect(() => {
         loadForSearch();
         getCount();
+        loadProfile();
 
         //  loadAddress();
 
-    }, []);
+    }, [user]);
 
 
     const [profileList, setProfileList] = useState([]);
