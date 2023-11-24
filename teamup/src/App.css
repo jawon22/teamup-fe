@@ -1,13 +1,13 @@
 /* 1600px 이하일 때의 스타일 */
-@media (max-width: 1000px) {
+@media (max-width: 1320px) {
   .app-start{
-    width: 30%;
+    width: 40%;
   }
   .app-center {
     display: none; /* 해당 클래스의 엘리먼트를 숨김 */
   }
   .app-end {
-    width: 100%; /* 100%의 너비를 가지도록 함 */
+    width: 60%; /* 100%의 너비를 가지도록 함 */
   }
 
 }

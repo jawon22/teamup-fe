@@ -25,6 +25,8 @@ const CompanyJoin = ()=>{
     };
 
 
+    
+
     const login = ()=>{
         axios({
             url:"http://localhost:8080/com/login",
@@ -37,8 +39,13 @@ const CompanyJoin = ()=>{
             if(response.data === true){
                 setCompany(companyInfo.comId)
                 console.log(company)
+
+
+                sessionStorage.setItem("comId",companyInfo.comId);
+
+
                 setTimeout(()=>{
-                    navigate('/home');
+                    navigate('/deptInsert');
                 },1000);
             }
         })

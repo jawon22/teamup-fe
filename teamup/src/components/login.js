@@ -53,9 +53,9 @@ const Login = () => {
                         }).then(response => {
                             console.log(response.data);
                             setCompany(response.data.comId);
-                            setTimeout(() => {
-                                navigate('/home');
-                            }, 5000);  // 1초 후에 '/home'으로 이동
+                            navigate('/home');
+                            
+                            
                         });
                     }
                 });
@@ -134,14 +134,7 @@ const Login = () => {
                             <img src="img/TeamUpLogo.png" style={{ maxWidth: "25%", height: "100%" }} alt="TeamUp Logo" />
                         </div>
 
-                        <div>
-                            id: 202383104<br />
-                            pw: 06b333a556 
 
-
-                            202384108
-                            669c61c235
-                        </div>
 
                         {/* 아이디 */}
                         <div className="row mt-4">

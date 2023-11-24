@@ -21,6 +21,8 @@ const Attend = (props) => {
     //상세보기 버튼 상태 state
     const [show, setShow] = useState(false);
 
+ 
+
     // - 현재 년, 월을 기준으로 목록 조회
     useEffect(()=>{
          // axios({}).then({}).catch({});
@@ -32,9 +34,8 @@ const Attend = (props) => {
             setAttendList(response.data);
 
         }).catch(err=>{
-            window.alert("통신 오류가 발생했습니다.");
         })
-    }, []);
+    }, [props.user]);
 
 
     // - 총 근무일 수 계산
@@ -91,14 +92,13 @@ const Attend = (props) => {
         setClientYearMonth(latestYearMonth);
       })
       .catch((err) => {
-        window.alert("통신 오류가 발생했습니다.");
       });
   };
 
   // 최초 1번 실행
   useEffect(() => {
     attendDetail();
-  }, []);
+  }, [props.user]);
 
   // 초기화 함수
   const clearAttendList = () => {
@@ -146,7 +146,6 @@ const Attend = (props) => {
           setClientYearMonth(newYearMonth);
       })
       .catch((err) => {
-        window.alert("통신 오류가 발생했습니다.");
       });
   };
 
@@ -185,7 +184,6 @@ const Attend = (props) => {
         setClientYearMonth(newYearMonth);
       })
       .catch((err) => {
-        window.alert("통신 오류가 발생했습니다.");
       });
   };
 
@@ -285,8 +283,8 @@ const Attend = (props) => {
               </tr>
             </thead>
             <tbody>
-              {attendList.map((attendLists) => (
-                <tr key={attendLists.empNo}>
+              {attendList.map((attendLists,index) => (
+                <tr key={index}>
                   <td>{attendLists.dt}</td>
                   <td>
                     {attendLists.attendStart

@@ -8,29 +8,42 @@ const DeptInsert = () => {
     //세션스토리지 아이디만 저장
     ///****전체적으로 모달 닫을때 초기화 시키기
 
-    const [comId] = useRecoilState(companyState);
+    const [comId,setComId] = useRecoilState(companyState);
     const [deptList, setDeptList] = useState([]);
+
+    const sessionId = sessionStorage.getItem("comId");
 
 
     const [newData, setNewData] = useState();
     ///그냥 모달을 여는거로 합시다! 못해먹겠습니다!
-    useEffect(() => {
-        console.log(comId)
-        loadDetpList();
-        loadPosition();
-    }, [])
+
+
+ useEffect(() => {
+        setComId(sessionId);
+
+    }, []);
+
+
+useEffect(() => {
+    console.log(comId);
+    loadDetpList();
+    loadPosition();
+}, [comId]);
+
+
+
     const clearDept = () => {
         setDept({
             deptNo: "",
             deptName: "",
-            comId: comId
+            comId: sessionId
         })
     }
 
     const [dept, setDept] = useState({
         deptNo: 0,
         deptName: "",
-        comId: comId
+        comId: sessionId
     })
 
     const changeInfo = (e) => {
@@ -149,6 +162,7 @@ const DeptInsert = () => {
     //------------부서 삭제 부서 인원이 없을경우
     //------------인원 추가 이동(백부터 만들어야함)
     const addEmp = (target) => {
+        loadPosition();
         setDept({ ...target })
         console.log(target)
         openModal2();
@@ -178,7 +192,7 @@ const DeptInsert = () => {
 
     /////-------------직급 등록
     const [positionData, setPositionData] = useState({
-        comId: comId,
+        comId: sessionId,
         empPositionName: "",
         empPositionOrder: ''
     });
@@ -197,11 +211,14 @@ const DeptInsert = () => {
             method: "post",
             data: positionData
         }).then(response => {
+            console.log(positionData)
             if (response.data != null) {
                 alert("성공")
             }
 
-            setPositionData('')
+            loadDetpList();
+            console.log("아이디",comId)
+
         });
     };
     ///--사원 불러오기
@@ -224,6 +241,8 @@ const DeptInsert = () => {
             setEmpList(response.data);
         });
     };
+
+
 
 
 
@@ -324,7 +343,7 @@ const DeptInsert = () => {
     const [positionList, setPositionList] = useState([]);
     const loadPosition = () => {
         axios({
-            url: `http://localhost:8080/empPosition/position/${comId}`,
+            url: `http://localhost:8080/empPosition/position/${sessionId}`,
             method: "get"
         }).then(response => {
             console.log(response.data)
@@ -573,7 +592,7 @@ const DeptInsert = () => {
                                                         <div className="col-7">
                                                             <select className="mt-2 form-control" name="deptNo" value={empInfo.deptNo} onChange={changeEmp}>
                                                                 {deptList.map((dept, index) => (
-                                                                    <option key={dept.deptNo} value={dept.deptNo}>{dept.deptNo}.{dept.deptName}</option>
+                                                                    <option key={dept.deptNo} value={dept.deptNo}>{dept.deptName}</option>
                                                                 ))}
                                                             </select>
                                                         </div>
