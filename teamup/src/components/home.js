@@ -15,6 +15,7 @@ import TodoCreate from "./TodoList/TodoCreate";
 import { TodoProvider } from "../TodoContext";
 import Weather from "./weather";
 import MainBoard from "./MainBoard";
+import MainApprove from "./MainApprove";
 
 const Home = (props) => {
 
@@ -256,7 +257,7 @@ useEffect(() => {
           <MainBoard />
         </div>
         <div className="row graybox border-primary h-50 mt-3">
-          전자결재
+          <MainApprove/>
         </div>
       </div>
 

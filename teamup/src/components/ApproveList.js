@@ -77,13 +77,6 @@ const ApproveList = (props)=>{
     console.log(receiverInfo);
     console.log(approveReceiver);
 
-    // const filterApproveReceiver = approveReceiver.filter(receiver =>{
-    //     const empPositionNo = parseInt(receiver.empPositionNo, 10);
-    //     return receiver.empNo !== empNo && empPositionNo > parseInt(checkInfo.empInfo.empPositionNo, 10);
-    // });
-    // console.log(filterApproveReceiver);
-    
-
     // receivers의 모든정보추출
     const findReceiverInfo = ()=>{
         const search = receiver.map(empNo => empList.find(emp => emp.empNo === empNo)); // 해당 승인자의 모든 정보 추출
@@ -115,6 +108,7 @@ const ApproveList = (props)=>{
         const selectInfo = combinedArray.find(list=> list.empInfo.empNo ===empNo)
         setCheckInfo(selectInfo);
     }
+    
     const isAllApproved = ()=>{
         return receiverPosition.length === ycount.length;
     }
