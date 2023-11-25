@@ -43,6 +43,7 @@ import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
 import './components/img.css'
 import { LuFolderTree } from "react-icons/lu";
+import MainBoard from './components/MainBoard';
 
 
 
@@ -285,7 +286,13 @@ function App() {
   const empName = sessionStorage.getItem("userName")
   return (
     <>
+    
+    <Routes>
+      <Route path="/login" element={<Login style={{ margin: 0 }} />} />
+    </Routes>
+    
       <div className='main-content container-fluid'>
+        
 
         {user === ''  ? '' : <Sidebar />}
       
@@ -305,7 +312,6 @@ function App() {
           <div className='col-md-10 offset-md-1'>
 
 
-
             {/* 헤더 */}
 
             {user === '' ? '' : (
@@ -315,6 +321,10 @@ function App() {
                     <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
 
                     <button onClick={openModal}>채팅</button>
+              <div className='col-4 app-start'>
+                <Navbar.Brand href="#home" className='logo'>
+                  <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
+                  <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
                     {/* <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink> */}
                     {/* <NavLink to="/profileEdit" className="ms-1">프로필</NavLink> */}
@@ -381,7 +391,9 @@ function App() {
 
 
 
-            <div className='mt-3'>
+
+            {/* <div className='mt-3'> */}
+            <div>
               <Routes>
                 {/* 각종 라우터 */}
                 <Route path="/approveList" element={<ApproveList />}></Route>
@@ -390,6 +402,7 @@ function App() {
                 <Route path='/search' element={<Search user={user} />}></Route>
                 <Route path='/home' element={<Home user={user} />}></Route>
                 <Route path='/login' element={<Login />}></Route>
+
                 <Route path="/mypage" element={<Mypage user={user} />}></Route>
                 <Route path="/deptInsert" element={<DeptInsert />}></Route>
                 <Route path="/calendar" element={<Calendar />}></Route>
@@ -400,6 +413,7 @@ function App() {
                 <Route path='/empTree' element={<Emp />} />
                 <Route path='/board/find/:idx' element={<BoardDetail />} />
                 <Route path='/board/update/:idx' element={<BoardUpdate />} />
+                <Route path='/mainBoard' element={<MainBoard />} />
 
 
 

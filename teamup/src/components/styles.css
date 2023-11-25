@@ -402,12 +402,13 @@ element.style {
 }
 
 /*큰 마진탑이 필요했어여.... align-items-center 안먹더라고?*/
-/* .mt-150{
+
+.mt-15{
     margin-top: 150px;
 }
-.ms-130{
+.ms-13{
     margin-left: 130px;
-} */
+}
 .ms-6{
     margin-left: 60px;
 }
@@ -558,4 +559,23 @@ h4 {
 
 .hidden{
     display: none;
+/*결재자 부서*/
+.approve-dept{
+    background-color: #218C74;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    padding: 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+.approve-position{
+    background-color: #78C2AD;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    padding: 0.3em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 }

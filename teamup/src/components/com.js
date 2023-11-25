@@ -339,12 +339,12 @@ const Com = () => {
 
 
 
-            {companyList.map(company => (
-                <div key={company.comId}>
-                    <p>comId: {company.comId}</p>
+            {/* {companyList.map(company => ( */}
+                {/* <div key={company.comId}> */}
+                    {/* <p>comId: {company.comId}</p> */}
                     {/* Add other properties you want to display */}
-                </div>
-            ))}
+                {/* </div> */}
+            {/* ))} */}
 
 
 

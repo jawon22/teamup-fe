@@ -61,7 +61,8 @@ const BoardUpdate =()=> {
           <th colSpan={1}>제목</th>
           <td colSpan={5}><input className="w-100" type="text" name="boardTitle"
            value={board.boardTitle} onChange={onChange}
-           style={{ border: 'none', boxShadow: 'none',outline: 'none' }}/></td>
+           style={{ border: 'none', boxShadow: 'none',outline: 'none' }}
+           autoComplete="off"/></td>
       </tr>
       <tr>
           <th colSpan={1}>부서</th>

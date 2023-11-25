@@ -37,7 +37,7 @@ const Mypage = (props) => {
 
     const myInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/emp/mypage/${empNo}`);
+            const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/emp/mypage/${empNo}`);
             console.log("정보={}", response.data);
             setEmpInfo(response.data);
         } catch (error) {
@@ -70,7 +70,7 @@ const Mypage = (props) => {
     //프로필 조회
     const loadProfile = (empNo) => {
         axios({
-            url: `http://localhost:8080/profile/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/profile/${empNo}`,
             method: "get",
         })
             .then(response => {//성공
@@ -165,7 +165,7 @@ const Mypage = (props) => {
         try {
             //서버로 업데이트 요청 전송
             await axios({
-                url: `http://localhost:8080/profile/${loggedInEmpNo}`,
+                url: `${process.env.REACT_APP_REST_API_URL}/profile/${loggedInEmpNo}`,
                 method: "put",
                 data: formData,
                 headers: {
@@ -197,7 +197,7 @@ const Mypage = (props) => {
             try {
                 // 백엔드에 이미지 삭제를 처리하는 API 호출
                 await axios({
-                    url: `http://localhost:8080/profile/image/${empNo}`,
+                    url: `${process.env.REACT_APP_REST_API_URL}/profile/image/${empNo}`,
                     method: "delete"
                 });
 
@@ -229,11 +229,11 @@ const Mypage = (props) => {
     const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
     useEffect(() => {
         axios({
-            url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`,
             method: "get"
         })
             .then(response => {
-                setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+                setImgSrc(`${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`);
             })
             .catch(err => {
                 setImgSrc(surf);
@@ -314,7 +314,7 @@ const Mypage = (props) => {
 
     const changePw = () => {
         axios({
-            url: `http://localhost:8080/emp/changePw/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/changePw/${empNo}`,
             method: 'put',
             data: { empPw: empInfomation.empPw }
         }).then(res => {
@@ -430,7 +430,7 @@ const Mypage = (props) => {
             <div className="container m-5 ps-5 pe-5">
                     직급변경 만들어야함
                 {/* 마이페이지 상세 */}
-                <div className="row mt-4 mp-bg text-green">
+                <div className="row mt-4 mp-bg text-green my-page">
 
                     <div className="col-5 image-fix d-flex justify-content-center align-self-center"
                         onClick={() => editProfile(loggedInEmpNo)}>
@@ -489,8 +489,8 @@ const Mypage = (props) => {
 
 
                         </NavDropdown>
-                    </div>
                 </div>
+</div>
 
 
                 {/* Modal */}
@@ -616,7 +616,7 @@ const Mypage = (props) => {
                 </Modal>
 
 
-                <div className="row mt-5 text-green">
+                <div className="row mt-5 text-green my-page">
                     {/* 근태 관리 */}
                     <div className="text-center text-green">
                         <div className="row mp-bg mb-4 p-4">
@@ -625,12 +625,8 @@ const Mypage = (props) => {
                             </div>
                         </div>
                     </div>
+                
                 </div>
-
-
-
-
-
 
 
 
@@ -673,10 +669,10 @@ const Mypage = (props) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
-                            Close
+                            닫기
                         </Button>
                         <Button variant="primary" onClick={changePw}>
-                            Save Changes
+                            수정
                         </Button>
                     </Modal.Footer>
                 </Modal>
