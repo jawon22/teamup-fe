@@ -101,7 +101,7 @@ const ApproveWrite = (props)=>{
             savedValues.length === 0
         ) {
             // 필수 값이 없으면 알림 처리 또는 다른 작업 수행
-            alert('모든 입력값을 작성해주세요.');
+            alert('참조자를 제외하고 모든 입력값을 작성해주세요.');
             return;
         }
 
