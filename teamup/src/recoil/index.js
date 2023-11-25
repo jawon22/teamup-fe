@@ -6,7 +6,7 @@ import { atom } from "recoil";
 // 로그인했을시 아이디 저장소
 const userState = atom({
     key:'userState',
-    default:''//향후 서버 연동 로그인이 구현되면 비워두고 로그인 성공시 설정하도록 구현
+    default:""//향후 서버 연동 로그인이 구현되면 비워두고 로그인 성공시 설정하도록 구현
 });
 
 // 레벨 저장소
