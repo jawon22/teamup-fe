@@ -117,27 +117,37 @@ const Login = () => {
 
     return (
         <>
-            <div className="container">
+            <div className="">
 
-                <div className="d-flex row">
+                <div className="d-flex row me-5">
 
                     {/* 이미지 부분 */}
-                    <div className="col-8" style={{ height: "100vh", overflow: "hidden" }}>
-                        <img src="img/company.png" style={{ maxWidth: "100%", height: "100%" }} alt="Company Logo"></img>
+                    <div className="col-8" style={{ height: "100vh", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <div style={{ height: "100%", width: "100%" }}>
+                            <img
+                                src="img/company.png"
+                                style={{
+                                    maxWidth: "100%",
+                                    height: "100%",
+                                    objectFit: "cover" // 이미지를 화면에 꽉 차게 표시
+                                }}
+                                alt="Company Logo"
+                            />
+                        </div>
                     </div>
 
                     {/* 로그인 부분 */}
-                    <div className="col-4 right">
+                    <div className="col-4 right p-5 mt-5">
 
                         {/* 로고 */}
-                        <div style={{ textAlign: "right" }}>
-                            <img src="img/TeamUpLogo.png" style={{ maxWidth: "25%", height: "100%" }} alt="TeamUp Logo" />
+                        <div style={{ textAlign: "center" }} className="me-5 mt-5 pt-5">
+                            <img src="img/TeamUpLogo.png" style={{ maxWidth: "35%", height: "100%" }} alt="TeamUp Logo" />
                         </div>
 
 
 
                         {/* 아이디 */}
-                        <div className="row mt-4">
+                        <div className="row mt-5 me-5">
                             <div className="col-ms-6 offset-ms-3">
                                 <input type="text" name="empId" onChange={inputChange}
                                     className="form-control p-4" placeholder="id"></input>
@@ -145,7 +155,7 @@ const Login = () => {
                         </div>
 
                         {/* 패스워드 */}
-                        <div className="row mt-2">
+                        <div className="row mt-2 me-5">
                             <div className="col-ms-6 offset-ms-3">
                                 <input type="passwosrd" className="form-control p-4" name="empPw"
                                     onChange={inputChange} placeholder="password"></input>
@@ -153,7 +163,7 @@ const Login = () => {
                         </div>
 
                         {/* 로그인 버튼 */}
-                        <div className="row mt-4">
+                        <div className="row mt-4 me-5">
                             <div className="col-ms-6 offset-ms-3">
                                 <button className=" btn btn-primary w-100 p-3 text-bold" onClick={login}>Login</button>
                             </div>
@@ -161,8 +171,8 @@ const Login = () => {
 
 
                         {/* 회사가입 링크 / 링크 추가해야함 */}
-                        <div className="row">
-                            <div className="col-ms-6 offset-ms-3 mt-2" style={{ textAlign: "right" }}>
+                        <div className="row me-5 mt-3">
+                            <div className="col-ms-6 offset-ms-3" style={{ textAlign: "right" }}>
                                 <NavLink to="/com" className="ms-1 link">회사가입</NavLink>
                             </div>
                         </div>
@@ -206,8 +216,8 @@ const Login = () => {
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" onClick={closeModal} >Close</button>
-                                    <button type="button" class="btn btn-primary" onClick={findPw}>Save changes</button>
+                                    <button type="button" class="btn btn-secondary" onClick={closeModal} >취소</button>
+                                    <button type="button" class="btn btn-primary" onClick={findPw}>비밀번호 찾기</button>
                                 </div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import { Pagination } from "react-bootstrap";
+import moment from 'moment';
 
 const Board =(props)=>{
     const [user, setUser] = useRecoilState(userState);
@@ -89,6 +90,11 @@ const Board =(props)=>{
     //모달 속 등록버튼
     const addBoard = () => {
 
+          // 내용이 비어있는지 확인
+          if (!board.boardContent.trim()) {
+            alert("내용을 작성해주세요.");
+            return;
+        }
     
         // 새로운 게시글 정보 생성
         const newBoard = {
@@ -165,6 +171,26 @@ const renderPagination = () => {
     </Pagination>
     );
 };
+
+// 타임스탬프를 날짜로 변환하는 함수
+const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
+    // 현재 날짜와 비교하여 오늘 작성된 경우 시간까지 표시, 그렇지 않은 경우 날짜만 표시
+    const today = new Date();
+    if (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+    ) {
+        // 오늘 작성된 경우
+        return date.toLocaleString('ko-KR', { hour: 'numeric', minute: 'numeric' });
+    } else {
+        // 오늘이 아닌 경우
+        return moment(timestamp).format('YYYY-MM-DD');
+    }
+};
     
 
 
@@ -189,7 +215,6 @@ const renderPagination = () => {
                         <thead>
                             <tr className="table-primary">
                                 <th>번호</th>
-                                <th>작성자</th>
                                 <th>부서</th>
                                 <th>제목</th>
                                 <th>작성일</th>
@@ -201,13 +226,12 @@ const renderPagination = () => {
                             {boardList.map(board=>(
                             <tr key={board.boardNo}>
                                 <td>{board.boardNo}</td>
-                                <td>{board.empName}</td>
                                 <td>{board.deptName}</td>
-                                <td>
+                                <td className="text-left">
                                     <Link className="custom-link" to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link>
                                 </td>
-                                <td>{board.boardWriteDate}</td>
-                                <td>{board.boardUpdateDate}</td>
+                                <td>{formatDate(board.boardWriteDate)}</td>
+                                <td>{board.boardUpdateDate ? formatDate(board.boardUpdateDate) : ''}</td>
                                 <td>{board.boardReadCount}</td>
                             </tr>
                             ))}
@@ -233,7 +257,8 @@ const renderPagination = () => {
                 <Form.Control
                     name="boardTitle"
                     type="text"
-                    autoFocus
+                    autoComplete="off"
+                    style={{ outline: 'none', boxShadow: 'none' }}
                 value={board.boardTitle} onChange={changeBoard}
                 />
                 </Form.Group>
@@ -244,8 +269,9 @@ const renderPagination = () => {
                 <Form.Label>내용</Form.Label>
                 <Form.Control
                 name="boardContent"
+                style={{ outline: 'none', boxShadow: 'none',resize: 'none' }}
                 value={board.boardContent} onChange={changeBoard}
-                as="textarea" rows={10} style={{ resize: 'none' }} />
+                as="textarea" rows={10} />
                 </Form.Group>
             </Form>
             </Modal.Body>
