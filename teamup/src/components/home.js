@@ -40,6 +40,7 @@ const Home = (props) => {
   const [empInfo, setEmpInfo] = useState({
     comId: '',
     deptNo: '',
+    deptName: '',
     empId: '',
     empName: '',
     empEmail: '',
@@ -47,6 +48,7 @@ const Home = (props) => {
     empTel: '',
     empJoin: ''
   });
+
 
 
 
@@ -164,10 +166,34 @@ const Home = (props) => {
     }
   };
 
-  useEffect(() => {
-    myInfo();
-  }, [props.user]);
+//
+const [profile, setProfile] = useState({
+  deptName:'',
+  empPositionName:'',
+});
 
+//프로필 조회
+const loadProfile = (loggedInEmpNo) => {
+  axios({
+      url: `${process.env.REACT_APP_REST_API_URL}/profile/${loggedInEmpNo}`,
+      method: "get",
+  })
+      .then(response => {//성공
+          // console.log(response);
+          setProfile(response.data);
+      })
+      .catch(err => {//실패
+          console.error(err);
+      });
+};
+
+useEffect(() => {
+  loadProfile(loggedInEmpNo);
+}, [props.user]);
+
+useEffect(() => {
+  myInfo();
+}, [props.user]);
 
   return (
 
@@ -187,7 +213,9 @@ const Home = (props) => {
           <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle"
             style={{ width: "220px", height: "200px", objectFit: "cover" }} />
 
-          <div className="d-flex item-center text-bold">
+            <div className="d-flex item-center text-bold">
+            <div className="approve-dept rounded-start">{profile.deptName}</div>
+            <div className="approve-position rounded-end">{profile.empPositionName}</div>
             <div>{empInfo.empName}</div>
           </div>
 

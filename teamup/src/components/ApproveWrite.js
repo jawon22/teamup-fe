@@ -282,13 +282,14 @@ const ApproveWrite = (props)=>{
                                         </button>
                                     </div>
                                 </div>
-                                <div> 
+                                <div className="mt-1 mb-3"> 
                                 {/* 저장을 누르면 추가되는 영역 */}
                                     {savedValues.map((receiver,index)=>(
                                         <div key={receiver.empNo}>
-                                            <span class="badge bg-primary">{receiver.deptName}</span>
-                                            <span class="badge bg-primary">{receiver.empPositionName}</span>
-                                            <span class="badge bg-primary">{receiver.empName}</span>
+                                            <span class="rounded-start approve-dept">{receiver.deptName}</span>
+                                            <span class="rounded-end approve-position">{receiver.empPositionName}</span>
+                                            　
+                                            <span style={{fontSize:"14px", fontWeight:"bold"}}>{receiver.empName}</span>
                                             <BsX onClick={()=>removeReceiver(receiver.empNo)}/>
                                         </div>
                                     ))}
@@ -317,13 +318,14 @@ const ApproveWrite = (props)=>{
                                         </button>
                                     </div>
                                 </div>
-                                <div>
+                                <div className="mt-1">
                                     {/* 저장을 누르면 추가되는 영역 */}
                                     {savedValues2.map((referer,index)=>(
                                         <div key={referer.empNo}>
-                                            <span class="badge bg-primary">{referer.deptName}</span>
-                                            <span class="badge bg-primary">{referer.empPositionName}</span>
-                                            <span class="badge bg-primary">{referer.empName}</span>
+                                            <span class="rounded-start approve-dept">{referer.deptName}</span>
+                                            <span class="rounded-end approve-position">{referer.empPositionName}</span>
+                                            　
+                                            <span style={{fontSize:"14px", fontWeight:"bold"}}>{referer.empName}</span>
                                             <BsX onClick={()=>removeReferer(referer.empNo)}/>
                                         </div>
                                     ))}

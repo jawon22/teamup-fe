@@ -103,6 +103,31 @@
     width: 285px;
   }
   .home-center {
+    width: 300px;
+  }
+  .main-board-font tr {
+    font-size: 9px !important;
+  }
+  .home-calendar {
+    width: 400px; 
+  }
+  .home-weather {
+    width: 400px; 
+  }
+  .space {
+    margin-left: 80px;
+  }
+
+}
+
+@media (max-width: 1430px) {
+  .home-profile{
+    width: 300px;
+  }
+  .home-todo{
+    width: 285px;
+  }
+  .home-center {
     display: none;
   }
   .home-calendar {
@@ -133,9 +158,8 @@
   .home-weather {
     width: 350px; 
   }
- 
   .space {
-    margin-left: 50px;
+    margin-left: 40px;
   }
 
 }
@@ -156,10 +180,12 @@
   .home-weather {
     width: 350px; 
   }
- 
-  /* .space {
-    margin-left: 50px;
-  } */
+  .space {
+    margin-left: 40px;
+  }
+  .my-page{
+    width: 660px;
+  }
 }
 
 @media (max-width: 933px) {
@@ -179,9 +205,9 @@
     width: 320px; 
   }
  
-  /* .space {
-    margin-left: 50px;
-  } */
+  .space {
+    margin-left: 40px;
+  }
 }
 
 @media (max-width: 873px) {
@@ -200,11 +226,11 @@
   .home-weather {
     width: 300px; 
   }
- 
-  /* .space {
-    margin-left: 50px;
-  } */
+  .space {
+    margin-left: 30px;
+  }
 }
+
 
 
 
@@ -213,7 +239,6 @@ body {
   margin: 0; /* 여백을 없애기 위해 body의 margin을 0으로 설정 */
   overflow-x: hidden;
 }
-
 
 
 

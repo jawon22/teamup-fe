@@ -13,6 +13,8 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { RiDeleteBin6Fill } from "react-icons/ri";
+import { NavDropdown } from "react-bootstrap";
+import { Await } from "react-router";
 
 
 const Mypage = (props) => {
@@ -35,7 +37,7 @@ const Mypage = (props) => {
 
     const myInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/emp/mypage/${empNo}`);
+            const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/emp/mypage/${empNo}`);
             console.log("정보={}", response.data);
             setEmpInfo(response.data);
         } catch (error) {
@@ -68,7 +70,7 @@ const Mypage = (props) => {
     //프로필 조회
     const loadProfile = (empNo) => {
         axios({
-            url: `http://localhost:8080/profile/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/profile/${empNo}`,
             method: "get",
         })
             .then(response => {//성공
@@ -163,7 +165,7 @@ const Mypage = (props) => {
         try {
             //서버로 업데이트 요청 전송
             await axios({
-                url: `http://localhost:8080/profile/${loggedInEmpNo}`,
+                url: `${process.env.REACT_APP_REST_API_URL}/profile/${loggedInEmpNo}`,
                 method: "put",
                 data: formData,
                 headers: {
@@ -195,7 +197,7 @@ const Mypage = (props) => {
             try {
                 // 백엔드에 이미지 삭제를 처리하는 API 호출
                 await axios({
-                    url: `http://localhost:8080/profile/image/${empNo}`,
+                    url: `${process.env.REACT_APP_REST_API_URL}/profile/image/${empNo}`,
                     method: "delete"
                 });
 
@@ -227,11 +229,11 @@ const Mypage = (props) => {
     const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
     useEffect(() => {
         axios({
-            url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`,
             method: "get"
         })
             .then(response => {
-                setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+                setImgSrc(`${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`);
             })
             .catch(err => {
                 setImgSrc(surf);
@@ -260,27 +262,39 @@ const Mypage = (props) => {
     });
 
     const [result, setResult] = useState({
+        originPw: null,
         pw: null,
         pwCheck: null,
     });
 
+
+    const findPw = () => {
+        axios({
+            url: `http://localhost:8080/emp/findPw/${empNo}`,
+            method: 'post',
+            data: empInfomation.empPw
+
+        }).then(res => {
+            setResult({
+                ...result,
+                originPw: res.data
+            })
+        });
+    }
+
     const check = () => {
-
         const checkPw = /^[A-Z][a-z0-9!@#$]{8,16}$/;
-        const pwMatch = empInfomation.empPw.length === 0 ? null : checkPw.test(empInfomation.empPw);
-
-        const match = empInfomation.empPwCheck.length === 0 ? null :
-            empInfomation.pwCheck === empInfomation.empPw && empInfomation.empPwCheck.length > 0;
-
+      
+        const pwMatch = checkPw.test(empInfomation.empPw);
+        const pwCheckMatch =
+          empInfomation.empPwCheck?.length > 0 &&
+          empInfomation.empPw === empInfomation.empPwCheck;
+      
         setResult({
-            pw: pwMatch,
-            pwCheck: match,
-        })
-
-
-    };
-
-
+          pw: pwMatch,
+          pwCheck: pwCheckMatch,
+        });
+      };
 
     const changeData = (e) => {
         setEmpInfomation({
@@ -300,7 +314,7 @@ const Mypage = (props) => {
 
     const changePw = () => {
         axios({
-            url: `http://localhost:8080/emp/changePw/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/changePw/${empNo}`,
             method: 'put',
             data: { empPw: empInfomation.empPw }
         }).then(res => {
@@ -323,23 +337,100 @@ const Mypage = (props) => {
             pwCheck: null,
         });
     };
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setEmpInfomation({
+            empPw:''
+        })
+        setShow(true)};
 
     //입사일 날짜까지만
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
         const formattedDate = new Date(dateString).toLocaleDateString('ko-KR', options);
         return formattedDate.replace(/\.$/, ''); // 맨 뒤의 . 제거
+
+
+        
     };
+
+
+
+    ///개인정보 수정
+    const openForChange=()=>{};
+
+
+    const infoChange = async () => {
+        if (window.confirm("정보를 수정 하시겠습니까?")) {
+        try {
+            const response = await axios({
+                url:`http://localhost:8080/emp/empInfoUpdate/${empNo}`,
+                method:'put',
+                data:{
+                    empName:empInfo.empName,
+                    empTel:empInfo.empTel,
+                    empEmail:empInfo.empEmail,
+                    }
+            })
+            console.log("정보={}", response.data);
+            alert("수정되었습니다.")
+            setShow2(false)
+            
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+};
+
+
+
+
+    const [empChange, setEmpChange] =useState({
+        empName:empInfo.empName,
+        empTel:empInfo.empTel,
+        empEmail:empInfo.empEmail
+    })
+
+    const change = (e) => {
+        setEmpInfo({
+            ...empInfo,
+            [e.target.name]: e.target.value
+        }
+        )
+
+        console.log(empInfo.empName)
+        console.log(empInfo.empTel)
+        console.log(empInfo.empEmail)
+
+    }
+
+
+
+
+
+
+    const [show2, setShow2] = useState(false);
+
+    const handleClose2 = () => {
+        setShow2(false)
+        setEmpInfomation({});
+
+        setResult({
+            pw: null,
+            pwCheck: null,
+        });
+    };
+    const handleShow2 = () => {
+        myInfo();
+        setShow2(true);}
 
 
 
     return (
         <>
             <div className="container m-5 ps-5 pe-5">
-
+                    직급변경 만들어야함
                 {/* 마이페이지 상세 */}
-                <div className="row mt-4 mp-bg text-green">
+                <div className="row mt-4 mp-bg text-green my-page">
 
                     <div className="col-5 image-fix d-flex justify-content-center align-self-center"
                         onClick={() => editProfile(loggedInEmpNo)}>
@@ -389,9 +480,17 @@ const Mypage = (props) => {
 
                     </div>
                     <div className="col-1 offset-11">
-                        <button className="btn btn-sm btn-secondary" value={empInfo.empNo} onClick={handleClickChange}>개인정보수정</button>
-                    </div>
+                        {/* <button className="btn btn-sm btn-secondary" value={empInfo.empNo} onClick={handleClickChange}>개인정보수정</button> */}
+
+                        <NavDropdown title="개인정보 수정">
+                            <NavDropdown.Item onClick={handleShow2}>개인정보 수정</NavDropdown.Item>
+                            <NavDropdown.Item value={empInfo.empNo} onClick={handleClickChange}>비밀번호 수정</NavDropdown.Item>
+
+
+
+                        </NavDropdown>
                 </div>
+</div>
 
 
                 {/* Modal */}
@@ -517,7 +616,7 @@ const Mypage = (props) => {
                 </Modal>
 
 
-                <div className="row mt-5 text-green">
+                <div className="row mt-5 text-green my-page">
                     {/* 근태 관리 */}
                     <div className="text-center text-green">
                         <div className="row mp-bg mb-4 p-4">
@@ -526,6 +625,7 @@ const Mypage = (props) => {
                             </div>
                         </div>
                     </div>
+                
                 </div>
 
 
@@ -534,35 +634,33 @@ const Mypage = (props) => {
 
 
 
-
-
-
-
-
-                <Button variant="primary" onClick={handleShow}>
-                    Launch demo modal
-                </Button>
-
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>비밀번호 수정</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
 
-                        <label className="form-label">새비밀번호</label>
+                        <label className="form-label">비밀번호</label>
                         <input
                             type="password"
                             onBlur={check}
-                            className={`form-control  ${result.pw === true ? 'is-valid' : ''} ${result.pw === false ? 'is-invalid' : ''}`}
+                            className={`form-control ${result.pw === true ? 'is-valid' : result.pw === false ? 'is-invalid' : ''
+                                }`}
                             name="empPw"
                             value={empInfomation.empPw}
                             onChange={changeData}
                         />
-                        <label className="form-label">비밀번호확인</label>
+
+                        <label className="form-label">비밀번호 확인</label>
                         <input
                             type="password"
                             onBlur={check}
-                            className={`form-control   ${result.pwCheck === true ? 'is-valid' : ''} ${result.pwCheck === false ? 'is-invalid' : ''}`}
+                            className={`form-control ${result.pwCheck === true
+                                    ? 'is-valid'
+                                    : result.pwCheck === false
+                                        ? 'is-invalid'
+                                        : ''
+                                }`}
                             name="empPwCheck"
                             value={empInfomation.empPwCheck}
                             onChange={changeData}
@@ -571,16 +669,40 @@ const Mypage = (props) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
-                            Close
+                            닫기
                         </Button>
                         <Button variant="primary" onClick={changePw}>
-                            Save Changes
+                            수정
                         </Button>
                     </Modal.Footer>
                 </Modal>
 
 
 
+                <Modal show={show2} onHide={handleClose2}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>개인정보 수정</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <label className="form-label mt-2">이름</label>
+                    <input type="text" name="empName" value={empInfo.empName} onChange={change} className="form-control" />
+                    <label className="form-label mt-2">전화번호</label>
+                    <input type="tel" name="empTel" value={empInfo.empTel} onChange={change} className="form-control" />
+                    <label className="form-label mt-2">E-mail</label>
+                    <input type="email" name="empEmail" value={empInfo.empEmail} onChange={change} className="form-control" />
+
+                       
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose2}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={infoChange}>
+                            Save Changes
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
 
 

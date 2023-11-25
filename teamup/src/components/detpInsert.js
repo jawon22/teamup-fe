@@ -3,12 +3,14 @@ import { companyState, userState } from "../recoil";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "bootstrap";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router";
 
 const DeptInsert = () => {
     //세션스토리지 아이디만 저장
     ///****전체적으로 모달 닫을때 초기화 시키기
 
-    const [comId,setComId] = useRecoilState(companyState);
+    const [comId, setComId] = useRecoilState(companyState);
     const [deptList, setDeptList] = useState([]);
 
     const sessionId = sessionStorage.getItem("comId");
@@ -18,17 +20,17 @@ const DeptInsert = () => {
     ///그냥 모달을 여는거로 합시다! 못해먹겠습니다!
 
 
- useEffect(() => {
+    useEffect(() => {
         setComId(sessionId);
 
     }, []);
 
 
-useEffect(() => {
-    console.log(comId);
-    loadDetpList();
-    loadPosition();
-}, [comId]);
+    useEffect(() => {
+        console.log(comId);
+        loadDetpList();
+        loadPosition();
+    }, [comId]);
 
 
 
@@ -217,7 +219,7 @@ useEffect(() => {
             }
 
             loadDetpList();
-            console.log("아이디",comId)
+            console.log("아이디", comId)
 
         });
     };
@@ -228,6 +230,8 @@ useEffect(() => {
     //     setDept({ ...target })
     //     loadEmpList();
     // };
+
+    const [deptNo,setDeptNo] =useState();
     const cellClick = (target) => {
         axios({
             url: `http://localhost:8080/emp/empListByDeptCom`,
@@ -237,10 +241,15 @@ useEffect(() => {
                 comId: comId
             }
         }).then(response => {
+            setDeptNo(target.deptNo)
             console.log(response.data);
             setEmpList(response.data);
         });
     };
+
+
+    useEffect(()=>{
+    },[])
 
 
 
@@ -365,7 +374,8 @@ useEffect(() => {
         deptNo: '',
         empExit: '',
         empName: "",
-        salAnnual: 0
+        salAnnual: 0,
+        empPositionNo:0,
     });
     const [isUpdate, setIsUpdate] = useState(false);
     const changeEmpDept = (target) => {
@@ -381,7 +391,8 @@ useEffect(() => {
             method: 'put',
             data: {
                 empDto: {
-                    empName: empInfo.empName
+                    empName: empInfo.empName,
+                    empPositionNo:empInfo.empPositionNo
                 },
                 salDto: {
                     salAnnual: empInfo.salAnnual
@@ -411,6 +422,7 @@ useEffect(() => {
         })
 
         console.log(empInfo.salAnnual)
+        console.log("직급",empInfo.empPositionNo)
     };
 
     const changeEmp = (e) => {
@@ -481,8 +493,6 @@ useEffect(() => {
 
 
 
-
-
     return (
 
         <>
@@ -490,10 +500,12 @@ useEffect(() => {
 
                 <div className="row">
                     <div className="col-10 offset-1 item-center">
-                        <h1>부서관리</h1>
+                        <h1>{comId}부서관리</h1>
                     </div>
                 </div>
 
+
+            
                 <div className="row mt-5">
                     <div className="col-3 ">
                         부서명 <input className="form-control" name="deptName" onChange={changeInfo} />
@@ -515,7 +527,7 @@ useEffect(() => {
 
                 {/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 -하지 말죠? */}
 
-                
+
                 <div className="row mt-4">
 
                     {/* 첫 번째 테이블 */}
@@ -655,10 +667,10 @@ useEffect(() => {
 
 
                                 </select>
-                                    <label className="mt-1">이메일</label>
-                                    <input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
-                                    <label className="mt-1">연봉</label>
-                                    <input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
+                                <label className="mt-1">이메일</label>
+                                <input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
+                                <label className="mt-1">연봉</label>
+                                <input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
 
 
                             </div>
@@ -682,7 +694,7 @@ useEffect(() => {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                            {/* -{dept.empCount} {dept.deptNo}-  */}
+                                {/* -{dept.empCount} {dept.deptNo}-  */}
                                 {dept.deptName} 삭제하시겠습니까?
                             </div>
                             <div className="modal-footer">
@@ -711,6 +723,16 @@ useEffect(() => {
                                     <input className="form-control" name="empName" onChange={change} value={empInfo.empName} />
                                     <label className="form-label mt-1">급여</label>
                                     <input className="form-control" name="salAnnual" onChange={change} value={empInfo.salAnnual} />
+
+
+                                    <label className="mt-1">직급선택</label>
+                                <select className="form-control" name="empPositionNo" value={empData.empPositionNo} onChange={change}>
+                                    {positionList.map((position) => (
+                                        <option key={position.empPositionNo} value={position.empPositionNo}>{position.empPositionName}</option>
+                                    ))}
+                                    </select>
+
+
                                 </div>
 
                             </div>

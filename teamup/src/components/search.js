@@ -154,7 +154,7 @@ const Search = (props) => {
     const loadProfile = () => {
 
         axios({
-            url: "http://localhost:8080/profile/",
+            url: `${process.env.REACT_APP_REST_API_URL}/profile/`,
             method: "get",
 
         })
@@ -220,7 +220,7 @@ const Search = (props) => {
     // };
     const getCount = () => {
         axios({
-            url: `http://localhost:8080/emp/count/${comId}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/count/${comId}`,
             method: 'get'
         }).then(res => {
 
@@ -238,11 +238,11 @@ const Search = (props) => {
     const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
     const loadProfileImage= (empNo)=>{
       axios({
-        url:`http://localhost:8080/image/profile/${empNo}`,
+        url:`${process.env.REACT_APP_REST_API_URL}/image/profile/${empNo}`,
         method:"get"
       })
       .then(response=>{
-        setImgSrc(`http://localhost:8080/image/profile/${empNo}`);
+        setImgSrc(`${process.env.REACT_APP_REST_API_URL}/image/profile/${empNo}`);
       })
       .catch(err=>{
         setImgSrc(surf);
@@ -263,13 +263,14 @@ const Search = (props) => {
 
 
     return (
-        <>
+        <div className="row">
+            <div className="col-md-10 offset-md-1 mt-5">
             <div className="container">
                 <div className="mt-3 mb-4">
                     <h2>주소록</h2>
                 </div>
 
-                <div className="row mb-5">
+                <div className="row mb-1">
                     <div className="col-2">
                         <select onChange={dataChange} name="select" class="form-select" id="exampleSelect">
                             <option value="d.dept_name">부서</option>
@@ -440,7 +441,8 @@ const Search = (props) => {
               <Button variant="secondary" onClick={closeModal}>닫기</Button>
             </Modal.Footer>
             </Modal>
-        </>
+            </div>
+        </div>
     );
 
 };
