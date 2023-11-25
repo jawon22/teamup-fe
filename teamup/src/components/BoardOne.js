@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { companyState, userState } from '../recoil';
+import { companyState, repliesState, userState } from '../recoil';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
@@ -10,6 +10,9 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
     const empNo = user.substring(6)
     const deptNo = user.substring(4, 6);
     const [comId] = useRecoilState(companyState);
+   const [replyContent, setReplyContent] = useState('');//댓글
+   const [replies, setReplies] = useRecoilState(repliesState);// 댓글 목록
+   
 
     // 수정 버튼 렌더링을 위한 조건 추가
     const empNoWithoutLeadingZero = String(Number(empNo));
@@ -36,6 +39,60 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         });
       }
     };
+
+    // 댓글 작성 이벤트 핸들러
+    const handleReplySubmit = async () => {
+      if (!replyContent) {
+        alert('댓글 내용을 입력해주세요.');
+        return;
+      }
+
+        // 기록 추가
+      console.log('댓글 내용:', replyContent);
+      console.log('작성자 번호:', empNo);
+      console.log('공지사항 번호:', idx);
+
+        // empNo를 숫자로 변환
+      const empNoNumber = Number(empNo);
+
+      const replyData = {
+        replyContent: replyContent,
+        replyWriter: empNoNumber, // 작성자 정보 사용 (여기서는 empNo 변수 사용)
+        replyOrigin: idx, // 공지사항의 idx를 댓글의 replyOrigin으로 사용
+      };
+
+      try {
+        // 댓글 작성 요청
+        await axios.post(`${process.env.REACT_APP_REST_API_URL}/reply/`, replyData);
+    
+        // 댓글 작성 후에 목록을 다시 불러옴
+        fetchReplies();
+    
+        alert('댓글이 작성되었습니다.');
+        setReplyContent('');
+      } catch (error) {
+        console.error('댓글 작성 에러:', error);
+        alert('댓글 작성 중 오류가 발생했습니다.');
+      }
+    };
+
+ // 댓글 목록 불러오기
+const fetchReplies = async () => {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/reply/list/${idx}`);
+    const updatedReplies = response.data;
+    setReplies(updatedReplies); // 상태 업데이트
+
+    // 여기서 replies 상태를 사용하는 부분에서 문제가 발생하지 않도록 수정
+    console.log('댓글 목록:', updatedReplies);
+  } catch (error) {
+    console.error('댓글 목록 불러오기 오류:', error);
+  }
+};
+
+    useEffect(() => {
+      fetchReplies();
+    }, []); 
 
 
 
@@ -95,6 +152,48 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         {contents}
       </div>
     </div>
+
+     {/* 댓글 입력 폼 */}
+     <div className="row mt-4">
+        <div className="col-12">
+          <h4>댓글 작성</h4>
+          <div className="d-flex">
+            <textarea
+              className="form-control"
+              rows="3"
+              value={replyContent}
+              onChange={(e) => setReplyContent(e.target.value)}
+            ></textarea>
+            <button className="btn btn-primary mt-2 ms-2" onClick={handleReplySubmit}>
+              등록
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      {/* 댓글 목록 */}
+      <div className="row mt-4 mb-5">
+        <div className="col-12">
+          <h3>댓글 목록</h3>
+          <ul className="list-group">
+            {replies.map((reply) => (
+              <li key={reply.replyNo} className="list-group-item">
+                <div className="d-flex justify-content-between">
+                  <div>
+                    <strong>{reply.replyWriterName}</strong>
+                    <span className="badge bg-primary ms-2 me-2">{reply.replyWriterDept}</span>
+                    <span className="badge bg-secondary me-2">{reply.replyWriterEP}</span>
+                  </div>
+                  <small>{reply.replyTime}</small>
+                </div>
+                <div>{reply.replyContent}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
 
 
     </div></div>
