@@ -53,6 +53,7 @@ const Login = () => {
                         }).then(response => {
                             console.log(response.data);
                             setCompany(response.data.comId);
+                            sessionStorage.setItem("userName" , response.data.empName);
                             navigate('/home');
                             
                             
@@ -171,11 +172,14 @@ const Login = () => {
 
 
                         {/* 회사가입 링크 / 링크 추가해야함 */}
-                        <div className="row me-5 mt-3">
-                            <div className="col-ms-6 offset-ms-3" style={{ textAlign: "right" }}>
+                        <div className="row">
+                            <div className="col-ms-6 offset-ms-3 mt-2" style={{ textAlign: "right" }}>
+                                <NavLink to="/companyJoin" className="ms-5">관리자로그인</NavLink>
                                 <NavLink to="/com" className="ms-1 link">회사가입</NavLink>
                             </div>
                         </div>
+
+                        
 
                         {/* 비밀번호 찾기 / 링크 추가해야함 */}
                         <div className="row">
@@ -191,7 +195,10 @@ const Login = () => {
 
                     </div>
 
+                    <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
+
    
+                    <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
 
                     <div class="modal fade" ref={bsModal} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

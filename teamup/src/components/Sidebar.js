@@ -27,6 +27,7 @@ const Sidebar = (props) => {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const [cookie, setCookie] =Cookies.get("userId");
 
 
 
@@ -34,9 +35,16 @@ const Sidebar = (props) => {
         console.log("logout function called");
         Cookies.remove('userId', { path: '/' });
         alert("로그아웃 되었습니다.")
-        navigate("/login");
 
-        console.log("user",user)
+        if(cookie){
+            return;
+        }
+        else{
+            sessionStorage.removeItem("comId")
+            navigate("/login");
+        }
+
+        console.log("user", user)
 
 
 
@@ -50,12 +58,13 @@ const Sidebar = (props) => {
     }, [])
 
 
+
     return (
         <div>
 
             <div className="side-bar row">
 
-              
+
 
                 <div className='row'>
                     <div className='col'>
@@ -93,24 +102,23 @@ const Sidebar = (props) => {
                         <span>급여내역</span>
                     </NavLink>
                 </div>
-                <div className="ms-4">
-                    <NavLink to="#" className="nav-link d-flex align-items-center">
+                <div className={`ms-4 ${user ? 'hidden' : ''}`}>
+                    <NavLink to="/deptInsert" className="nav-link d-flex align-items-center">
                         <MdOutlineManageAccounts className="text-white me-3 mt-1" size="30" />
                         <span>관리자</span>
                     </NavLink>
                 </div>
-
                 <div className="ms-4 mt-4">
-                {user === "" ? (
-                                <NavLink to='/login' className="nav-link d-flex align-items-center">
-                                    <BiLogIn className="text-white me-3" size="30" />
-                                   <span>로그인 페이지로</span> 
-                                </NavLink>
-                            ) : (
-                                <NavLink onClick={logout} className='nav-link d-flex align-items-center'>
-                                <BiLogOut className="text-white me-3" size="30" />
-                                <span>로그아웃</span></NavLink>
-                            )}
+                    {user === "" ? (
+                        <NavLink to='/login' className="nav-link d-flex align-items-center">
+                            <BiLogIn className="text-white me-3" size="30" />
+                            <span>로그인 페이지로</span>
+                        </NavLink>
+                    ) : (
+                        <NavLink onClick={logout} className='nav-link d-flex align-items-center'>
+                            <BiLogOut className="text-white me-3" size="30" />
+                            <span>로그아웃</span></NavLink>
+                    )}
                 </div>
 
                 {/* 관리자일 때만 나오기 */}

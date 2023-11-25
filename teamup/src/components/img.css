@@ -1,0 +1,30 @@
+@keyframes sparkle {
+    0% { border-color: #d4ba00; box-shadow: 0 0 8px #d4ba00; }
+  50% { border-color: #cc9500; box-shadow: 0 0 20px #cc9500; }
+  100% { border-color: #d4ba00; box-shadow: 0 0 10px #d4ba00; }}
+
+  .mini {
+    border: 2px solid #ffeb3b;
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  img.mini {
+    animation: sparkle 2s infinite;
+  }
+
+
+  @keyframes rotateBorderColor {
+    0% { border-color: #ffeb3b; }
+    25% { border-color: #4caf50; }
+    50% { border-color: #2196f3; }
+    75% { border-color: #e91e63; }
+    100% { border-color: #ffeb3b; }
+  }
+
+  .rotating-border {
+    border: 5px solid; /* 테두리 두께 설정 */
+    border-radius: 8px;
+    display: inline-block;
+    animation: rotateBorderColor 5s infinite linear; /* 테두리 색상 회전 애니메이션 적용 */
+  }

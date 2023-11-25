@@ -41,6 +41,8 @@ import BoardDetail from './components/BoardDetail';
 import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
+import './components/img.css'
+import { LuFolderTree } from "react-icons/lu";
 import MainBoard from './components/MainBoard';
 
 
@@ -66,75 +68,104 @@ function App() {
   //------------------------------조직도 끝---
 
 
-//user로 내 정보 끌어오기
+  //user로 내 정보 끌어오기
 
 
 
-// const [socket, setSocket] = useState();
-// const [room , setRoom] = useRecoilState(roomState);
+  const [socket, setSocket] = useState();
+  const [room, setRoom] = useRecoilState(roomState);
 
-// const [roomNo, setRoomNo] = useState("");
-
-
-
-// const onRoomNoChange = () => {
-//   //채팅방 번호 전달하기
-
-//   console.log(roomNo);
-
-//   console.log('useEffect in App.js triggered!');
-// };
+  const [roomNo, setRoomNo] = useState("");
 
 
 
+  const onRoomNoChange = () => {
+    //채팅방 번호 전달하기
 
-// useEffect((props) => {
-//   // SockJS를 사용하여 WebSocket에 연결
-//   const socket = new SockJS('http://localhost:8080/ws/sockjs');
+    const data = {
+      type: 'enterRoom',
+      empNo:user,
+      chatRoomNo: `${roomNo}`,
+    };
 
-//   // 연결 성공 시 실행되는 콜백
-//   socket.onopen = () => {
-//     console.log('WebSocket Connected!');
-//     const data = {
-//       type: 'enterRoom',
-//       chatRoomNo: roomNo
-//     };
-    
-//     // 보낼 데이터를 정의
+    // 디버깅을 위해 데이터를 콘솔에 로그
+    console.log('전송?', data);
 
-    
-//     // 데이터를 JSON 문자열로 변환하여 서버로 전송
-//   };
+    // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
+    webSock.send(JSON.stringify(data));
 
-//   console.log('App.js의 useEffect가 트리거되었습니다!');
+    console.log(roomNo);
 
-//   // 메시지를 받았을 때 실행되는 콜백
-//   socket.onmessage = (event) => {
-//     const message = JSON.parse(event.data);
-//     console.log('Received message:', message);
-//     // 메시지 처리 로직을 추가하세요.
-//   };
+    console.log('useEffect in App.js triggered!');
+  };
 
-//   // 연결이 닫힌 경우 실행되는 콜백
-//   socket.onclose = () => {
-//     console.log('WebSocket Connection Closed.');
-//   };
 
-//   // 컴포넌트가 언마운트되면 연결 종료
-//   return () => {
-//     if (socket.readyState === SockJS.OPEN) {
-//       socket.close();
-//     }
-//   };
-// }, []); // 컴포넌트가 처음 마운트될 때만 실행
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [webSock, setWebSock] =useState();
 
 
 
+  useEffect(() => {
+    const socket = new SockJS('http://localhost:8080/ws/sockjs');
+    setWebSock(socket);
+  
+    socket.onopen = () => {
+      console.log('WebSocket Connected!');
+      const data = {
+        type: 'enterRoom',
+        chatRoomNo: 'waitingRoom',
+        empNo: user,
+        empName: empName,
+      };
+      socket.send(JSON.stringify(data));
+      console.log(data, '입장');
+      // 세션에 속성 설정
+      socket.sessionAttributes = {
+        empNo: `${user}`,
+        empName: empName,
+      };
+    };
+  
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('Received message:', message);
+      setMessages((prevMessages) => [...prevMessages, message]);
+      // 새로운 메시지를 기존 메시지 목록에 추가
+    };
+  
+    socket.onclose = () => {
+      console.log('WebSocket Connection Closed.');
+    };
+  
+    return () => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.close();
+      }
+    };
+  }, []);
 
-
-
-
-
+  const chatMessage = (message) => {
+    // WebSocket 연결이 열려 있는지 확인
+    if (webSock && webSock.readyState === WebSocket.OPEN) {
+      // 'message' 타입의 데이터 객체를 생성하고 주어진 메시지를 추가
+      const data = {
+        type: 'message',
+        id:user,
+        content: message,
+        chatRoomNo:roomNo,
+      };
+  
+      // 디버깅을 위해 데이터를 콘솔에 로그
+      console.log('전송?', data);
+  
+      // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
+      webSock.send(JSON.stringify(data));
+    } else {
+      // WebSocket 연결이 열려 있지 않은 경우 오류 메시지를 로그
+      console.error('WebSocket connection is not open.');
+    }
+  };
 
 
 
@@ -183,21 +214,35 @@ function App() {
 
   useEffect(() => {
     setCompany(sessionId)
-    console.log("세션아이디::",sessionId)
+    console.log("세션아이디::", sessionId)
   }, [])
 
 
   useEffect(() => {
     loadInfo();
-}, [company, user]);
+  }, [company, user]);
 
 
-useEffect(()=>{
-  if(user===''){
-    navigate("/login");
-  }
+  const [lastVisitedPage, setLastVisitedPage] = useState(null);
 
-},[])
+  useEffect(() => {
+    // 페이지 이동 시마다 현재 경로를 저장
+    setLastVisitedPage(location.pathname);
+  }, [location.pathname]);
+
+
+  useEffect(() => {
+    if (sessionId) {
+      navigate("/deptInsert")
+
+    }
+    else if (savedToken === undefined) {
+      navigate("/login")
+    }
+    else {
+      navigate(setLastVisitedPage)
+    }
+  }, [savedToken, sessionId])
 
 
 
@@ -214,19 +259,19 @@ useEffect(()=>{
   const loggedInEmpNo = parseInt(user.substring(6));
 
   const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
-  useEffect(()=>{
+  useEffect(() => {
 
-      axios({
-        url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
-        method:"get"
-      })
-      .then(response=>{
+    axios({
+      url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      method: "get"
+    })
+      .then(response => {
         setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
       })
-      .catch(err=>{
+      .catch(err => {
         setImgSrc(surf);
       });
-  },[user]);
+  }, [user]);
 
 
   //이미지가 있으면 imgSrc를 사용하고, 없다면 surf를 사용
@@ -237,6 +282,8 @@ useEffect(()=>{
 
 
 
+
+  const empName = sessionStorage.getItem("userName")
   return (
     <>
     
@@ -247,64 +294,85 @@ useEffect(()=>{
       <div className='main-content container-fluid'>
         
 
-        {user ===''? '': <Sidebar />}
+        {user === ''  ? '' : <Sidebar />}
+      
 
-        {/* <div className='row ms-15 mt-3'> */}
-        <div className='row space'>
+        {/* {sessionId ? (
+          // sessionId가 존재하는 경우
+          <Sidebar />
+        ) : savedToken === undefined ? (
+          // savedToken이 정의되지 않은 경우
+          ''
+        ) : (
+          // 모든 조건이 충족되지 않는 경우
+          <Sidebar />
+        )}    */}
+        
+        <div className='row ms-15 mt-3'>
           <div className='col-md-10 offset-md-1'>
 
 
             {/* 헤더 */}
 
-            {user ===''?'':(
+            {user === '' ? '' : (
+              <div className='row'>
+                <div className='col-4 me-auto app-start'>
+                  <Navbar.Brand href="#home" className='logo'>
+                    <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
 
-
-
-            <div className='row'>
+                    <button onClick={openModal}>채팅</button>
               <div className='col-4 app-start'>
                 <Navbar.Brand href="#home" className='logo'>
                   <img src={TeamUpLogo} alt="TemaUpLog" width={100} />
                   <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
-                  <NavLink to="/deptInsert" className="ms-1">부서등록</NavLink>
-                  {/* <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink> */}
-                  {/* <NavLink to="/profileEdit" className="ms-1">프로필</NavLink> */}
+                    {/* <NavLink to="/empTree" className={"ms-2"}>조직도</NavLink> */}
+                    {/* <NavLink to="/profileEdit" className="ms-1">프로필</NavLink> */}
 
-                  <Button onClick={handleShow} className=" btn btn-primary ms-3">조직도</Button>
 
-                </Navbar.Brand>
-              </div>
-
-              <div className='col-4 app-center'>아오</div>
-
-              <div className='col-4 app-end'>
-
-                <div className='row'>
-                  <div className='col text-end'>
-               
-                    <div className='col-2'>
-                      <Navbar expand="sm" className="bg-body-white ">
-                        <Nav className="bg-body-primary ">
+                  </Navbar.Brand>
+                </div>
 
 
 
+                <div className='col-4 app-end'>
 
-                          <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle" 
-                                  style={{width:"45px", height:"45px", objectFit:"cover"}}/>} id="basic-nav-dropdown">  
-                            {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
-                            {/* <img src={imgSrc} alt="profileImage" className="rounded-circle" 
+                  <div className='row'>
+                    <div className='col'>
+
+                      <div className='col'>
+                        <Navbar expand="sm" className="bg-body-white ">
+                          <Nav className="bg-body-primary ">
+
+
+
+                            <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle  mini"
+                              style={{ width: "45px", height: "45px", objectFit: "cover" }} />} id="basic-nav-dropdown">
+                              {/* <NavDropdown title={<CgProfile className="me-3" size={45}style={{color:'#218C74'}} />} id="basic-nav-dropdown">  */}
+                              {/* <img src={imgSrc} alt="profileImage" className="rounded-circle" 
                                   style={{width:"45px", height:"45px", objectFit:"cover"}}/> */}
-                            <NavDropdown.Item href="#mypage"  >마이페이지</NavDropdown.Item>
+                              <NavDropdown.Item href="#mypage"  >마이페이지</NavDropdown.Item>
 
-                            <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
-                          </NavDropdown>
-                        </Nav>
-                      </Navbar>
+                              <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
+                            </NavDropdown>
+
+                            <div className='col'>
+                              {user}<br />{empName} <label className='form-label'>님 환영합니다!</label>
+
+                            </div>
+                            <div><LuFolderTree onClick={handleShow} size="30" className='mt-2 me-3'>조직도</LuFolderTree>
+                            </div>
+
+                          </Nav>
+                        </Navbar>
+
+
+                      </div>
+
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             )}
             {/* 본문 */}
             {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
@@ -332,7 +400,9 @@ useEffect(()=>{
                 <Route path="/approveWrite" element={<ApproveWrite />}></Route>
                 <Route path='/com' element={<Com />} ></Route>
                 <Route path='/search' element={<Search user={user} />}></Route>
-                <Route path='/home' element={<Home  user={user}/>}></Route>
+                <Route path='/home' element={<Home user={user} />}></Route>
+                <Route path='/login' element={<Login />}></Route>
+
                 <Route path="/mypage" element={<Mypage user={user} />}></Route>
                 <Route path="/deptInsert" element={<DeptInsert />}></Route>
                 <Route path="/calendar" element={<Calendar />}></Route>
@@ -377,7 +447,7 @@ useEffect(()=>{
 
 
 
-{/* 
+
       {showModal && (
         <div className="chat-modal-background" >
           <div className="chat-modal-content">
@@ -388,10 +458,16 @@ useEffect(()=>{
             <div className='chat-container'>
               <div className='row'>
                 <div className='col-4' >
-                  <ChatList setRoomNo={setRoomNo}   list={roomNo}  onRoomNoChange={onRoomNoChange}/>
+                  <ChatList setRoomNo={setRoomNo} list={roomNo} onRoomNoChange={onRoomNoChange} />
                 </div>
                 <div className='col-8'>
-                  <Chat/>
+                  <Chat
+                    messages={messages}
+                    setMessages={setMessages}
+                    newMessage={newMessage}
+                    setNewMessage={setNewMessage}
+                    chatMessage={chatMessage} // chatMessage 함수를 전달
+                  />
                 </div>
               </div>
             </div>
@@ -404,7 +480,7 @@ useEffect(()=>{
           <div>
           </div>
         </div>
-      )} */}
+      )}
 
     </>
   );

@@ -557,6 +557,8 @@ h4 {
     border-color: #218C74;
 }
 
+.hidden{
+    display: none;
 /*결재자 부서*/
 .approve-dept{
     background-color: #218C74;
