@@ -11,6 +11,7 @@ import { Pagination } from "react-bootstrap";
 import { FaRegCheckSquare } from "react-icons/fa";
 import { FaRegSquare } from "react-icons/fa6";
 import { FiXSquare } from "react-icons/fi";
+import { TfiPencil } from "react-icons/tfi";
 
 import { useRecoilState } from 'recoil';
 import { companyState, userState } from '../recoil';
@@ -364,12 +365,17 @@ const ApproveList = (props)=>{
     return(
         <div className="container-fluid">
             <div className="row">
-                <div className="col-md-8 offset-md-2">
+                <div className="col-md-10 offset-md-1">
                     <div className="text-end my-3" >
                         <NavLink className={`nav-link ${location.pathname === '/approveWrite' ? 'active' : ''}`} to="/approveWrite">
-                            <button className="btn btn-info">기안 상신 작성</button>
+                            <button className="btn btn-primary">기안 상신 작성<TfiPencil /></button>
                         </NavLink>
                     </div>
+
+                    <div className="mb-3">
+                        <h2>전자결재</h2>
+                    </div>
+
 
                     <div className="btn-group text-start" role="group" aria-label="Basic radio toggle button group">
                         <input type="radio" className="btn-check" name="btnradio" id="btnradio1"/>
@@ -386,12 +392,12 @@ const ApproveList = (props)=>{
                         <div className='col'>
 
                             <table className='table table-hover text-center'>
-                                <thead>
+                                <thead className='table-primary'>
                                     <tr>
-                                        <th className='text-start'>제목</th> 
-                                        <th>발신인</th> 
-                                        <th>상신일</th> 
-                                        <th>마감일</th> 
+                                        <th width="35%">제목</th> 
+                                        <th width="15%">발신인</th> 
+                                        <th width="20%">상신일</th> 
+                                        <th width="20%">마감일</th> 
                                         <th>상태</th> 
                                     </tr>
                                 </thead>
