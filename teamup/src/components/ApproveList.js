@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 import axios from "axios";
-// import { Modal } from "bootstrap";
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -34,12 +33,61 @@ const ApproveList = (props)=>{
     const [receiverPosition, setReceiverPosition] = useState([]); //자신을 제외한 사원정보
     const [checkInfo, setCheckInfo] = useState([]);
 
+    // const [pageSize, setPageSize] = useState(10); // 페이지당 항목 수
+    // const [totalPages, setTotalPages] = useState(1); // 첫 페이지 설정
+    const [positionOrder, setPositionOrder] = useState([]); // 해당 회사의 직급 설정
+    const [position, setPosition] = useState([]); 
+
     const [referer, setReferer] = useState([]); //참조자만 저장
     const [empList, setEmpList] = useState([]); // 회원에 대한 모든 정보 
     const [emp, setEmp] = useState([]); //결재 하나의 회원정보
     const [ycount, setYCount] = useState([]);// Y카운트 갯수
 
     const empNo = parseInt(user.substring(6)); //로그인한 사람의 사원번호
+
+    // 페이지네이션 함수
+    // const pageCount = () =>{
+    //     setTotalPages(Math.ceil(apprList.length/pageSize));
+    // }
+
+    // 로그인한 사원의 회사 직급 가져오기
+    const getPosition = async() =>{
+
+        const response = await axios({
+            url:`${process.env.REACT_APP_REST_API_URL}/empPosition/position/${company}`,
+            method:"get"
+        });
+        setPosition(response.data);
+        const positions = response.data.map(item => item.empPositionName);
+        setPositionOrder(positions);
+    }
+
+    useEffect(()=>{
+        getPosition();
+    },[company])
+
+    console.log(position);
+    console.log(positionOrder);
+    console.log(checkInfo);
+
+    // const myPositionName = checkInfo.empPositionName; // 현재 로그인한 사람의 직급
+    // const myPositionIndex = positionOrder.indexOf(myPositionName); // 현재 로그인한 사람의 인덱스
+
+    const canApprove = ()=>{
+        if (receiver.length > 1 && apprData.status === "진행") {
+            const myIndex = receiver.findIndex((r) => r === empNo);
+            if (myIndex !== -1) {
+              const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
+              if (allApproved && checkInfo !== undefined) {
+                // 다른 수신자의 상태가 'Y' 인지 확인하는 추가 조건
+                const otherReceivers = receiverPosition.filter((r, index) => index !== myIndex);
+                const allOtherReceiversApproved = otherReceivers.every((r) => r.receiversStatus === 'Y');
+                return allOtherReceiversApproved;
+                }
+            }
+        }
+        return false;
+    }
 
     // receivers
     const divideReceiversDto = ()=>{
@@ -50,6 +98,11 @@ const ApproveList = (props)=>{
     console.log(receiverInfo);
     console.log(approveReceiver);
 
+    // const filterApproveReceiver = approveReceiver.filter(receiver =>{
+    //     const empPositionNo = parseInt(receiver.empPositionNo, 10);
+    //     return receiver.empNo !== empNo && empPositionNo > parseInt(checkInfo.empInfo.empPositionNo, 10);
+    // });
+    // console.log(filterApproveReceiver);
     
 
     // receivers의 모든정보추출
@@ -276,7 +329,6 @@ const ApproveList = (props)=>{
 
         })
     };
-    console.log(myApprInfo);
     
     //승인자 결재 반려 처리
     const cancelAppr = () =>{
