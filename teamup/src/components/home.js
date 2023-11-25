@@ -32,9 +32,9 @@ const Home = (props) => {
   const [flag, setFlag] = useState("출근전");
 
 
-  const [name ,setName] =useRecoilState(nameState);
+  const [name, setName] = useRecoilState(nameState);
   //const [positionName ,setPositionName] =useRecoilState();
-  const [deptNo ,setDeptNo] =useRecoilState(deptNoState);
+  const [deptNo, setDeptNo] = useRecoilState(deptNoState);
 
   //사원 
   const [empInfo, setEmpInfo] = useState({
@@ -46,7 +46,7 @@ const Home = (props) => {
     empPositionNo: '',
     empTel: '',
     empJoin: ''
-});
+  });
 
 
 
@@ -149,9 +149,9 @@ const Home = (props) => {
   const displayImage = imgSrc || surf;
 
 
- // 이름과 직급을 찍기 위해 사원정보를 불러옴
- const myInfo = async () => {
-  try {
+  // 이름과 직급을 찍기 위해 사원정보를 불러옴
+  const myInfo = async () => {
+    try {
       const response = await axios.get(`http://localhost:8080/emp/mypage/${empNo}`);
       console.log(response.data);
       setEmpInfo(response.data);
@@ -159,93 +159,93 @@ const Home = (props) => {
       setName(response.data.empName);
       setDeptNo(response.data.deptNo);
       console.log(name);
-  } catch (error) {
+    } catch (error) {
       console.error('Error fetching data:', error);
-  }
-};
+    }
+  };
 
-useEffect(() => {
-  myInfo();
-}, [props.user]);
+  useEffect(() => {
+    myInfo();
+  }, [props.user]);
 
 
   return (
 
-      <div className="row ms-13 mt-2 mp space">
+    <div className="row ms-13 mt-2 mp space">
 
 
-        {/* 세로로 첫 번째 줄 */}
-        <div className="home-profile col-3">
+      {/* 세로로 첫 번째 줄 */}
+      <div className="home-profile col-3">
 
-          {/* 프로필과 출퇴근 버튼 */}
-          <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
+        {/* 프로필과 출퇴근 버튼 */}
+        <div className="row h-50 mb-3 p-3 me-1 d-flex graybox 
                                     justify-content-center align-items-center">
-            {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
+          {/* <CgProfile  size={150}style={{color:'#218C74'}} /> */}
 
 
-            {/* 프로필 */}
-            <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle"
-              style={{ width: "220px", height: "200px", objectFit: "cover" }} />
+          {/* 프로필 */}
+          <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle"
+            style={{ width: "220px", height: "200px", objectFit: "cover" }} />
 
-            <div className="d-flex item-center text-bold">
+          <div className="d-flex item-center text-bold">
             <div>{empInfo.empName}</div>
-            </div>
-
-            {/* 출근 */}
-            <div className="d-flex ms-4">
-              <div className="m-1 me-3 font-mian-title">출근시간</div>
-              <div className="m-1 font-main-content">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
-              <button className="ms-2 btn btn-primary custom-btn font-mian-btn" onClick={attendStartClick}
-                disabled={flag !== "근무전"}>출근</button>
-            </div>
-
-            {/* 퇴근 */}
-            <div className="d-flex ms-4">
-              <div className="ms-1 me-3 font-mian-title">퇴근시간</div>
-              <div className="ms-1 font-main-content">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
-              <button className="ms-2 btn btn-primary custom-btn font-mian-btn" onClick={attendEndClick}
-                disabled={flag === "근무전"}>퇴근</button>
-            </div>
-
           </div>
 
-          {/* 투두리스트 */}
-          <div className="row h-50 me-1 home-todo">
-            <TodoProvider>
+          {/* 출근 */}
+          <div className="d-flex ms-4">
+            <div className="m-1 me-3 font-mian-title">출근시간</div>
+            <div className="m-1 font-main-content">{attendList.attendStart ? formatDateTime(attendList.attendStart) : "-"}</div>
+            <button className="ms-2 btn btn-primary custom-btn font-mian-btn" onClick={attendStartClick}
+              disabled={flag !== "근무전"}>출근</button>
+          </div>
+
+          {/* 퇴근 */}
+          <div className="d-flex ms-4">
+            <div className="ms-1 me-3 font-mian-title">퇴근시간</div>
+            <div className="ms-1 font-main-content">{attendList.attendEnd ? formatDateTime(attendList.attendEnd) : "-"}</div>
+            <button className="ms-2 btn btn-primary custom-btn font-mian-btn" onClick={attendEndClick}
+              disabled={flag === "근무전"}>퇴근</button>
+          </div>
+
+        </div>
+
+        {/* 투두리스트 */}
+        <div className="row h-50 me-1 home-todo">
+          <TodoProvider>
             <TodoTemplate style={{ width: '100%', height: '100%' }}>
-                <TodoHead />
-                <TodoList />
-                <TodoCreate />
-              </TodoTemplate>
-            </TodoProvider>
-          </div>
-
-        </div>
-
-        {/* 세로로 두 번째 줄 */}
-        <div className="col-5 home-center">
-          <div className="row graybox border-primary h-50">
-            <MainBoard/>
-          </div>
-          <div className="row graybox border-primary h-50 mt-3">
-            전자결재
-          </div>
-        </div>
-
-        {/* 세로로 세 번째 줄 */}
-        <div className="home-calendar col-4">
-          {/* 캘린더 */}
-          <div className="home-calendar graybox border-primary h-50 p-3">
-            <Calendar />
-          </div>
-
-          {/* 날씨 */}
-          <div className="home-weather graybox border-primary h-50 p-4 mt-3 custom-background text-bold white" style={{ backgroundImage: 'url("img/cloud.jpg")', backgroundSize: 'cover' }}>
-              <Weather />
-          </div>
+              <TodoHead />
+              <TodoList />
+              <TodoCreate />
+            </TodoTemplate>
+          </TodoProvider>
         </div>
 
       </div>
+
+      {/* 세로로 두 번째 줄 */}
+      <div className="col-5 home-center">
+        <div className="row graybox border-primary h-50">
+          <MainBoard />
+        </div>
+        <div className="row graybox border-primary h-50 mt-3">
+          전자결재
+        </div>
+      </div>
+
+      {/* 세로로 세 번째 줄 */}
+      <div className="home-calendar col-4">
+        {/* 캘린더 */}
+        <div className="home-calendar graybox border-primary h-50 p-3">
+          <Calendar />
+        </div>
+
+        {/* 날씨 */}
+        <div className="home-weather graybox border-primary h-50 p-4 mt-3 custom-background text-bold white" style={{ backgroundImage: 'url("img/cloud.jpg")', backgroundSize: 'cover' }}>
+          <Weather />
+        </div>
+      </div>
+
+    </div>
   );
 };
 

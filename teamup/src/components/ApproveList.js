@@ -65,28 +65,7 @@ const ApproveList = (props)=>{
         getPosition();
     },[company])
 
-    console.log(position);
-    console.log(positionOrder);
     console.log(checkInfo);
-
-    // const myPositionName = checkInfo.empPositionName; // 현재 로그인한 사람의 직급
-    // const myPositionIndex = positionOrder.indexOf(myPositionName); // 현재 로그인한 사람의 인덱스
-
-    const canApprove = ()=>{
-        if (receiver.length > 1 && apprData.status === "진행") {
-            const myIndex = receiver.findIndex((r) => r === empNo);
-            if (myIndex !== -1) {
-              const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
-              if (allApproved && checkInfo !== undefined) {
-                // 다른 수신자의 상태가 'Y' 인지 확인하는 추가 조건
-                const otherReceivers = receiverPosition.filter((r, index) => index !== myIndex);
-                const allOtherReceiversApproved = otherReceivers.every((r) => r.receiversStatus === 'Y');
-                return allOtherReceiversApproved;
-                }
-            }
-        }
-        return false;
-    }
 
     // receivers
     const divideReceiversDto = ()=>{
@@ -117,16 +96,35 @@ const ApproveList = (props)=>{
             empInfo: search[index],
             receiversStatus: receiversStatusArray[index],
         }));    
-
         setReceiverInfo(combinedArray);
+        
+        const myInfo = combinedArray.find(userInfo => userInfo.empInfo.empNo === empNo); //자신의 정보
+        if(myInfo){
+            const myApprInfo = apprData.receiversDtoList.find(receiver => receiver.receiversReceiver === empNo);
+            SetMyApprInfo(myApprInfo);
+
+            const higherPosition = combinedArray.filter(userInfo => 
+                Number(userInfo.empInfo.empPositionNo) > Number(myInfo.empInfo.empPositionNo))
+            setReceiverPosition(higherPosition);
+
+            const ycount = higherPosition.filter(i => i.receiversStatus ==="Y");
+            setYCount(ycount)
+        }
 
         const selectInfo = combinedArray.find(list=> list.empInfo.empNo ===empNo)
         setCheckInfo(selectInfo);
     }
+    const isAllApproved = ()=>{
+        return receiverPosition.length === ycount.length;
+    }
+    
+    console.log(receiverPosition);
+    console.log(receiverPosition.length);
+    console.log(ycount);
+    console.log(ycount.length);
 
     useEffect(()=>{
         findReceiverInfo();
-        approveCompute();
     },[receiver])
     
     // referers
@@ -233,34 +231,8 @@ const ApproveList = (props)=>{
     console.log(empList);
     console.log(emp);
     console.log(apprData);
-    // console.log(approveReceiver.empInfo.empNo);
 
     const [myApprInfo, SetMyApprInfo] = useState([]);
-
-    useEffect(()=>{
-        approveCompute();
-    },[apprData])
-    console.log(myApprInfo);
-
-    //상세를 누르면 승인자들의 직급에 따라 계산
-    const approveCompute = ()=>{
-        const myInfo = receiverInfo.find(userInfo => userInfo.empInfo.empNo === empNo); //자신의 정보
-        if(myInfo){
-            const myApprInfo = apprData.receiversDtoList.find(receiver => receiver.receiversReceiver === empNo);
-            SetMyApprInfo(myApprInfo);
-
-            const higherPosition = receiverInfo.filter(userInfo => 
-                    userInfo.empInfo.empPositionNo > myInfo.empInfo.empPositionNo)
-            setReceiverPosition(higherPosition);
-
-            const ycount = higherPosition.filter(i => i.receiversStatus ==="Y");
-            setYCount(ycount)
-        }
-    };
-    console.log(receiverPosition);
-    console.log(receiverPosition.length);
-    console.log(ycount);
-    console.log(ycount.length);
 
     //자신이 올린 결재 삭제 처리
     const deleteAppr = (apprNo) =>{
@@ -439,14 +411,6 @@ const ApproveList = (props)=>{
                                         {/* {조건 ? 참 : 거짓}
                                             {조건 && 참}
                                             {조건 || 거짓} */}
-                                        {/* <Row>
-                                            <Col aria-labelledby='approve-modal' closeButton className='text-end'>
-                                                <Button type='button' variant="light" size="30px"
-                                                    className='border-0 bg-transparent' onClick={closeModal}>
-                                                        <span aria-hidden="true">&times;</span>
-                                                </Button>
-                                            </Col>
-                                        </Row> */}
 
                                         { apprData.length !==0 && 
                                         <Row className='border border-success rounded mt-3'>
@@ -552,6 +516,12 @@ const ApproveList = (props)=>{
                                                 신청자 : {apprData.empName}
                                             </Col>
                                         </Row>
+
+                                        <div>
+                                            {!isAllApproved() &&(
+                                                <div style={{color:'red'}}>앞 승인자의 승인이 이루어지지 않았습니다.</div>
+                                            )}
+                                        </div>
                                     </Col>
                                 </Row>
                             </Container>
@@ -577,12 +547,33 @@ const ApproveList = (props)=>{
                                                         <Row>
                                                             <Col xs={6} md={9}>
                                                                 <Form>
-                                                                    <Form.Control
-                                                                        type="text"
-                                                                        placeholder="반려 시 사유를 입력하세요"
-                                                                        autoFocus name='receiversReturnRs' value={checkRecevier.receiversReturnRs}
-                                                                        onChange={e=>changeRecevier(e)} className='mt-2 mb-4'
-                                                                        />
+                                                                    {(()=>{
+                                                                        if(receiver.length === 1 ){
+                                                                            return(
+                                                                                <Form.Control
+                                                                                    type="text"
+                                                                                    placeholder="반려 시 사유를 입력하세요"
+                                                                                    autoFocus name='receiversReturnRs' value={checkRecevier.receiversReturnRs}
+                                                                                    onChange={e=>changeRecevier(e)} className='mt-2 mb-4'
+                                                                                    />
+                                                                            );
+                                                                        }
+                                                                        if (receiver.length > 1){
+                                                                            const isApproved = receiverPosition.length === ycount.length;
+
+                                                                            if (isApproved && checkInfo !== undefined) {
+                                                                                return(
+                                                                                    <Form.Control
+                                                                                    type="text"
+                                                                                    placeholder="반려 시 사유를 입력하세요"
+                                                                                    autoFocus name='receiversReturnRs' value={checkRecevier.receiversReturnRs}
+                                                                                    onChange={e=>changeRecevier(e)} className='mt-2 mb-4'
+                                                                                    />
+                                                                                );
+                                                                            }
+                                                                        }
+                                                                        return null;
+                                                                    })()}
                                                                 </Form>
                                                             </Col>
                                                             <Col xs={6} md={3} className='text-end'>
@@ -596,22 +587,28 @@ const ApproveList = (props)=>{
                                                                             </div>
                                                                         );
                                                                     }
-                                                                    if(receiver.length > 1 && apprData.status === "진행"){
-                                                                        const myIndex = receiver.findIndex((r) => r === empNo);
-                                                                        if (myIndex !== -1) {
-                                                                            const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
-                                                                            if (allApproved && checkInfo !== undefined) {
-                                                                                return (
-                                                                                    <div>
-                                                                                        <Button variant="primary"
-                                                                                            className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''} mt-2 mb-4`}
-                                                                                            onClick={checkAppr}>승인</Button>
-                                                                                        <Button variant='secondary' 
-                                                                                            className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''} mt-2 mb-4`}
-                                                                                            onClick={cancelAppr}>반려</Button>
-                                                                                    </div>
-                                                                                );
-                                                                            }
+                                                                    if (receiver.length > 1 && apprData.status === "진행") {
+                                                                        const isApproved = receiverPosition.length === ycount.length;
+                                                                        
+                                                                        if (isApproved && checkInfo !== undefined) {
+                                                                            return (
+                                                                                <div>
+                                                                                    <Button 
+                                                                                        variant="primary"
+                                                                                        className={`me-1 ${checkInfo.receiversStatus !== "R" ? 'disabled' : ''} mt-2 mb-4`}
+                                                                                        onClick={checkAppr}
+                                                                                    >
+                                                                                        승인
+                                                                                    </Button>
+                                                                                    <Button 
+                                                                                        variant="secondary" 
+                                                                                        className={`me-1 ${checkInfo.receiversStatus !== "R" ? 'disabled' : ''} mt-2 mb-4`}
+                                                                                        onClick={cancelAppr}
+                                                                                    >
+                                                                                        반려
+                                                                                    </Button>
+                                                                                </div>
+                                                                            );
                                                                         }
                                                                     }
                                                                     return null;
@@ -639,3 +636,23 @@ const ApproveList = (props)=>{
 };
 
 export default ApproveList;
+
+
+// if(receiver.length > 1 && apprData.status === "진행"){
+//     const myIndex = receiver.findIndex((r) => r === empNo);
+//     if (myIndex !== -1) {
+//         const allApproved = ycount.every((count, index) => index >= myIndex || count > 0);
+//         if (allApproved && checkInfo !== undefined) {
+//             return (
+//                 <div>
+//                     <Button variant="primary"
+//                         className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''} mt-2 mb-4`}
+//                         onClick={checkAppr}>승인</Button>
+//                     <Button variant='secondary' 
+//                         className={`me-1 ${checkInfo.receiversStatus !=="R" ? 'disabled': ''} mt-2 mb-4`}
+//                         onClick={cancelAppr}>반려</Button>
+//                 </div>
+//             );
+//         }
+//     }
+// }
