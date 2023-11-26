@@ -48,7 +48,7 @@ const Search = (props) => {
 
 
         axios({
-            url: "http://localhost:8080/emp/search/",
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
             method: "post",
             data: {
                 ...data,
@@ -122,7 +122,7 @@ const Search = (props) => {
 
     const loadForSearch = (pageNumber) => {
         axios({
-            url: "http://localhost:8080/emp/search/",
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
             method: "post",
             data: {
                 ...data,

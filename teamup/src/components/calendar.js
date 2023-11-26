@@ -103,7 +103,7 @@ const Calendar = () => {
 
   const addSchedule = () => {
     axios({
-      url: "http://localhost:8080/cal_emp/",
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/`,
       method: "post",
       data: schedule
 
@@ -116,7 +116,7 @@ const Calendar = () => {
   };
   const editSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/updateCal/${schedule.calNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/updateCal/${schedule.calNo}`,
       method: "put",
       data: schedule
     })
@@ -144,7 +144,7 @@ const Calendar = () => {
   // 일정 불러오기
   const loadSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/list/${empNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/list/${empNo}`,
       method: "get"
     }).then(response => {
       console.log(response);
@@ -220,7 +220,7 @@ const Calendar = () => {
   ///삭제 
   const deleteSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/delete/${schedule.calNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/delete/${schedule.calNo}`,
       method: "delete",
     }).then(response => {
       if (response.data !== null) alert("삭제되었습니다")
