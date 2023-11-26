@@ -119,7 +119,7 @@ const DeptCalendar = () => {
 
   const addSchedule = () => {
     axios({
-      url: "http://localhost:8080/cal_emp/dpetadd/",
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/dpetadd/`,
       method: "post",
       data: schedule
 
@@ -132,7 +132,7 @@ const DeptCalendar = () => {
   };
   const editSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/updateDeptCal/${schedule.calNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/updateDeptCal/${schedule.calNo}`,
       method: "put",
       data: schedule
     })
@@ -179,7 +179,7 @@ const DeptCalendar = () => {
   // 일정 불러오기
   const loadSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/deptList/${deptNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/deptList/${deptNo}`,
       method: "get"
     }).then(response => {
       console.log(response);
@@ -273,7 +273,7 @@ const DeptCalendar = () => {
   ///삭제 
   const deleteSchedule = () => {
     axios({
-      url: `http://localhost:8080/cal_emp/deleteDeptCal/${schedule.calNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/deleteDeptCal/${schedule.calNo}`,
       method: "delete",
 
 
