@@ -4,6 +4,7 @@ import { companyState, userState } from "../recoil";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { CiSquarePlus } from "react-icons/ci";
 
 const MainBoard=(props)=>{
 
@@ -55,13 +56,18 @@ const MainBoard=(props)=>{
         
     return(
 
-        <div className="">
+        <div>
 
             <div className="row">
                 <div className="col-6 mt-4 mb-3 ms-2">
                         <h4>공지사항</h4>
                 </div>
-               
+            </div>
+
+            <div className="row text-end text-green mb-1 me-1">    
+                <div className="col">
+                    <Link to={`/Board`} className="link">더보기<CiSquarePlus /></Link>
+                </div>
             </div>
                 
             <div className="row">

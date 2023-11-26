@@ -311,7 +311,7 @@ function App() {
           <Sidebar />
         )}    */}
         
-        <div className='row ms-15 mt-3'>
+        <div className='row ms-10 mt-3'>
           <div className='col-md-10 offset-md-1'>
 
             {/* Header */}
@@ -329,19 +329,19 @@ function App() {
                   </Navbar.Brand>
                 </div> */}
 
-                <div className='col-4 app-end text-end' style={{ display: 'flex', flexDirection: 'row' }}>
+                <div className='col-4 app-end' style={{ display: 'flex', flexDirection: 'row' }}>
                   <div className='row'>
                     <div className='col-3'></div>
-                      <div className='col-3'>
-                        <BsWechat onClick={openModal} className='mt-2 me-3 text-green header-icon'
+                      <div className='col-3 align-self-center'>
+                        <BsWechat onClick={openModal} className='me-2 text-green header-icon'
                             style={{width: "40px", height: "40px"}}/>
                       </div>
-                      <div className='col-3'>
-                          <HiMiniUserGroup onClick={handleShow} className='mt-2 me-3 text-green header-icon'
+                      <div className='col-3 align-self-center'>
+                          <HiMiniUserGroup onClick={handleShow} className='me-2 text-green header-icon '
                               style={{width: "45px", height: "45px"}}/>
                       </div>
-                      <div className='col-3'>
-                      <Navbar expand="sm" className="bg-body-white ">
+                      <div className='col-3 text-end'>
+                      <Navbar expand="sm" className="bg-body-white">
                         <Nav className="bg-body-primary ">
                           <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle header-icon"
                             style={{ width: "45px", height: "45px", objectFit: "cover"}} />} id="basic-nav-dropdown">

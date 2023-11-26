@@ -214,7 +214,7 @@ const toggleCal = ()=>{
 
   return (
 
-    <div className="row ms-13 mt-2 mp space">
+    <div className="row ms-10 mt-2 mp space">
 
 
       {/* 세로로 첫 번째 줄 */}
@@ -233,6 +233,7 @@ const toggleCal = ()=>{
             <div className="d-flex item-center text-bold">
             <div className="approve-dept rounded-start">{profile.deptName}</div>
             <div className="approve-position rounded-end">{profile.empPositionName}</div>
+            　
             <div>{empInfo.empName}</div>
           </div>
 
@@ -281,7 +282,7 @@ const toggleCal = ()=>{
       <div className="home-calendar col-4">
         {/* 캘린더 */}
         <div className="home-calendar graybox border-primary h-50 p-3">
-          <span onClick={toggleCal}>{isSchedule===true? (<label>개인일정</label>):(<label>부서일정</label>)}</span>
+          <span onClick={toggleCal}>{isSchedule===true? (<label style={{cursor: "pointer"}}>개인일정</label>):(<label style={{cursor: "pointer"}}>부서일정</label>)}</span>
 
           {isSchedule===true? <Calendar />: <DeptCalendar/>}
         </div>
