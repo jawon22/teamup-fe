@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Modal } from "bootstrap";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
+import { NavLink } from "react-bootstrap";
 
 const DeptInsert = () => {
     //세션스토리지 아이디만 저장
@@ -252,10 +253,24 @@ const DeptInsert = () => {
     },[])
 
 
+    const navigate =useNavigate();
 
 
 
 
+    const logOut =()=>{
+
+    //     if (comId) {
+    //         const userConfirmed = window.confirm("정말로 로그아웃하시겠습니까?");
+    //         if (userConfirmed) {
+    //             sessionStorage.removeItem("comId");
+    //             navigate("/login");
+    //     }
+    //     else{
+    //         alert("이미 로그아웃 되었습니다");
+    //     }
+    // };
+    }
 
 
 
@@ -502,6 +517,7 @@ const DeptInsert = () => {
                     <div className="col-10 offset-1 item-center">
                         <h1>{comId}부서관리</h1>
                     </div>
+                    <NavLink onClick={logOut}>로그아웃</NavLink>
                 </div>
 
 

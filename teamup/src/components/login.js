@@ -117,7 +117,7 @@ const Login = () => {
     
 
     return (
-        <>
+        <form autoComplete="off">
             <div className="">
 
                 <div className="d-flex row me-5">
@@ -166,7 +166,7 @@ const Login = () => {
                         {/* 로그인 버튼 */}
                         <div className="row mt-4 me-5">
                             <div className="col-ms-6 offset-ms-3">
-                                <button className=" btn btn-primary w-100 p-3 text-bold" onClick={login}>Login</button>
+                                <button type="button" className=" btn btn-primary w-100 p-3 text-bold" onClick={login}>Login</button>
                             </div>
                         </div>
 
@@ -195,10 +195,8 @@ const Login = () => {
 
                     </div>
 
-                    <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
    
-                    <NavLink to="/companyJoin" className="ms-5">회사로그인</NavLink>
 
 
                     <div class="modal fade" ref={bsModal} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -234,7 +232,7 @@ const Login = () => {
                 </div>
 
             </div>
-        </>
+        </form>
     );
 
 };

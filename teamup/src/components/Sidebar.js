@@ -27,35 +27,26 @@ const Sidebar = (props) => {
 
     const location = useLocation();
     const navigate = useNavigate();
-    const [cookie, setCookie] =Cookies.get("userId");
 
 
 
     const logout = () => {
+        window.confirm("로그아웃 하시겠습니까?")
         console.log("logout function called");
         Cookies.remove('userId', { path: '/' });
+        setUser("")
+        navigate('/login');
+
+
         alert("로그아웃 되었습니다.")
 
-        if(cookie){
-            return;
-        }
-        else{
-            sessionStorage.removeItem("comId")
-            navigate("/login");
-        }
-
-        console.log("user", user)
-
-
-
-        setUser("");
-        setCompany("");
-
-
+      
     };
 
     useEffect(() => {
-    }, [])
+
+
+    }, [props.user])
 
 
 

@@ -54,7 +54,7 @@ const CompanyJoin = ()=>{
 
     return (
 
-        <>
+        <form autoComplete="off">
         <div className="container">
             <div className="row mt-5 pt-5">
                 <div className="col-4 offset-4">
@@ -79,12 +79,12 @@ const CompanyJoin = ()=>{
             </div>
             <div className="row mt-4">
                 <div className="col-4 offset-4">
-                   <button className="btn btn-primary w-100" onClick={login}>회사 로그인</button>
+                   <button type="button" className="btn btn-primary w-100" onClick={login}>회사 로그인</button>
                 </div>
             </div>
 
         </div>
-        </>
+        </form>
     );
 };
 export default CompanyJoin;

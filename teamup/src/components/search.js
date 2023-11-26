@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { useLocation } from 'react-router-dom'
+import { Await, useLocation } from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 import surf from "./images/profileImage.png";
 import { useRecoilState } from "recoil";
@@ -84,7 +84,7 @@ const Search = (props) => {
 
     for (let number = 1; number <= pages; number++) {
         items.push(
-            <Pagination.Item key={number} active={number === active} onClick={() => loadForSearch(number)}>
+            <Pagination.Item key={number} active={number === active} onClick={() => loadForpage(number)}>
                 {number}
             </Pagination.Item>
         );
@@ -119,8 +119,23 @@ const Search = (props) => {
         console.log("??=   ", user)
 
     };
+    const loadForSearch = () => {
+        axios({
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
+            method: "post",
+            data: 
+                data
+        })
+            .then(response => {
+                console.log("보낸 데이터", data);
+                setSearchList(response.data);
+                console.log(response.data);
+            })
+            .catch();
+    };
 
-    const loadForSearch = (pageNumber) => {
+
+    const loadForpage = (pageNumber) => {
         axios({
             url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
             method: "post",
@@ -132,7 +147,7 @@ const Search = (props) => {
             .then(response => {
                 console.log("보낸 데이터", data);
                 setSearchList(response.data);
-                console.log(response.data);
+                console.log("page",pageNumber);
             })
             .catch();
     };

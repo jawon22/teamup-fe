@@ -36,7 +36,7 @@ const ChatList =(props)=>{
     const loadempList = ()=>{
   
       axios({
-        url:"http://localhost:8080/emp/complexSearch/",
+        url:`${process.env.REACT_APP_REST_API_URL}/emp/complexSearch/`,
         method:"post",
         data:{
           comId:company,
@@ -72,7 +72,7 @@ const ChatList =(props)=>{
 
       const loadRoomList=()=>{
         axios({
-            url:`http://localhost:8080/chat/roomList/${empNo}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/chat/roomList/${empNo}`,
             method:'get'
 
         }).then(res=>{
