@@ -34,7 +34,7 @@ const Emp = () => {
     // 부서리스트
     const loadDeptList = () => {
         axios({
-            url: `http://localhost:8080/dept/listByCompany/${company}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/dept/listByCompany/${company}`,
             method: 'get'
         }).then(res => {
             setDeptList(res.data);
@@ -47,7 +47,7 @@ const Emp = () => {
 
         if (openDept !== deptNo) {
             axios({
-                url: 'http://localhost:8080/emp/empListByDeptCom',
+                url: '${process.env.REACT_APP_REST_API_URL}/emp/empListByDeptCom',
                 method: 'post',
                 data: {
                     comId: company,
