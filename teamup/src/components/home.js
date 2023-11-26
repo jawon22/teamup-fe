@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
+import axios, { isCancel } from "axios";
 import { deptNoState, nameState, userState } from "../recoil";
 import { CgProfile } from "react-icons/cg";//임시프로필사진
 import Calendar from "./calendar";
@@ -16,6 +16,7 @@ import { TodoProvider } from "../TodoContext";
 import Weather from "./weather";
 import MainBoard from "./MainBoard";
 import MainApprove from "./MainApprove";
+import DeptCalendar from "./deptCalendar";
 
 const Home = (props) => {
 
@@ -196,6 +197,21 @@ useEffect(() => {
   myInfo();
 }, [props.user]);
 
+
+
+const [isSchedule,setIsSchedule] = useState(false);
+
+const toggleCal = ()=>{
+  if(isSchedule===false){
+    setIsSchedule(true);
+  }
+  else if(isSchedule===true){
+    setIsSchedule(false);
+  }
+
+  console.log(isSchedule)
+};
+
   return (
 
     <div className="row ms-13 mt-2 mp space">
@@ -265,7 +281,9 @@ useEffect(() => {
       <div className="home-calendar col-4">
         {/* 캘린더 */}
         <div className="home-calendar graybox border-primary h-50 p-3">
-          <Calendar />
+          <span onClick={toggleCal}>{isSchedule===true? (<label>개인일정</label>):(<label>부서일정</label>)}</span>
+
+          {isSchedule===true? <Calendar />: <DeptCalendar/>}
         </div>
 
         {/* 날씨 */}

@@ -47,7 +47,7 @@ const Emp = () => {
 
         if (openDept !== deptNo) {
             axios({
-                url: '${process.env.REACT_APP_REST_API_URL}/emp/empListByDeptCom',
+                url: `${process.env.REACT_APP_REST_API_URL}/emp/empListByDeptCom`,
                 method: 'post',
                 data: {
                     comId: company,
@@ -55,17 +55,14 @@ const Emp = () => {
                 },
             })
                 .then((res) => {
-                    console.log('저장사원', empList);
                     setEmpList(res.data);
                     setToggle((prevToggle) => !prevToggle);
-                    console.log(toggle);
                 })
                 .catch((error) => {
                     console.error('Error fetching employee list:', error);
                 });
         }
 
-        console.log(deptNo)
 
 
 
@@ -82,11 +79,8 @@ const Emp = () => {
     const [clickedEmpPosition, setClickedEmpPosition] = useState('');
 
     const show = (emp) => {
-        console.log("click")
-        console.log("emp", emp.empId)
         openModal();
         setClickedEmpNo(emp.empId.substring(6));
-        console.log("empNo", clickedEmpNo)
         setClickedEmpName(emp.empName)
         setClickedEmpPosition(emp.empPositionName)
 
@@ -111,7 +105,7 @@ const Emp = () => {
                                             {openDept === dept.deptNo && (
                                                 <ul >
                                                     {empList.map((emp, index2) => (
-                                                        <li key={index2} onClick={() => show(emp)}>
+                                                        <li key={index2}>
                                                             <Badge bg="success">{emp.empPositionName}</Badge> {emp.empName}
                                                         </li>
                                                     ))}

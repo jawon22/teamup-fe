@@ -428,7 +428,6 @@ const Mypage = (props) => {
     return (
         <>
             <div className="container m-5 ps-5 pe-5">
-                    직급변경 만들어야함
                 {/* 마이페이지 상세 */}
                 <div className="row mt-4 mp-bg text-green my-page">
 

@@ -299,17 +299,13 @@ const DeptCalendar = () => {
 
         initialView="dayGridMonth" // 초기뷰 dayGridMonth or timeGridWeek
         headerToolbar={{ // 띄어쓰면 갭이 생기고, 콤마가 있으면 그룹으로 묶는 형태
-          left: "today prev,next",
-          center: "title",
-          right: "dayGridMonth,dayGridWeek,dayGridDay"
+          // right: 'month,agendaWeek,agendaDay'
         }}
-
 
         footerToolbar={{
-
-          //  right: "dayGridMonth,dayGridWeek,dayGridDay"
+           right: "dayGridMonth,dayGridWeek,dayGridDay"
         }}
-
+        locale="ko"
 
         buttonText={{
           // prev: "이전", // 부트스트랩 아이콘으로 변경 가능

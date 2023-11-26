@@ -112,8 +112,16 @@ const Calendar = () => {
       closeModal();
     }
     )
-
-  };
+    .catch((error) => {
+      if (error.response && error.response.status === 500) {
+        // 서버에서 500번 에러가 발생한 경우
+        alert("모든 항목을 입력해 주세요");
+      } else {
+        // 다른 종류의 에러 처리
+        console.error("에러 발생", error);
+      }
+    });
+};
   const editSchedule = () => {
     axios({
       url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/updateCal/${schedule.calNo}`,
@@ -224,6 +232,7 @@ const Calendar = () => {
       method: "delete",
     }).then(response => {
       if (response.data !== null) alert("삭제되었습니다")
+      closeModal();
     });
   };
 
@@ -238,15 +247,12 @@ const Calendar = () => {
         plugins={plugin}
         initialView="dayGridMonth" // 초기뷰 dayGridMonth or timeGridWeek
         headerToolbar={{ // 띄어쓰면 갭이 생기고, 콤마가 있으면 그룹으로 묶는 형태
-          left: "today prev,next",
-          center: "title",
-          right: "dayGridMonth,dayGridWeek,dayGridDay"
           // right: 'month,agendaWeek,agendaDay'
         }}
 
-        // footerToolbar={{
-        //    right: "dayGridMonth,dayGridWeek,dayGridDay"
-        // }}
+        footerToolbar={{
+           right: "dayGridMonth,dayGridWeek,dayGridDay"
+        }}
 
         buttonText={{
           // prev: "이전", // 부트스트랩 아이콘으로 변경 가능
@@ -301,7 +307,7 @@ const Calendar = () => {
       
       />
 
-      <div>
+      <form autoComplete="off">
 
         <div className="modal fade" ref={bsModal} keyboard={'false'} backdrop="static" id="exampleModal" tabindex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div className="modal-dialog">
@@ -364,7 +370,7 @@ const Calendar = () => {
           </div>
         </div>
 
-      </div>
+      </form>
       </div>
     </div>
     </>

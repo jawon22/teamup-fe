@@ -110,7 +110,7 @@ function App() {
 
 
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws/sockjs');
+    const socket = new SockJS(`${process.env.REACT_APP_REST_API_URL}/ws/sockjs`);
     setWebSock(socket);
   
     socket.onopen = () => {
@@ -186,7 +186,7 @@ function App() {
 
     console.log("????", savedToken)
     axios({
-      url: `http://localhost:8080/emp/findtoken/${savedToken}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/emp/findtoken/${savedToken}`,
       method: 'get',
     }).then(res => {
 
@@ -199,7 +199,7 @@ function App() {
 
 
         axios({
-          url: `http://localhost:8080/emp/mypage/${userNo}`,
+          url: `${process.env.REACT_APP_REST_API_URL}/emp/mypage/${userNo}`,
           method: 'get'
         }).then(response => {
           console.log(response.data)
@@ -265,11 +265,11 @@ function App() {
   useEffect(() => {
 
     axios({
-      url: `http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      url: `${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`,
       method: "get"
     })
       .then(response => {
-        setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+        setImgSrc(`${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`);
       })
       .catch(err => {
         setImgSrc(surf);
@@ -387,7 +387,6 @@ function App() {
                 <Route path='/com' element={<Com />} ></Route>
                 <Route path='/search' element={<Search user={user} />}></Route>
                 <Route path='/home' element={<Home user={user} />}></Route>
-                <Route path='/login' element={<Login />}></Route>
 
                 <Route path="/mypage" element={<Mypage user={user} />}></Route>
                 <Route path="/deptInsert" element={<DeptInsert />}></Route>
