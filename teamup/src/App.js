@@ -15,6 +15,8 @@ import DeptInsert from './components/detpInsert';
 import CompanyJoin from './components/companyJoin';
 import Board from './components/Board';
 import TeamUpLogo from './components/images/TeamUpLogo.png';
+import { HiMiniUserGroup } from "react-icons/hi2";
+import { BsWechat } from "react-icons/bs";
 
 import { BsFillBellFill } from "react-icons/bs";
 import { RiKakaoTalkFill } from "react-icons/ri";
@@ -44,6 +46,7 @@ import BoardUpdate from './components/BoardUpdate';
 import './components/img.css'
 import { LuFolderTree } from "react-icons/lu";
 import MainBoard from './components/MainBoard';
+import { invalid } from 'moment';
 
 
 
@@ -309,49 +312,54 @@ function App() {
         )}    */}
         
         <div className='row ms-15 mt-3'>
-  <div className='col-md-10 offset-md-1'>
+          <div className='col-md-10 offset-md-1'>
 
-    {/* Header */}
-    {user === '' ? '' : (
-      <div className='row'>
-        <div className='col-4 me-auto app-start'>
-          <Navbar.Brand href="#home" className='logo'>
-            <img src={TeamUpLogo} alt="TeamUpLogo" width={100} />
-            <button onClick={openModal}>채팅</button>
-          </Navbar.Brand>
-        </div>
+            {/* Header */}
+            {user === '' ? '' : (
+              <div className='row'>
+                <div className='col-8 app-start'>
+                  <Navbar.Brand href="#home" className='logo'>
+                    <img src={TeamUpLogo} alt="TeamUpLogo" width={100} />
+                  </Navbar.Brand>
+                </div>
 
-        <div className='col-4 app-start'>
-          <Navbar.Brand href="#home" className='logo'>
-            <img src={TeamUpLogo} alt="TeamUpLogo" width={100} />
-          </Navbar.Brand>
-        </div>
+                {/* <div className='col-4 app-start'>
+                  <Navbar.Brand href="#home" className='logo'>
+                    <img src={TeamUpLogo} alt="TeamUpLogo" width={100} />
+                  </Navbar.Brand>
+                </div> */}
 
-        <div className='col-4 app-end'>
-          <div className='row'>
-            <div className='col'>
-              <Navbar expand="sm" className="bg-body-white ">
-                <Nav className="bg-body-primary ">
-                  <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle mini"
-                    style={{ width: "45px", height: "45px", objectFit: "cover" }} />} id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
-                  </NavDropdown>
+                <div className='col-4 app-end text-end' style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div className='row'>
+                    <div className='col-3'></div>
+                      <div className='col-3'>
+                        <BsWechat onClick={openModal} className='mt-2 me-3 text-green header-icon'
+                            style={{width: "40px", height: "40px"}}/>
+                      </div>
+                      <div className='col-3'>
+                          <HiMiniUserGroup onClick={handleShow} className='mt-2 me-3 text-green header-icon'
+                              style={{width: "45px", height: "45px"}}/>
+                      </div>
+                      <div className='col-3'>
+                      <Navbar expand="sm" className="bg-body-white ">
+                        <Nav className="bg-body-primary ">
+                          <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle header-icon"
+                            style={{ width: "45px", height: "45px", objectFit: "cover"}} />} id="basic-nav-dropdown">
+                            <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
+                            <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
+                          </NavDropdown>
 
-                  <div className='col'>
-                    {user}<br />{empName} <label className='form-label'>님 환영합니다!</label>
+                          {/* <div className='col'>
+                            {user}<br />{empName} <label className='form-label'>님 환영합니다!</label>
+                          </div> */}
+
+                        </Nav>
+                      </Navbar>
+                    </div>
                   </div>
-
-                  <div>
-                    <LuFolderTree onClick={handleShow} size="30" className='mt-2 me-3'>조직도</LuFolderTree>
-                  </div>
-                </Nav>
-              </Navbar>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
+                </div>
+              </div>
+            )}
             {/* 본문 */}
             {/* 여기가 회원 로그인 페이지 ===> 회원이 로그인을 하면 select 로 찾아서  sessionstoregy 에 저장 하고 */}
 
