@@ -9,6 +9,8 @@ import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import { Pagination } from "react-bootstrap";
 import moment from 'moment';
+import { FaComment } from 'react-icons/fa';
+import { Badge } from 'react-bootstrap';
 
 const Board =(props)=>{
     const [user, setUser] = useRecoilState(userState);
@@ -83,7 +85,7 @@ const Board =(props)=>{
     const clearBoard = () =>{
         setBoard({
             boardNo:"", empNo:"", comId:"",  deptNo:"",empName:"",deptName:"", boardTitle:"", boardContent:"", boardWriteDate:"", boardUpdateDate:"",
-            boardReadCount:""
+            boardReadCount:"", boardReplyCount:""
         });
     }
 
@@ -107,7 +109,8 @@ const Board =(props)=>{
             boardContent: board.boardContent,
             boardWriteDate: "",
             boardUpdateDate: "", // 초기에는 null로 설정
-            boardReadCount: "" // 초기에는 null로 설정
+            boardReadCount: "", // 초기에는 null로 설정
+            boardReplyCount:""
         };
     
         // Axios를 사용하여 서버에 데이터 전송
@@ -203,7 +206,7 @@ const formatDate = (timestamp) => {
                 <div className="col-6 mb-3 mt-4">
                         <h2>공지사항</h2>
                 </div>
-                <div className="col-6 text-end">
+                <div className="col-6 mb-3 mt-4 text-end">
                         <button className="btn btn-primary text-white"onClick={handleShow}>글쓰기<TfiPencil /></button>
                 </div>
             </div>
@@ -227,8 +230,21 @@ const formatDate = (timestamp) => {
                             <tr key={board.boardNo}>
                                 <td>{board.boardNo}</td>
                                 <td>{board.deptName}</td>
+
                                 <td className="text-left">
-                                    <Link className="custom-link" to={`/board/find/${board.boardNo}`}>{board.boardTitle}</Link>
+                                    <Link className="custom-link" to={`/board/find/${board.boardNo}`}>
+                                        {board.boardTitle}
+                                        {board.boardReplyCount > 0 && (
+                                            <span className="ms-2"
+                                                style={{
+                                                    color: '#78c2ad',
+                                                    fontSize: '0.8rem',
+                                                }}>
+                                                <FaComment className="me-1" />
+                                                {board.boardReplyCount}
+                                            </span>
+                                        )}
+                                    </Link>
                                 </td>
                                 <td>{formatDate(board.boardWriteDate)}</td>
                                 <td>{board.boardUpdateDate ? formatDate(board.boardUpdateDate) : ''}</td>

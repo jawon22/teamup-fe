@@ -385,8 +385,6 @@ li {
 
 /* 드롭다운 메뉴 */
 
-element.style {
-}
 .dropdown-item:focus, .dropdown-item:hover {
     color: #fff;
     background-color: rgb(95, 166, 120)

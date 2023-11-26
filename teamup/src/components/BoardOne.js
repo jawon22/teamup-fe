@@ -247,8 +247,16 @@ const handleEditReply = (replyNo, currentContent, reply) => {
               <div className="d-flex justify-content-between">
                 <div>
                   <strong>{reply.replyWriterName}</strong>
-                  <span className="badge bg-secondary ms-2 me-2">{reply.replyWriterEP}</span>
-                  <span className="badge bg-primary me-2">{reply.replyWriterDept}</span>
+                  <span className=" ms-2 rounded-start"
+                   style={{ backgroundColor: '#218C74', color:'white',
+                    fontSize:'12px',fontWeight:'bold',
+                    padding: '0.3em', paddingLeft: '0.5em', paddingRight:'0.5em' }}
+                  >{reply.replyWriterDept}</span>
+                  <span className=" rounded-end"
+                    style={{ backgroundColor: '#78C2AD', color:'white',
+                    fontSize:'12px',fontWeight:'bold',
+                    padding: '0.3em', paddingLeft: '0.5em', paddingRight:'0.5em' }}
+                   >{reply.replyWriterEP}</span>
                 </div>
                 <small className='mt-2'>{reply.replyTime}</small>
               </div>
