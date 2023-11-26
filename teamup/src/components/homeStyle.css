@@ -19,7 +19,7 @@
     width: 400px; 
   }
   .space {
-    margin-left: 80px;
+    margin-left: 60px;
   }
 }
 
@@ -43,7 +43,7 @@
     width: 400px; 
   }
   .space {
-    margin-left: 80px;
+    margin-left: 60px;
   }
 }
 
@@ -67,7 +67,7 @@
     width: 400px; 
   }
   .space {
-    margin-left: 80px;
+    margin-left: 60px;
   }
 }
 
@@ -91,7 +91,7 @@
     width: 400px; 
   }
   .space {
-    margin-left: 80px;
+    margin-left: 60px;
   }
 }
 
@@ -115,7 +115,7 @@
     width: 400px; 
   }
   .space {
-    margin-left: 80px;
+    margin-left: 60px;
   }
 
 }
@@ -137,7 +137,7 @@
     width: 400px; 
   }
   .space {
-    margin-left: 80px;
+    margin-left: 60px;
   }
 
 }
@@ -159,7 +159,29 @@
     width: 350px; 
   }
   .space {
-    margin-left: 40px;
+    margin-left: 25px;
+  }
+
+}
+
+@media (max-width: 1005px) {
+  .home-profile{
+    width: 300px;
+  }
+  .home-todo{
+    width: 285px;
+  }
+  .home-center {
+    display: none;
+  }
+  .home-calendar {
+    width: 350px; 
+  }
+  .home-weather {
+    width: 350px; 
+  }
+  .space {
+    margin-left: 25px;
   }
 
 }
@@ -181,7 +203,7 @@
     width: 350px; 
   }
   .space {
-    margin-left: 40px;
+    margin-left: -35px;
   }
   .my-page{
     width: 660px;
@@ -206,7 +228,7 @@
   }
  
   .space {
-    margin-left: 40px;
+    margin-left: -35px;
   }
 }
 
@@ -227,7 +249,7 @@
     width: 300px; 
   }
   .space {
-    margin-left: 30px;
+    margin-left: -35px;
   }
 }
 
