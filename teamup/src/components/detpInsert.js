@@ -60,7 +60,7 @@ const DeptInsert = () => {
     const deptInsert = () => {
         //추가할 부분 같은 이름의 부서가 있을 경우 등록이 안되게 해야함
         axios({
-            url: `http://localhost:8080/dept/`,
+            url: `${process.env.REACT_APP_REST_API_URL}/dept/`,
             method: 'post',
             data: {
                 deptName: dept.deptName,
@@ -78,7 +78,7 @@ const DeptInsert = () => {
 
     const loadDetpList = () => {
         axios({
-            url: `http://localhost:8080/dept/listByCompany/${comId}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/dept/listByCompany/${comId}`,
             method: "get"
 
 
@@ -92,7 +92,7 @@ const DeptInsert = () => {
         console.log(dept.deptNo)
         delete dept.comId;
         axios({
-            url: `http://localhost:8080/dept/update/${dept.deptNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/dept/update/${dept.deptNo}`,
             method: "put",
             data: { deptName: dept.deptName }
 
@@ -177,7 +177,7 @@ const DeptInsert = () => {
     }
     const removeDept = () => {
         axios({
-            url: `http://localhost:8080/dept/deleteDept/${dept.deptNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/dept/deleteDept/${dept.deptNo}`,
             method: 'delete'
         }).then(response => {
             if (response.data == null) { alert("실패") }
@@ -209,7 +209,7 @@ const DeptInsert = () => {
     const addPosition = () => {
 
         axios({
-            url: "http://localhost:8080/empPosition",
+            url: `${process.env.REACT_APP_REST_API_URL}/empPosition`,
             method: "post",
             data: positionData
         }).then(response => {
@@ -234,7 +234,7 @@ const DeptInsert = () => {
     const [deptNo,setDeptNo] =useState();
     const cellClick = (target) => {
         axios({
-            url: `http://localhost:8080/emp/empListByDeptCom`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/empListByDeptCom`,
             method: 'post',
             data: {
                 deptNo: target.deptNo,
@@ -316,7 +316,7 @@ const DeptInsert = () => {
     const addEmployee = () => {
         // 서버에 데이터 전송
         axios({
-            url: "http://localhost:8080/emp/addEmp/", // 실제 API 엔드포인트로 변경
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/addEmp/`, // 실제 API 엔드포인트로 변경
             method: "post",
             data: {
                 empDto: {
@@ -352,7 +352,7 @@ const DeptInsert = () => {
     const [positionList, setPositionList] = useState([]);
     const loadPosition = () => {
         axios({
-            url: `http://localhost:8080/empPosition/position/${sessionId}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/empPosition/position/${sessionId}`,
             method: "get"
         }).then(response => {
             console.log(response.data)
@@ -387,7 +387,7 @@ const DeptInsert = () => {
         let No = empInfo.empId.substring(6);
 
         axios({
-            url: `http://localhost:8080/emp/adminEmpUpdate/${No}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/adminEmpUpdate/${No}`,
             method: 'put',
             data: {
                 empDto: {
@@ -437,7 +437,7 @@ const DeptInsert = () => {
     const transDept = () => {
         console.log(empInfo.deptNo)
         axios({
-            url: `http://localhost:8080/emp/updateDept/${empInfo.empId}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/updateDept/${empInfo.empId}`,
             method: 'put',
             data: {
                 deptNo: empInfo.deptNo
@@ -478,7 +478,7 @@ const DeptInsert = () => {
     const empLeave = () => {
         //empId알려주고 퇴사일 쏴주고
         axios({
-            url: `http://localhost:8080/emp/updateExit/${leaveData.empId}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/updateExit/${leaveData.empId}`,
             method: "put",
             data: { empExit: leaveData.empExit }
         }).then(response => {
