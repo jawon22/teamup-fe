@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom'
-import { NavLink } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -333,9 +333,9 @@ const ApproveList = (props)=>{
             <div className="row">
                 <div className="col-md-10 offset-md-1">
                     <div className="text-end my-3" >
-                        <NavLink className={`nav-link ${location.pathname === '/approveWrite' ? 'active' : ''}`} to="/approveWrite">
+                        <Link to="/approveWrite">
                             <button className="btn btn-primary">기안 상신 작성<TfiPencil /></button>
-                        </NavLink>
+                        </Link>
                     </div>
 
                     <div className="mb-3">
