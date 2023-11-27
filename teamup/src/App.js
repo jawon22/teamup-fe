@@ -92,14 +92,14 @@ function App() {
     };
 
     // 디버깅을 위해 데이터를 콘솔에 로그
-    console.log('전송?', data);
+    // console.log('전송?', data);
 
     // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
     webSock.send(JSON.stringify(data));
 
-    console.log(roomNo);
+    // console.log(roomNo);
 
-    console.log('useEffect in App.js triggered!');
+    // console.log('useEffect in App.js triggered!');
   };
 
 
@@ -114,7 +114,7 @@ function App() {
     setWebSock(socket);
   
     socket.onopen = () => {
-      console.log('WebSocket Connected!');
+      // console.log('WebSocket Connected!');
       const data = {
         type: 'enterRoom',
         chatRoomNo: 'waitingRoom',
@@ -122,7 +122,7 @@ function App() {
         empName: empName,
       };
       socket.send(JSON.stringify(data));
-      console.log(data, '입장');
+      // console.log(data, '입장');
       // 세션에 속성 설정
       socket.sessionAttributes = {
         empNo: `${user}`,
@@ -132,13 +132,13 @@ function App() {
   
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      console.log('Received message:', message);
+      // console.log('Received message:', message);
       setMessages((prevMessages) => [...prevMessages, message]);
       // 새로운 메시지를 기존 메시지 목록에 추가
     };
   
     socket.onclose = () => {
-      console.log('WebSocket Connection Closed.');
+      // console.log('WebSocket Connection Closed.');
     };
   
     return () => {
@@ -160,13 +160,13 @@ function App() {
       };
   
       // 디버깅을 위해 데이터를 콘솔에 로그
-      console.log('전송?', data);
+      // console.log('전송?', data);
   
       // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
       webSock.send(JSON.stringify(data));
     } else {
       // WebSocket 연결이 열려 있지 않은 경우 오류 메시지를 로그
-      console.error('WebSocket connection is not open.');
+      // console.error('WebSocket connection is not open.');
     }
   };
 
@@ -194,7 +194,6 @@ function App() {
         const decode = jwtDecode(savedToken)
         const userId = decode.sub
         setUser(userId);
-        console.log(userId)
         let userNo = userId.substring(6);
 
 
@@ -202,10 +201,7 @@ function App() {
           url: `${process.env.REACT_APP_REST_API_URL}/emp/mypage/${userNo}`,
           method: 'get'
         }).then(response => {
-          console.log(response.data)
           setCompany(response.data.comId)
-
-
         });
       }
     }
@@ -217,7 +213,6 @@ function App() {
 
   useEffect(() => {
     setCompany(sessionId)
-    console.log("세션아이디::", sessionId)
   }, [])
 
 
@@ -332,16 +327,16 @@ function App() {
                   </Navbar.Brand>
                 </div> */}
 
-                <div className='col-4 app-end' style={{ display: 'flex', flexDirection: 'row' }}>
+                <div className='col-4 app-end d-flex flex-row-reverse' style={{ display: 'flex', flexDirection: 'row' }}>
                   <div className='row'>
-                    <div className='col-3'></div>
-                      <div className='col-3 align-self-center'>
-                        <BsWechat onClick={openModal} className='me-2 text-green header-icon'
-                            style={{width: "40px", height: "40px"}}/>
-                      </div>
-                      <div className='col-3 align-self-center'>
-                          <HiMiniUserGroup onClick={handleShow} className='me-2 text-green header-icon '
-                              style={{width: "45px", height: "45px"}}/>
+                    {/* <div className='col-3'></div> */}
+                      {/* <div className='col-3 align-self-center'>
+                        <BsWechat onClick={openModal} className='header-icon'
+                            style={{width: "40px", height: "40px", color:"#218C74"}}/>
+                      </div> */}
+                      <div className='col-3 align-self-center me-2'>
+                          <HiMiniUserGroup onClick={handleShow} className='header-icon'
+                              style={{width: "45px", height: "45px", color:"#218C74"}}/>
                       </div>
                       <div className='col-3 text-end'>
                       <Navbar expand="sm" className="bg-body-white">
@@ -385,7 +380,7 @@ function App() {
             <div>
               <Routes>
                 {/* 각종 라우터 */}
-                <Route path="/approveList" element={<ApproveList />}></Route>
+                <Route path="/approveList" element={<ApproveList user={user} />}></Route>
                 <Route path="/approveWrite" element={<ApproveWrite />}></Route>
                 <Route path='/com' element={<Com />} ></Route>
                 <Route path='/search' element={<Search user={user} />}></Route>

@@ -27,7 +27,7 @@ const Attend = (props) => {
     useEffect(()=>{
          // axios({}).then({}).catch({});
          axios({
-            url:`http://localhost:8080/attend/findSysdate/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/attend/findSysdate/${empNo}`,
             method:"post"
 
         }).then(response=>{
@@ -81,7 +81,7 @@ const Attend = (props) => {
 
     //서버에서 sysdate로 근태내역 불러옴
     axios({
-      url: `http://localhost:8080/attend/findSysdate/${empNo}`,
+      url:  `${process.env.REACT_APP_REST_API_URL}/attend/findSysdate/${empNo}`,
       method: "post",
     })
       .then((response) => {
@@ -137,7 +137,7 @@ const Attend = (props) => {
 
     //서버에서 사용자가 입력한 년, 월로 근태내역 불러옴
     axios({
-      url: `http://localhost:8080/attend/findSearch/${empNo}`,
+      url:  `${process.env.REACT_APP_REST_API_URL}/attend/findSearch/${empNo}`,
       method: "post",
       data: { empNo: empNo, yearMonth: newYearMonth },
     })
@@ -175,7 +175,7 @@ const Attend = (props) => {
 
     //서버에서 사용자가 입력한 년, 월로 근태내역 불러옴
     axios({
-      url: `http://localhost:8080/attend/findSearch/${empNo}`,
+      url:  `${process.env.REACT_APP_REST_API_URL}/attend/findSearch/${empNo}`,
       method: "post",
       data: { empNo: empNo, yearMonth: newYearMonth },
     })

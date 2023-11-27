@@ -28,18 +28,14 @@ const BoardUpdate =()=> {
         axios
           .get(`${process.env.REACT_APP_REST_API_URL}/board/find/${idx}`)
           .then((response) => {
-            console.log('Response data:', response.data);
             setBoard(response.data);
           })
-          .catch((error) => {
-            console.error('Error fetching board:', error);
-          });
+          .catch((error) => {});
       };
 
     const updateBoard = async ()=>{
         await axios.put(`${process.env.REACT_APP_REST_API_URL}/board/${idx}`, board)
         .then(response=>{
-            alert('수정되었습니다.');
             navigate('/board/find/'+idx);
         });
     };
@@ -94,8 +90,8 @@ const BoardUpdate =()=> {
     </table>
     <div className="row">
         <div className="col text-end">
-            <button className="btn btn-primary" onClick={updateBoard}>등록</button>
-            <button className="btn btn-danger ms-1" onClick={backToDetail}>취소</button>
+            <button className="btn btn-primary" onClick={updateBoard}>수정</button>
+            <button className="btn btn-secondary ms-1" onClick={backToDetail}>취소</button>
         </div> 
     </div>
 

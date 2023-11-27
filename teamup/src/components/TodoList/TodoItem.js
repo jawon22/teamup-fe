@@ -31,22 +31,17 @@ const TodoItemBlock = styled.div`
 `;
 
 const CheckCircle = styled.div`
-  width: 18px;
-  height: 18px;
+  width: 10px;
+  height: 10px;
   border-radius: 16px;
-  border: 1px solid #ced4da;
+  border: 1px solid #78C2AD;
+  background-color: #78C2AD; /* 배경색을 원하는 색상으로 설정 */
   font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-  cursor: pointer;
-  ${props =>
-    props.done &&
-    css`
-      border: 1px solid #218C74;
-      color: #218C74;
-    `}
+
 `;
 
 const Text = styled.div`
@@ -68,10 +63,7 @@ function TodoItem({ id, done, text }) {
       // Recoil 상태
     const [todos, setTodos] = useRecoilState(todosState);
 
-    console.log('Done value:', done);
-
    const onToggle = () => {
-  console.log("toggleId",id);
   dispatch({ type: 'TOGGLE', id });
    // Recoil 상태 업데이트
    setTodos(
@@ -81,19 +73,17 @@ function TodoItem({ id, done, text }) {
   );
 };
     const onRemove = () => {
-      console.log("id",id);
       removeTodo(dispatch, empNo, id);
        // Recoil 상태 업데이트
     setTodos(todos.filter((todo) => todo.todoNo !== id));
     };
       // useEffect를 TodoItem 컴포넌트 내에 추가
   useEffect(() => {
-    console.log('Component re-rendered with done:', done);
   }, [done]);
 
   return (
     <TodoItemBlock>
-      <CheckCircle done={done} onClick={onToggle}>{done && <MdDone />}   
+      <CheckCircle done={done}>{done && <MdDone />}   
       </CheckCircle>
       <Text done={done}>{text}</Text>
       <Remove onClick={onRemove}>

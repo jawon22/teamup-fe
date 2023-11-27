@@ -15,7 +15,7 @@ import { TfiPencil } from "react-icons/tfi";
 
 import { useRecoilState } from 'recoil';
 import { companyState, userState } from '../recoil';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 import { copy } from 'stylis';
 import moment from 'moment';
@@ -66,16 +66,11 @@ const ApproveList = (props)=>{
         getPosition();
     },[company])
 
-    console.log(checkInfo);
-
     // receivers
     const divideReceiversDto = ()=>{
         const receiversList = apprData.receiversDtoList ? apprData.receiversDtoList.map(receiver => receiver.receiversReceiver) : [];
         setReceiver(receiversList);
     }
-    console.log(receiver);
-    console.log(receiverInfo);
-    console.log(approveReceiver);
 
     // receivers의 모든정보추출
     const findReceiverInfo = ()=>{
@@ -84,11 +79,15 @@ const ApproveList = (props)=>{
 
         const receiversStatusArray = receiver.map(empNo =>
             apprData.receiversDtoList.find(receiverDto => receiverDto.receiversReceiver === empNo)?.receiversStatus);
+
+        const receiversRsArray = receiver.map(empNo =>
+            apprData.receiversDtoList.find(receiverDto => receiverDto.receiversReceiver === empNo)?.receiversReturnRs);
         
         // empNo, empInfo, receiversStatus를 합쳐서 새로운 배열 생성
         const combinedArray = receiver.map((empNo, index) => ({
             empInfo: search[index],
             receiversStatus: receiversStatusArray[index],
+            receiversReturnRs: receiversRsArray[index],
         }));    
         setReceiverInfo(combinedArray);
         
@@ -109,14 +108,13 @@ const ApproveList = (props)=>{
         setCheckInfo(selectInfo);
     }
     
-    const isAllApproved = ()=>{
-        return receiverPosition.length === ycount.length;
+    // const isAllApproved = ()=>{
+    //     return receiverPosition.length === ycount.length;
+    // }
+
+    const isApproveN = ()=>{
+        return receiverInfo.some(item => item.receiversStatus === 'N');
     }
-    
-    console.log(receiverPosition);
-    console.log(receiverPosition.length);
-    console.log(ycount);
-    console.log(ycount.length);
 
     useEffect(()=>{
         findReceiverInfo();
@@ -128,10 +126,6 @@ const ApproveList = (props)=>{
         setReferer(referersList);
     }
     
-    console.log(apprList);
-    // console.log(approveDto);
-    // console.log(receiver);
-    // console.log(referer);
     
     // 수신버튼을 눌렀을때 (페이지 기본)
     // 로그인한 사람이 결재의 승인자로 지정 되어있는 기안만
@@ -194,7 +188,7 @@ const ApproveList = (props)=>{
     useEffect(()=>{
         susinButton();
         listEmp();
-    },[]);
+    },[props.user]);
     useEffect(()=>{
         divideReceiversDto();
         divideReferersDto();
@@ -223,10 +217,6 @@ const ApproveList = (props)=>{
         })
     };
     
-    console.log(empList);
-    console.log(emp);
-    console.log(apprData);
-
     const [myApprInfo, SetMyApprInfo] = useState([]);
 
     //자신이 올린 결재 삭제 처리
@@ -426,7 +416,7 @@ const ApproveList = (props)=>{
                                                     </span>
                                                 ))}
                                                 <div></div>
-                                           
+                                                
                                                 {apprData.receiversDtoList.map((receiver,index)=>(
                                                     <span key={index} className='mx-4' style={{display:'inline'}}>
                                                         {receiver.receiversStatus === 'Y' ? <FaRegCheckSquare /> : 
@@ -516,12 +506,25 @@ const ApproveList = (props)=>{
                                                 신청자 : {apprData.empName}
                                             </Col>
                                         </Row>
+                                        
+                                        <Row className={`mt-3 rounded ${isApproveN() ? 'border border-success' : ''}`}>
+                                            
+                                            {receiverInfo.map((item, index) => (
+                                                item.receiversStatus === 'N' && (
+                                                <React.Fragment key={index}>
+                                                    <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                    반려사유
+                                                    </Col>
+                                                    
+                                                    <Col xs={12} md={10} className='py-2' style={{ color: 'red' }}>
+                                                    {item.receiversReturnRs}
+                                                    </Col>
+                                                </React.Fragment>
+                                                )
+                                            ))}
+                                        </Row>
 
-                                        <div>
-                                            {!isAllApproved() &&(
-                                                <div style={{color:'red'}}>앞 승인자의 승인이 이루어지지 않았습니다.</div>
-                                            )}
-                                        </div>
+                                        
                                     </Col>
                                 </Row>
                             </Container>
@@ -603,7 +606,7 @@ const ApproveList = (props)=>{
                                                                                     <Button 
                                                                                         variant="secondary" 
                                                                                         className={`me-1 ${checkInfo.receiversStatus !== "R" ? 'disabled' : ''} mt-2 mb-4`}
-                                                                                        onClick={cancelAppr}
+                                                                                        onClick={cancelAppr} disabled={checkRecevier.receiversReturnRs.length===0}
                                                                                     >
                                                                                         반려
                                                                                     </Button>

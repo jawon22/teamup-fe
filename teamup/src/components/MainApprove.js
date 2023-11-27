@@ -23,7 +23,6 @@ const MainApprove = (props)=>{
             setApproveList(updateApprList);
         });
     };
-    console.log(approveList);
 
     // 두 날짜 간의 차이를 계산하는 함수
     const calculateDate = (startDate, endDate) => {
@@ -48,22 +47,19 @@ const MainApprove = (props)=>{
     },[])
 
     return(
-        <div>
+        <>
             <div className="row">
-                <div className="col mt-4 mb-3 ms-2">
+                <div className="col-6 mt-4 ms-2">
                     <h4>전자결재</h4>
                 </div>
-            </div>
-            
-            <div className="row text-end text-green mb-1 me-1">    
-                <div className="col">
-                    <Link to={`/approveList`} className="link">더보기<CiSquarePlus /></Link>
+                <div className="col-3">
+                    <Link to={`/approveList`}><CiSquarePlus /></Link>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col">
-                    <table className="table main-board-font">
+                    <table className="table">
                         <thead>
                             <tr className="table-primary text-center">
                                 <th width="50%">제목</th>
@@ -97,7 +93,7 @@ const MainApprove = (props)=>{
                     </table>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

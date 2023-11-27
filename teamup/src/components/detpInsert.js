@@ -61,7 +61,6 @@ const DeptInsert = () => {
                 comId: comId
             }
         }).then(response => {
-            console.log(response.data)
             alert("성공!")
             loadDetpList();
         }
@@ -82,9 +81,9 @@ const DeptInsert = () => {
         } catch (error) {
             console.error('Error loading department list:', error.message);
         }
+        });
     };
     const updateDept = () => {
-        console.log(dept.deptNo)
         delete dept.comId;
         axios({
             url: `${process.env.REACT_APP_REST_API_URL}/dept/update/${dept.deptNo}`,
@@ -92,7 +91,6 @@ const DeptInsert = () => {
             data: { deptName: dept.deptName }
 
         }).then(response => {
-            console.log(response.data)
             closeModal();
             loadDetpList();
             alert("수정완료")
@@ -161,7 +159,6 @@ const DeptInsert = () => {
     const addEmp = (target) => {
         loadPosition();
         setDept({ ...target })
-        console.log(target)
         openModal2();
     };
     //회사아이디는 세션에ㅐ 있는 값을 가져와서 하고 
@@ -208,14 +205,11 @@ const DeptInsert = () => {
             method: "post",
             data: positionData
         }).then(response => {
-            console.log(positionData)
             if (response.data != null) {
                 alert("성공")
             }
 
             loadDetpList();
-            console.log("아이디", comId)
-
         });
     };
     ///--사원 불러오기
@@ -237,7 +231,6 @@ const DeptInsert = () => {
             }
         }).then(response => {
             setDeptNo(target.deptNo)
-            console.log(response.data);
             setEmpList(response.data);
         });
     };
@@ -305,7 +298,6 @@ const DeptInsert = () => {
     });
 
     const changeSalChange = (e) => {
-        console.log(dept.deptNo)
         setSalData({
             ...salData,
             [e.target.name]: e.target.value,
@@ -350,9 +342,6 @@ const DeptInsert = () => {
 
             // 성공 후에 상태 초기화 또는 필요한 작업 수행
 
-        }).catch(error => {
-            console.error("에러 발생:", error);
-            // 에러 처리 로직 작성 가능
         });
     };
 
@@ -364,7 +353,6 @@ const DeptInsert = () => {
             url: `${process.env.REACT_APP_REST_API_URL}/empPosition/position/${sessionId}`,
             method: "get"
         }).then(response => {
-            console.log(response.data)
             setPositionList(response.data);
         });
     }
@@ -430,8 +418,6 @@ const DeptInsert = () => {
             [e.target.name]: e.target.value
         })
 
-        console.log(empInfo.salAnnual)
-        console.log("직급",empInfo.empPositionNo)
     };
 
     const changeEmp = (e) => {
@@ -439,12 +425,10 @@ const DeptInsert = () => {
             ...empInfo,
             [e.target.name]: e.target.value
         })
-        console.log("emp={}", empInfo)
 
     };
 
     const transDept = () => {
-        console.log(empInfo.deptNo)
         axios({
             url: `${process.env.REACT_APP_REST_API_URL}/emp/updateDept/${empInfo.empId}`,
             method: 'put',
@@ -452,7 +436,6 @@ const DeptInsert = () => {
                 deptNo: empInfo.deptNo
             }
         }).then(response => {
-            console.log(response.data)
             if (response.data === null) { alert("실패했습니다") }
             else { alert("성공") }
             loadDetpList();
@@ -480,8 +463,6 @@ const DeptInsert = () => {
             empExit: e.target.value,
             empId: empInfo.empId
         });
-        console.log("emp={}", empInfo)
-
     };
 
     const empLeave = () => {
@@ -491,7 +472,6 @@ const DeptInsert = () => {
             method: "put",
             data: { empExit: leaveData.empExit }
         }).then(response => {
-            console.log(response.data)
             setLeaveData("")
         });
     }
@@ -558,7 +538,7 @@ const DeptInsert = () => {
                                         <td className="hover" onClick={e => cellClick(dept)}>{dept.deptName}</td>
                                         <td>{dept.empCount} 명</td>
                                         <td>
-                                            <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
+                                            <button className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</button>
                                             <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
                                             <button className="btn btn-outline-primary" onClick={e => deptDelete(dept)}>삭제</button>
                                         </td>

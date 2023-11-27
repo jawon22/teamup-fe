@@ -28,12 +28,11 @@ const CompanyJoin = ()=>{
 
     const login = ()=>{
         axios({
-            url:"http://localhost:8080/com/login",
+            url:`${process.env.REACT_APP_REST_API_URL}/com/login`,
             method:"post",
             data:companyInfo
 
         }).then(response=>{
-            console.log(response.data)
             if(response.data ===false)return;
             if(response.data === true){
                 setCompany(companyInfo.comId)

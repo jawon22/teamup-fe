@@ -38,10 +38,9 @@ const Mypage = (props) => {
     const myInfo = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/emp/mypage/${empNo}`);
-            console.log("정보={}", response.data);
             setEmpInfo(response.data);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            // console.error('Error fetching data:', error);
         }
     };
 
@@ -81,9 +80,6 @@ const Mypage = (props) => {
 
                 // 프로필 로드가 완료된 후에 모달 열기
                 // openModal();
-            })
-            .catch(err => {//실패
-                console.error(err);
             });
     };
 
@@ -185,7 +181,6 @@ const Mypage = (props) => {
             closeModal();
         }
         catch (error) {
-            console.error("프로필 업데이트 에러", error);
             //수정한 이미지 파일이 없는 경우에도 모달 닫기
             closeModal();
         }
@@ -208,7 +203,7 @@ const Mypage = (props) => {
                 closeModal();
             }
             catch (error) {
-                console.error("프로필 이미지 삭제 에러", error);
+                // console.error("프로필 이미지 삭제 에러", error);
             }
         };
     };
@@ -270,7 +265,7 @@ const Mypage = (props) => {
 
     const findPw = () => {
         axios({
-            url: `http://localhost:8080/emp/findPw/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/findPw/${empNo}`,
             method: 'post',
             data: empInfomation.empPw
 
@@ -303,8 +298,6 @@ const Mypage = (props) => {
         }
         )
 
-        console.log(empInfomation.empPwCheck)
-
     }
 
 
@@ -317,9 +310,6 @@ const Mypage = (props) => {
             url: `${process.env.REACT_APP_REST_API_URL}/emp/changePw/${empNo}`,
             method: 'put',
             data: { empPw: empInfomation.empPw }
-        }).then(res => {
-            console.log(res.data)
-
         });
     };
 
@@ -363,7 +353,7 @@ const Mypage = (props) => {
         if (window.confirm("정보를 수정 하시겠습니까?")) {
         try {
             const response = await axios({
-                url:`http://localhost:8080/emp/empInfoUpdate/${empNo}`,
+                url:`${process.env.REACT_APP_REST_API_URL}/emp/empInfoUpdate/${empNo}`,
                 method:'put',
                 data:{
                     empName:empInfo.empName,
@@ -371,12 +361,11 @@ const Mypage = (props) => {
                     empEmail:empInfo.empEmail,
                     }
             })
-            console.log("정보={}", response.data);
             alert("수정되었습니다.")
             setShow2(false)
             
         } catch (error) {
-            console.error('Error fetching data:', error);
+            // console.error('Error fetching data:', error);
         }
     };
 };
@@ -396,10 +385,6 @@ const Mypage = (props) => {
             [e.target.name]: e.target.value
         }
         )
-
-        console.log(empInfo.empName)
-        console.log(empInfo.empTel)
-        console.log(empInfo.empEmail)
 
     }
 
@@ -430,7 +415,7 @@ const Mypage = (props) => {
             <div className="container m-5 ps-5 pe-5">
                 {/* 마이페이지 상세 */}
                 <div className="row mt-4 mp-bg text-green my-page">
-
+                    <div className="row">
                     <div className="col-5 image-fix d-flex justify-content-center align-self-center"
                         onClick={() => editProfile(loggedInEmpNo)}>
                         <img src={displayImage} alt="profileImage" id="previewImage2"
@@ -476,143 +461,145 @@ const Mypage = (props) => {
                             <div className="col-4 text-bold">회사아이디</div>
                             <div className="col-8">{empInfo.comId}</div>
                         </div>
-
                     </div>
-                    <div className="col-1 offset-11">
-                        {/* <button className="btn btn-sm btn-secondary" value={empInfo.empNo} onClick={handleClickChange}>개인정보수정</button> */}
+                    </div>
 
-                        <NavDropdown title="개인정보 수정">
-                            <NavDropdown.Item onClick={handleShow2}>개인정보 수정</NavDropdown.Item>
-                            <NavDropdown.Item value={empInfo.empNo} onClick={handleClickChange}>비밀번호 수정</NavDropdown.Item>
+                    <div className="row">
+                        <div className="col-10"></div>
+                        <div className="col-2 mb-3 text-center">
+                            {/* <button className="btn btn-sm btn-secondary" value={empInfo.empNo} onClick={handleClickChange}>개인정보수정</button> */}
 
-
-
-                        </NavDropdown>
+                            <NavDropdown title="개인정보 수정" className="bage rounded-pill text-white"
+                                style={{fontSize:"14px", padding:"0.3em", backgroundColor:"#218C74", fontWeight:"bold"}}>
+                                <NavDropdown.Item onClick={handleShow2}>개인정보 수정</NavDropdown.Item>
+                                <NavDropdown.Item value={empInfo.empNo} onClick={handleClickChange}>비밀번호 수정</NavDropdown.Item>
+                            </NavDropdown>
+                        </div>
+                    </div>
                 </div>
-</div>
 
 
-                {/* Modal */}
-                <Modal
-                    show={showModal}
-                    onHide={closeModal}
-                    backdrop="static"
-                    size="md"
-                    centered={true}
-                    aria-labelledby="contained-modal-title-vcenter">
-                    <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title-vcenter">
-                            <h5 className="modal-title">내 프로필</h5>
-                            {/* <button type="button" className="btn-close" data-dismiss="modal" onClick={closeModal}>
-                              <span aria-hidden="true">&times;</span>
-                            </button> */}
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className="grid-example mt-3">
-                        <Container>
-                            <Row className="justify-content-md-center">
-                                <Col xs={11} md={11}>
-                                    <Row>
-                                        <Col xs={6} md={6}>
-                                            <Row className="d-flex justify-content-center align-self-center">
-                                                <label className="input-file-button" for="changeImage">
-                                                    <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover"
-                                                        style={{ width: "180px", height: "180px" }} />
-                                                </label>
-                                            </Row>
-                                            <Row>
-                                                <label>
-                                                    <input type="file" name="attach" id="changeImage" style={{ display: "none" }} onChange={updateImagePreview} />
-                                                    <IoCamera className="image-edit-btn text-white ms-1 mt-1" style={{ width: "30px", height: "30px", padding: "3px" }} />
-                                                </label>
-                                                <label>
-                                                    <RiDeleteBin6Fill className="image-delete-btn text-white ms-1 mt-1" style={{ width: "30px", height: "30px", padding: "3px" }}
-                                                        onClick={deleteImage} />
-                                                </label>
+                    {/* Modal */}
+                    <Modal
+                        show={showModal}
+                        onHide={closeModal}
+                        backdrop="static"
+                        size="md"
+                        centered={true}
+                        aria-labelledby="contained-modal-title-vcenter">
+                        <Modal.Header closeButton>
+                            <Modal.Title id="contained-modal-title-vcenter">
+                                <h5 className="modal-title">내 프로필</h5>
+                                {/* <button type="button" className="btn-close" data-dismiss="modal" onClick={closeModal}>
+                                  <span aria-hidden="true">&times;</span>
+                                </button> */}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body className="grid-example mt-3">
+                            <Container>
+                                <Row className="justify-content-md-center">
+                                    <Col xs={11} md={11}>
+                                        <Row>
+                                            <Col xs={6} md={6}>
+                                                <Row className="d-flex justify-content-center align-self-center">
+                                                    <label className="input-file-button" for="changeImage">
+                                                        <img src={displayImage} alt="profileImage" id="previewImage" className="rounded-circle object-fit-cover"
+                                                            style={{ width: "180px", height: "180px" }} />
+                                                    </label>
+                                                </Row>
+                                                <Row>
+                                                    <label>
+                                                        <input type="file" name="attach" id="changeImage" style={{ display: "none" }} onChange={updateImagePreview} />
+                                                        <IoCamera className="image-edit-btn text-white ms-1 mt-1" style={{ width: "30px", height: "30px", padding: "3px" }} />
+                                                    </label>
+                                                    <label>
+                                                        <RiDeleteBin6Fill className="image-delete-btn text-white ms-1 mt-1" style={{ width: "30px", height: "30px", padding: "3px" }}
+                                                            onClick={deleteImage} />
+                                                    </label>
 
-                                            </Row>
-                                        </Col>
-                                        <Col>
-                                            <Row className="border border-success mt-3 rounded-top">
-                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
-                                                    부서
-                                                </Col>
-                                                <Col xs={12} md={7} className="py-2">
-                                                    {profile.deptName}
-                                                </Col>
-                                            </Row>
-                                            <Row className="border border-success border-top-0">
-                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
-                                                    직급
-                                                </Col>
-                                                <Col xs={12} md={7} className="py-2">
-                                                    {profile.empPositionName}
-                                                </Col>
-                                            </Row>
-                                            <Row className="border border-success border-top-0">
-                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
-                                                    이름
-                                                </Col>
-                                                <Col xs={12} md={7} className="py-2">
-                                                    {profile.empName}
-                                                </Col>
-                                            </Row>
-                                            <Row className='border border-success border-top-0 rounded-bottom'>
-                                                <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
-                                                    입사일
-                                                </Col>
-                                                <Col xs={12} md={7} className="py-2">
-                                                    {formatDate(profile.empJoin)}
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Row>
+                                                </Row>
+                                            </Col>
+                                            <Col>
+                                                <Row className="border border-success mt-3 rounded-top">
+                                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                        부서
+                                                    </Col>
+                                                    <Col xs={12} md={7} className="py-2">
+                                                        {profile.deptName}
+                                                    </Col>
+                                                </Row>
+                                                <Row className="border border-success border-top-0">
+                                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                        직급
+                                                    </Col>
+                                                    <Col xs={12} md={7} className="py-2">
+                                                        {profile.empPositionName}
+                                                    </Col>
+                                                </Row>
+                                                <Row className="border border-success border-top-0">
+                                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                        이름
+                                                    </Col>
+                                                    <Col xs={12} md={7} className="py-2">
+                                                        {profile.empName}
+                                                    </Col>
+                                                </Row>
+                                                <Row className='border border-success border-top-0 rounded-bottom'>
+                                                    <Col xs={12} md={5} className='border-bg-color text-center text-bold text-green py-2'>
+                                                        입사일
+                                                    </Col>
+                                                    <Col xs={12} md={7} className="py-2">
+                                                        {formatDate(profile.empJoin)}
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
 
-                                    <Row>
-                                        <Col xs={4} md={3} className="border border-success border-bg-color text-center text-bold text-green py-2 rounded-top">
-                                            연락처
-                                        </Col>
-                                        <Col xs={8} md={9}>
-                                            <input type="tel" name="empTel" className="form-control"
-                                                value={profile.empTel} onChange={changeProfile} />
-                                        </Col>
-                                        <Col xs={4} md={3} className="border border-success border-bg-color 
-                                                text-center text-bold text-green py-2 border-top-0">
-                                            이메일
-                                        </Col>
-                                        <Col xs={8} md={9}>
-                                            <input type="email" name="empEmail" className="form-control"
-                                                value={profile.empEmail} onChange={changeProfile} />
-                                        </Col>
+                                        <Row>
+                                            <Col xs={4} md={3} className="border border-success border-bg-color text-center text-bold text-green py-2 rounded-top">
+                                                연락처
+                                            </Col>
+                                            <Col xs={8} md={9}>
+                                                <input type="tel" name="empTel" className="form-control"
+                                                    value={profile.empTel} onChange={changeProfile} />
+                                            </Col>
+                                            <Col xs={4} md={3} className="border border-success border-bg-color 
+                                                    text-center text-bold text-green py-2 border-top-0">
+                                                이메일
+                                            </Col>
+                                            <Col xs={8} md={9}>
+                                                <input type="email" name="empEmail" className="form-control"
+                                                    value={profile.empEmail} onChange={changeProfile} />
+                                            </Col>
 
-                                        <Col xs={4} md={3} className="border border-success border-bg-color 
-                                                text-center text-bold text-green py-2 border-top-0">
-                                            소개
-                                        </Col>
-                                        <Col xs={8} md={9}>
-                                            <input type="text" name="profileTitle" className="form-control"
-                                                value={profile.profileTitle} onChange={changeProfile} />
-                                        </Col>
+                                            <Col xs={4} md={3} className="border border-success border-bg-color 
+                                                    text-center text-bold text-green py-2 border-top-0">
+                                                소개
+                                            </Col>
+                                            <Col xs={8} md={9}>
+                                                <input type="text" name="profileTitle" className="form-control"
+                                                    value={profile.profileTitle} onChange={changeProfile} />
+                                            </Col>
 
-                                        <Col xs={4} md={3} className="border border-success border-bg-color 
-                                                text-center text-bold text-green border-top-0 rounded-bottom align-self-center"
-                                            style={{ height: "86px" }}>
-                                            <p className="mt-4">내용</p>
-                                        </Col>
-                                        <Col xs={8} md={9}>
-                                            <textarea name="profileContent" className="form-control" rows="3"
-                                                value={profile.profileContent} onChange={changeProfile} />
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={closeModal}>닫기</Button>
-                        <Button variant="primary" onClick={updateProfile}>수정</Button>
-                    </Modal.Footer>
-                </Modal>
+                                            <Col xs={4} md={3} className="border border-success border-bg-color 
+                                                    text-center text-bold text-green border-top-0 rounded-bottom align-self-center"
+                                                style={{ height: "86px" }}>
+                                                <p className="mt-4">내용</p>
+                                            </Col>
+                                            <Col xs={8} md={9}>
+                                                <textarea name="profileContent" className="form-control" rows="3"
+                                                    value={profile.profileContent} onChange={changeProfile} />
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={closeModal}>닫기</Button>
+                            <Button variant="primary" onClick={updateProfile}>수정</Button>
+                        </Modal.Footer>
+                    </Modal>
 
 
                 <div className="row mt-5 text-green my-page">
@@ -695,10 +682,10 @@ const Mypage = (props) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose2}>
-                            Close
+                            닫기
                         </Button>
                         <Button variant="primary" onClick={infoChange}>
-                            Save Changes
+                            수정
                         </Button>
                     </Modal.Footer>
                 </Modal>

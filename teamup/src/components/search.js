@@ -64,8 +64,6 @@ const Search = (props) => {
 
 
     useEffect(() => {
-        console.log('click', active);
-        console.log('count', count);
     }, [active]);
 
 
@@ -185,7 +183,6 @@ const Search = (props) => {
             ...data,
             [e.target.name]: e.target.value
         })
-        console.log("??=   ", data.type)
 
     };
     const loadForSearch = () => {
@@ -200,6 +197,19 @@ const Search = (props) => {
         //         setSearchList(response.data);
         //         console.log(response.data);
         //     })
+
+   };
+    const loadForSearch = () => {
+        axios({
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
+            method: "post",
+            data: 
+                data
+        })
+            .then(response => {
+                setSearchList(response.data);
+            })
+            .catch();
     };
 
 
@@ -244,10 +254,7 @@ const Search = (props) => {
                 setProfileList(response.data);
 
 
-            })
-            .catch(err => {
-                console.error(err);
-            });//실패
+            });
     };
     // console.log(setProfileList);
 
@@ -305,8 +312,6 @@ const Search = (props) => {
             url: `${process.env.REACT_APP_REST_API_URL}/emp/count/${comId}`,
             method: 'get'
         }).then(res => {
-
-            console.log(res.data)
             setCount(res.data)
         }
         );

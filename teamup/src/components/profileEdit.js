@@ -32,7 +32,7 @@ const ProfileEdit = ()=>{
   //프로필 조회
   const loadProfile = (empNo) => {
     axios ({
-      url:`http://localhost:8080/profile/${empNo}`,
+      url:`${process.env.REACT_APP_REST_API_URL}/profile/${empNo}`,
       method:"get",
     })
     .then(response =>{//성공
@@ -43,9 +43,6 @@ const ProfileEdit = ()=>{
 
         // 프로필 로드가 완료된 후에 모달 열기
         openModal();
-    })
-    .catch(err=>{//실패
-        console.error(err);
     });
   };
 
@@ -184,7 +181,7 @@ const ProfileEdit = ()=>{
     try{
       //서버로 업데이트 요청 전송
       await axios({
-        url:`http://localhost:8080/profile/${loggedInEmpNo}`,
+        url:`${process.env.REACT_APP_REST_API_URL}/profile/${loggedInEmpNo}`,
         method:"put",
         data: formData,
         headers:{
@@ -204,7 +201,6 @@ const ProfileEdit = ()=>{
       closeModal();
     }
     catch(error){
-      console.error("프로필 업데이트 에러", error);
       //수정한 이미지 파일이 없는 경우에도 모달 닫기
       closeModal();
     }
@@ -246,11 +242,11 @@ const ProfileEdit = ()=>{
   const [imgSrc, setImgSrc] = useState(null);//처음에는 없다고 치고 기본이미지로 설정
   useEffect(()=>{
     axios({
-      url:`http://localhost:8080/image/profile/${loggedInEmpNo}`,
+      url:`${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`,
       method:"get"
     })
     .then(response=>{
-      setImgSrc(`http://localhost:8080/image/profile/${loggedInEmpNo}`);
+      setImgSrc(`${process.env.REACT_APP_REST_API_URL}/image/profile/${loggedInEmpNo}`);
     })
     .catch(err=>{
       setImgSrc(surf);
