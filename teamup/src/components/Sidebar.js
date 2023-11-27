@@ -31,13 +31,17 @@ const Sidebar = (props) => {
 
 
     const logout = () => {
-        window.confirm("로그아웃 하시겠습니까?")
-        Cookies.remove('userId', { path: '/' });
-        setUser("")
-        navigate('/login');
+        if (window.confirm("로그아웃 하시겠습니까?")) {
+            console.log("로그아웃을 수락했습니다.");
+            Cookies.remove('userId', { path: '/' });
+            setUser("");
+            navigate('/login');
+            alert("로그아웃 되었습니다.");
+          } else {
+            console.log("로그아웃을 취소했습니다.");
+            // 사용자가 로그아웃을 취소한 경우 여기에 추가적인 로직을 추가할 수 있습니다.
+          }
 
-
-        alert("로그아웃 되었습니다.")
 
       
     };

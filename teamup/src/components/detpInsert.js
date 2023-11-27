@@ -35,13 +35,6 @@ const DeptInsert = () => {
 
 
 
-    const clearDept = () => {
-        setDept({
-            deptNo: "",
-            deptName: "",
-            comId: sessionId
-        })
-    }
 
     const [dept, setDept] = useState({
         deptNo: 0,
@@ -76,17 +69,20 @@ const DeptInsert = () => {
 
     };
 
-    const loadDetpList = () => {
-        axios({
-            url: `${process.env.REACT_APP_REST_API_URL}/dept/listByCompany/${comId}`,
-            method: "get"
-
-
-        }).then((response) => {
+    const loadDetpList = async () => {
+        try {
+            const response = await axios({
+                url: `${process.env.REACT_APP_REST_API_URL}/dept/listByCompany/${comId}`,
+                method: "get"
+            });
+    
             setDeptList(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error loading department list:', error.message);
+        }
         });
     };
-
     const updateDept = () => {
         delete dept.comId;
         axios({
@@ -251,16 +247,16 @@ const DeptInsert = () => {
 
     const logOut =()=>{
 
-    //     if (comId) {
-    //         const userConfirmed = window.confirm("정말로 로그아웃하시겠습니까?");
-    //         if (userConfirmed) {
-    //             sessionStorage.removeItem("comId");
-    //             navigate("/login");
-    //     }
-    //     else{
-    //         alert("이미 로그아웃 되었습니다");
-    //     }
-    // };
+        if (comId) {
+            const userConfirmed = window.confirm("정말로 로그아웃하시겠습니까?");
+            if (userConfirmed) {
+                sessionStorage.removeItem("comId");
+                navigate("/login");
+        }
+        else{
+            alert("이미 로그아웃 되었습니다");
+        }
+    };
     }
 
 
@@ -488,7 +484,7 @@ const DeptInsert = () => {
 
     return (
 
-        <>
+        <form autoComplete="off">
             <div className="container">
 
                 <div className="row">
@@ -742,7 +738,7 @@ const DeptInsert = () => {
             </div>
 
 
-        </>
+        </form>
     );
 };
 export default DeptInsert;
