@@ -24,51 +24,44 @@ const Search = (props) => {
     const [size, setSize] = useState(10);
 
 
-    const [active, setActive] = useState();
+    const [active, setActive] = useState(1);
 
 
     const userId = user.substring(6);
 
-    // const loadAddress = () => {
+    const itemsPerPage = 10;
 
-    //     axios({
-    //         url:"http://localhost:8080/addr/myAddrList/13",
-    //         method:"get"
 
-    //     }).then(response=>{
-    //         setAddressList(response.data);
+
+    // const pageClick = (selectedPage) => {
+    // setActive(selectedPage);
+
+
+    // axios({
+    //     url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
+    //     method: "post",
+    //     data: {
+    //         ...data,
+    //         page: active
     //     }
 
-    //     )
 
+
+    // }).then(response => {
+    //     console.log("Data  ", response.data)
+    //     console.log("page", active)
+    //     console.log("count", response.data.length)
+    //     console.log("보낸 데이터", data)
+    //     setSearchList(response.data)
+    //     setSearchList([])
+    //     loadForSearch()
+    // }).catch();
+
+    // console.log("data", data)
     // };
-    //onclick으로 보내기
-    const pageClick = (selectedPage) => {
-        setActive(selectedPage);
-
-
-        axios({
-            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
-            method: "post",
-            data: {
-                ...data,
-                page: active
-            }
 
 
 
-        }).then(response => {
-            console.log("Data  ", response.data)
-            console.log("page", active)
-            console.log("count", response.data.length)
-            console.log("보낸 데이터", data)
-            setSearchList(response.data)
-            setSearchList([])
-            loadForSearch()
-        }).catch();
-
-        console.log("data", data)
-    };
 
     useEffect(() => {
         console.log('click', active);
@@ -76,15 +69,94 @@ const Search = (props) => {
     }, [active]);
 
 
+
+    const preClick=()=>{
+        setActive(active-1)
+
+    };
+    const nextClick=()=>{
+        setActive(active+1)
+
+    };
+
+
+    const pageClick = (number) => {
+
+
+        setActive(number);
+        console.log("active", active)
+
+
+    }
+
+
+    const newList = async () => {
+        try {
+            const res = await axios.post(
+                `${process.env.REACT_APP_REST_API_URL}/emp/pagenation/`,
+                {
+                    searchVO: {
+                        comId: comId,
+                        deptNo: data.deptNo,
+                        deptName: data.deptName,
+                        empName: data.empName,
+                        empId: data.empId,
+                        empPositionNo: data.empPositionNo,
+                        empEmail: data.empEmail,
+                        empTel: data.empTel,
+                        empJoin: data.empJoin,
+                        empExit: data.empExit,
+                        type: data.type,
+                        keyword: data.keyword,
+                        joinStart: data.joinStart,
+                        joinEnd: data.joinEnd
+                    },
+                    pagenationVO: {
+                        page: active,
+                        size: 10
+                    }
+                }
+            );
+            console.log(res.data.pagenationVO.count)
+            console.log(data)
+
+            console.log("newData", res.length);
+            setSearchList(res.data.searchVO);
+            console.log(searchList)
+            let count = res.data.length
+            setNavi(res.data.pagenationVO.count)
+
+
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            alert("오류")
+        }
+    };
+
+    useEffect(() => {
+        newList();
+    }, [])
+
+    useEffect(() => {
+        newList();
+        console.log(searchList)
+    }, [active])
+
+    const [navi, setNavi] = useState(1);
+
+    let pages = navi / 10 + 1;
+    const totalPages = Math.ceil(navi / itemsPerPage) + 1;
+
     let items = [];
 
-    let pages = count % size === 0 ? count / size : Math.floor(count / size) + 1;
+    // 현재 페이지 주변의 페이지 번호만 표시
+    const startPage = Math.max(1);
+    const endPage = Math.min(totalPages, startPage + itemsPerPage - 1);
 
-
-
-    for (let number = 1; number <= pages; number++) {
+    for (let number = startPage; number <= endPage; number++) {
         items.push(
-            <Pagination.Item key={number} active={number === active} onClick={() => loadForpage(number)}>
+            <Pagination.Item key={number} active={number === active} onClick={() => pageClick(number)}>
                 {number}
             </Pagination.Item>
         );
@@ -104,51 +176,48 @@ const Search = (props) => {
         joinStart: null,
         joinEnd: null,
         empTel: null,
-        salMax: 0,
-        salMin: 0,
-        page: 0,
-        size: size
-
-
+        empExit: null,
+        keyword: null,
+        type: null,
     });
     const dataChange = (e) => {
         setData({
             ...data,
             [e.target.name]: e.target.value
         })
-        console.log("??=   ", user)
+        console.log("??=   ", data.type)
 
     };
     const loadForSearch = () => {
-        axios({
-            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
-            method: "post",
-            data:
-                data
-        })
-            .then(response => {
-                console.log("보낸 데이터", data);
-                setSearchList(response.data);
-                console.log(response.data);
-            })
+        // axios({
+        //     url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
+        //     method: "post",
+        //     data:
+        //         data
+        // })
+        //     .then(response => {
+        //         console.log("보낸 데이터", data);
+        //         setSearchList(response.data);
+        //         console.log(response.data);
+        //     })
     };
 
 
     const loadForpage = (pageNumber) => {
-        axios({
-            url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
-            method: "post",
-            data: {
-                ...data,
-                page: pageNumber
-            }
-        })
-            .then(response => {
-                console.log("보낸 데이터", data);
-                setSearchList(response.data);
-                console.log("page", pageNumber);
-            })
-            .catch();
+        // axios({
+        //     url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
+        //     method: "post",
+        //     data: {
+        //         ...data,
+        //         page: pageNumber
+        //     }
+        // })
+        //     .then(response => {
+        //         console.log("보낸 데이터", data);
+        //         setSearchList(response.data);
+        //         console.log("page", pageNumber);
+        //     })
+        //     .catch();
     };
 
     useEffect(() => {
@@ -283,11 +352,12 @@ const Search = (props) => {
                     <div className="container">
                         <div className="mt-3 mb-4">
                             <h2>주소록</h2>
+                            {active}
                         </div>
 
                         <div className="row mb-1">
                             <div className="col-2">
-                                <select onChange={dataChange} name="select" class="form-select" id="exampleSelect">
+                                <select onChange={dataChange} name="type" class="form-select" id="exampleSelect">
                                     <option value="d.dept_name">부서</option>
                                     <option value="e.emp_name">이름</option>
                                     <option value="ep.emp_position_name">직급</option>
@@ -308,7 +378,7 @@ const Search = (props) => {
 
                             <div className="col-1">
 
-                                <button type="button" onClick={loadForSearch} className="btn btn-primary">검색</button>
+                                <button type="button" onClick={newList} className="btn btn-primary">검색</button>
 
                             </div>
                         </div>
@@ -331,7 +401,7 @@ const Search = (props) => {
                                 {searchList.map(list => (
                                     <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)}
                                         style={{ cursor: "pointer" }}>
-                                        <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empId}</td>
+                                        <td >{list.empName}</td>
                                         <td className={list.empExit !== null ? 'text-danger' : ''}>{list.deptName}</td>
                                         <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empPositionName}</td>
                                         <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empName}</td>
@@ -347,11 +417,18 @@ const Search = (props) => {
                             </tbody>
                         </table>
                         <div className="row item-center">
-                            <div className="col-6 offset-5 mt-4">
-                                <Pagination >{items}</Pagination>
+                            <div className="col-6 offset-3 mt-4">
+                                <Pagination>
+                                    {/* "이전" 버튼 */}
+                                    <Pagination.Prev onClick={() => preClick()} />
+
+                                    {items}
+
+                                    {/* "다음" 버튼 */}
+                                    <Pagination.Next onClick={() => nextClick()} />
+                                </Pagination>
                             </div>
                         </div>
-
 
                     </div>
 
