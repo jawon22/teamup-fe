@@ -45,7 +45,7 @@ class Weather extends Component {
 
     return (
         <>
-            <div className="container p-3">
+            <div className="container p-3"> 
 
                 <div className="row">
                     <div className="col-6 offset-3 text-center">
