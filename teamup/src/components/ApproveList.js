@@ -15,7 +15,7 @@ import { TfiPencil } from "react-icons/tfi";
 
 import { useRecoilState } from 'recoil';
 import { companyState, userState } from '../recoil';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaCheck } from "react-icons/fa";
 import { copy } from 'stylis';
 import moment from 'moment';
@@ -79,11 +79,15 @@ const ApproveList = (props)=>{
 
         const receiversStatusArray = receiver.map(empNo =>
             apprData.receiversDtoList.find(receiverDto => receiverDto.receiversReceiver === empNo)?.receiversStatus);
+
+        const receiversRsArray = receiver.map(empNo =>
+            apprData.receiversDtoList.find(receiverDto => receiverDto.receiversReceiver === empNo)?.receiversReturnRs);
         
         // empNo, empInfo, receiversStatus를 합쳐서 새로운 배열 생성
         const combinedArray = receiver.map((empNo, index) => ({
             empInfo: search[index],
             receiversStatus: receiversStatusArray[index],
+            receiversReturnRs: receiversRsArray[index],
         }));    
         setReceiverInfo(combinedArray);
         
@@ -104,10 +108,13 @@ const ApproveList = (props)=>{
         setCheckInfo(selectInfo);
     }
     
-    const isAllApproved = ()=>{
-        return receiverPosition.length === ycount.length;
-    }
+    // const isAllApproved = ()=>{
+    //     return receiverPosition.length === ycount.length;
+    // }
 
+    const isApproveN = ()=>{
+        return receiverInfo.some(item => item.receiversStatus === 'N');
+    }
 
     useEffect(()=>{
         findReceiverInfo();
@@ -499,12 +506,25 @@ const ApproveList = (props)=>{
                                                 신청자 : {apprData.empName}
                                             </Col>
                                         </Row>
+                                        
+                                        <Row className={`mt-3 rounded ${isApproveN() ? 'border border-success' : ''}`}>
+                                            
+                                            {receiverInfo.map((item, index) => (
+                                                item.receiversStatus === 'N' && (
+                                                <React.Fragment key={index}>
+                                                    <Col xs={12} md={2} className='border-bg-color text-center py-2 text-bold text-green'>
+                                                    반려사유
+                                                    </Col>
+                                                    
+                                                    <Col xs={12} md={10} className='py-2' style={{ color: 'red' }}>
+                                                    {item.receiversReturnRs}
+                                                    </Col>
+                                                </React.Fragment>
+                                                )
+                                            ))}
+                                        </Row>
 
-                                        <div>
-                                            {!isAllApproved() &&(
-                                                <div style={{color:'red'}}>앞 승인자의 승인이 이루어지지 않았습니다.</div>
-                                            )}
-                                        </div>
+                                        
                                     </Col>
                                 </Row>
                             </Container>
@@ -586,7 +606,7 @@ const ApproveList = (props)=>{
                                                                                     <Button 
                                                                                         variant="secondary" 
                                                                                         className={`me-1 ${checkInfo.receiversStatus !== "R" ? 'disabled' : ''} mt-2 mb-4`}
-                                                                                        onClick={cancelAppr}
+                                                                                        onClick={cancelAppr} disabled={checkRecevier.receiversReturnRs.length===0}
                                                                                     >
                                                                                         반려
                                                                                     </Button>
