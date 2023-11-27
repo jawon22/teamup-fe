@@ -45,6 +45,7 @@ const Board =(props)=>{
             })
             .catch(error => {});
         };
+        
 
         // 화면 실행시 회사별 공지사항 리스트 출력
         const boardListByCom = () => {
