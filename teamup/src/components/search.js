@@ -58,21 +58,14 @@ const Search = (props) => {
 
 
         }).then(response => {
-            console.log("Data  ", response.data)
-            console.log("page", active)
-            console.log("count", response.data.length)
-            console.log("보낸 데이터", data)
             setSearchList(response.data)
             setSearchList([])
             loadForSearch()
         }).catch();
 
-        console.log("data", data)
     };
 
     useEffect(() => {
-        console.log('click', active);
-        console.log('count', count);
     }, [active]);
 
 
@@ -116,7 +109,6 @@ const Search = (props) => {
             ...data,
             [e.target.name]: e.target.value
         })
-        console.log("??=   ", user)
 
     };
     const loadForSearch = () => {
@@ -127,9 +119,7 @@ const Search = (props) => {
                 data
         })
             .then(response => {
-                console.log("보낸 데이터", data);
                 setSearchList(response.data);
-                console.log(response.data);
             })
             .catch();
     };
@@ -145,9 +135,7 @@ const Search = (props) => {
             }
         })
             .then(response => {
-                console.log("보낸 데이터", data);
                 setSearchList(response.data);
-                console.log("page",pageNumber);
             })
             .catch();
     };
@@ -177,10 +165,7 @@ const Search = (props) => {
                 setProfileList(response.data);
 
 
-            })
-            .catch(err => {
-                console.error(err);
-            });//실패
+            });
     };
     // console.log(setProfileList);
 
@@ -238,8 +223,6 @@ const Search = (props) => {
             url: `${process.env.REACT_APP_REST_API_URL}/emp/count/${comId}`,
             method: 'get'
         }).then(res => {
-
-            console.log(res.data)
             setCount(res.data)
         }
         );

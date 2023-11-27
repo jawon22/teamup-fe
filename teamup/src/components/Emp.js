@@ -38,7 +38,6 @@ const Emp = () => {
             method: 'get'
         }).then(res => {
             setDeptList(res.data);
-            //console.log('저장부서',deptList)
         });
     };
     
@@ -57,14 +56,8 @@ const Emp = () => {
                 .then((res) => {
                     setEmpList(res.data);
                     setToggle((prevToggle) => !prevToggle);
-                })
-                .catch((error) => {
-                    console.error('Error fetching employee list:', error);
                 });
         }
-
-
-
 
     };
 

@@ -7,7 +7,6 @@ import moment from "moment";
 import { CiSquarePlus } from "react-icons/ci";
 
 const MainBoard=(props)=>{
-
     const [user, setUser] = useRecoilState(userState);
     const empNo = user.substring(6)
     const deptNo = user.substring(4, 6);
@@ -26,11 +25,7 @@ const MainBoard=(props)=>{
                 method: "get"
             })
             .then(response => {
-                console.log("응답 데이터:", response.data);
                 setBoardList(response.data);
-            })
-            .catch(error => {
-                console.error("공지사항 목록을 가져오는 중 오류가 발생", error);
             });
         };
 
