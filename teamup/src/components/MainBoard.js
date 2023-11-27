@@ -25,12 +25,9 @@ const MainBoard=(props)=>{
                 method: "get"
             })
             .then(response => {
-                console.log("응답 데이터:", response.data);
                 setBoardList(response.data);
             })
-            .catch(error => {
-                console.error("공지사항 목록을 가져오는 중 오류가 발생", error);
-            });
+            .catch(error => {});
         };
 
         // 타임스탬프를 날짜로 변환하는 함수

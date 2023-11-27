@@ -39,13 +39,12 @@ export function TodoProvider({ children }) {
   useEffect(() => {
     const fetchTodos = () => {
       axios
-        .get(`http://localhost:8080/todo/list/${empNo}`) // API endpoint에 맞게 수정
+        .get(`${process.env.REACT_APP_REST_API_URL}/todo/list/${empNo}`) // API endpoint에 맞게 수정
         .then((response) => {
           dispatch({ type: 'SET_TODOS', todos: response.data });
           setTodos(response.data); // Recoil 상태 업데이트
         })
         .catch((error) => {
-          console.error('할 일 목록을 불러오는 중 에러 발생:', error);
         });
     };
 
@@ -92,7 +91,7 @@ export function TodoProvider({ children }) {
 
 export function createTodo(dispatch, nextId, empNo, text) {
   axios
-    .post(`http://localhost:8080/todo/save`, {
+    .post(`${process.env.REACT_APP_REST_API_URL}/todo/save`, {
       todoContent: text,
       todoDone: false,
       todoNo: nextId,
@@ -107,19 +106,17 @@ export function createTodo(dispatch, nextId, empNo, text) {
       dispatch({ type: 'CREATE', todo: newTodo });
     })
     .catch((error) => {
-      console.error('할 일을 생성하는 중 에러 발생:', error);
     });
 }
 
   
   export function removeTodo(dispatch, empNo,  id) {
     axios
-      .delete(`http://localhost:8080/todo/${id}`)
+      .delete(`${process.env.REACT_APP_REST_API_URL}/todo/${id}`)
       .then(() => {
         console.log(id);
         dispatch({ type: 'REMOVE', empNo, id });
       })
       .catch((error) => {
-        console.error('할 일을 삭제하는 중 에러 발생:', error);
       });
   }

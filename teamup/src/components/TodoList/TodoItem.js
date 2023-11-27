@@ -63,10 +63,7 @@ function TodoItem({ id, done, text }) {
       // Recoil 상태
     const [todos, setTodos] = useRecoilState(todosState);
 
-    console.log('Done value:', done);
-
    const onToggle = () => {
-  console.log("toggleId",id);
   dispatch({ type: 'TOGGLE', id });
    // Recoil 상태 업데이트
    setTodos(
@@ -76,14 +73,12 @@ function TodoItem({ id, done, text }) {
   );
 };
     const onRemove = () => {
-      console.log("id",id);
       removeTodo(dispatch, empNo, id);
        // Recoil 상태 업데이트
     setTodos(todos.filter((todo) => todo.todoNo !== id));
     };
       // useEffect를 TodoItem 컴포넌트 내에 추가
   useEffect(() => {
-    console.log('Component re-rendered with done:', done);
   }, [done]);
 
   return (

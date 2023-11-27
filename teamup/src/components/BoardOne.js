@@ -21,9 +21,6 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
     const empNoWithoutLeadingZero = String(Number(empNo));
     const isAuthor = empNoWithoutLeadingZero === String(writer);
 
-    console.log("writer",writer);
-    console.log("empNo",empNo);
-
     //목록버튼을 누르면 목록페이지로 이동
     const moveToBoard = ()=>{
       navigate('/board');
@@ -40,8 +37,7 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         await axios.delete(`${process.env.REACT_APP_REST_API_URL}/board/${idx}`).then(response=>{
           navigate('/board');
         });
-      }
-    };
+      }};
 
     // 댓글 작성 이벤트 핸들러
     const handleReplySubmit = async () => {
@@ -50,12 +46,7 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         return;
       }
 
-        // 기록 추가
-      console.log('댓글 내용:', replyContent);
-      console.log('작성자 번호:', empNo);
-      console.log('공지사항 번호:', idx);
-
-        // empNo를 숫자로 변환
+     // empNo를 숫자로 변환
       const empNoNumber = Number(empNo);
 
       const replyData = {
@@ -72,10 +63,7 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         fetchReplies();
  
         setReplyContent('');
-      } catch (error) {
-        console.error('댓글 작성 에러:', error);
-        alert('댓글 작성 중 오류가 발생했습니다.');
-      }
+      } catch (error) {}
     };
 
     // 댓글 목록 불러오기
@@ -84,12 +72,7 @@ const BoardOne = ({ idx, writer, title, dept, contents, writeDate, updateDate, c
         const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/reply/list/${idx}`);
         const updatedReplies = response.data;
         setReplies(updatedReplies); // 상태 업데이트
-
-        // 여기서 replies 상태를 사용하는 부분에서 문제가 발생하지 않도록 수정
-        console.log('댓글 목록:', updatedReplies);
-      } catch (error) {
-        console.error('댓글 목록 불러오기 오류:', error);
-      }
+      } catch (error) {}
     };
 
     useEffect(() => {
@@ -113,10 +96,8 @@ const handleEditReply = (replyNo, currentContent, reply) => {
   const applyEditReply = async () => {
     try {
       if (editedReplyNo === null) {
-        console.error('수정할 댓글 번호가 없습니다.');
         return;
-      }
-  
+      }  
       // 수정한 내용으로 데이터 업데이트
       await axios.put(`${process.env.REACT_APP_REST_API_URL}/reply/${editedReplyNo}`, {
         replyNo: editedReplyNo,
@@ -130,10 +111,7 @@ const handleEditReply = (replyNo, currentContent, reply) => {
       setEditMode(false);
       setEditedReplyContent('');
       setEditedReplyNo(null);
-    } catch (error) {
-      console.error('댓글 수정 에러:', error);
-      alert('댓글 수정 중 오류가 발생했습니다.');
-    }
+    } catch (error) {}
   };
 
   const handleDeleteReply = async (replyNo, reply) => {
@@ -144,10 +122,7 @@ const handleEditReply = (replyNo, currentContent, reply) => {
           await axios.delete(`${process.env.REACT_APP_REST_API_URL}/reply/${replyNo}`);
           fetchReplies();
         }
-      } catch (error) {
-        console.error('댓글 삭제 에러:', error);
-        alert('댓글 삭제 중 오류가 발생했습니다.');
-      }
+      } catch (error) {}
     } else {
       alert('댓글을 삭제할 수 있는 권한이 없습니다.');
     }
@@ -157,8 +132,6 @@ const handleEditReply = (replyNo, currentContent, reply) => {
   const canEditDeleteComment = (reply) => {
     return parseInt(empNo, 10) === reply.replyWriter;
   };
-
-
 
 
   return (
@@ -313,13 +286,6 @@ const handleEditReply = (replyNo, currentContent, reply) => {
         </ul>
       </div>
     </div>
-
-
-
-
-
-
-
 
     </div></div>
   );

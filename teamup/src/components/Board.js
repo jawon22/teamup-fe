@@ -41,12 +41,9 @@ const Board =(props)=>{
                 method: "get"
             })
             .then(response => {
-                console.log("전체 게시물 수:", response.data);
                 setTotalPages(Math.ceil(response.data / pageSize));
             })
-            .catch(error => {
-                console.error("전체 게시물 수를 가져오는 중 오류가 발생", error);
-            });
+            .catch(error => {});
         };
 
         // 화면 실행시 회사별 공지사항 리스트 출력
@@ -56,12 +53,9 @@ const Board =(props)=>{
                 method: "get"
             })
             .then(response => {
-                console.log("응답 데이터:", response.data);
                 setBoardList(response.data);
             })
-            .catch(error => {
-                console.error("공지사항 목록을 가져오는 중 오류가 발생", error);
-            });
+            .catch(error => {});
         };
 
 
@@ -115,18 +109,14 @@ const Board =(props)=>{
     
         // Axios를 사용하여 서버에 데이터 전송
         axios.post(`${process.env.REACT_APP_REST_API_URL}/board/add`, newBoard)
-            .then(response => {
-                console.log("게시글 추가 성공:", response.data);                
+            .then(response => {      
                 // 게시글 목록 갱신
                 boardListByCom();       
                 // 모달 닫기
                 handleModalClose();
             })
-            .catch(error => {
-                console.error("게시글 추가 중 오류 발생", error);
-            });
+            .catch(error => {});
     };
-
     // 모달이 닫힐 때 실행될 함수
     const handleModalClose = () => {
     // 등록창 초기화
@@ -265,10 +255,10 @@ const formatDate = (timestamp) => {
                 </div>
             
 
-            <Modal show={show} onHide={handleModalClose}>
+            <Modal show={show} onHide={handleModalClose} backdrop="static" centered>
             <Modal.Body>
             <Form>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Form.Group className="mb-3 " controlId="exampleForm.ControlInput1">
                 <Form.Label>제목</Form.Label>
                 <Form.Control
                     name="boardTitle"
