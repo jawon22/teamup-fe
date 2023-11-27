@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { RiDeleteBin6Fill } from "react-icons/ri";
 
-const Search = (props) => {
+const Backup = (props) => {
     const location = useLocation();
     const [searchList, setSearchList] = useState([]);
     const [addressList, setAddressList] = useState([]);
@@ -463,4 +463,4 @@ const Search = (props) => {
     );
 
 };
-export default Search;
+export default Backup;

@@ -20,7 +20,6 @@ const CompanyJoin = ()=>{
             ...companyInfo,
             [e.target.name]:e.target.value
         })
-        console.log(companyInfo.comId)
 
     };
 
@@ -38,8 +37,6 @@ const CompanyJoin = ()=>{
             if(response.data ===false)return;
             if(response.data === true){
                 setCompany(companyInfo.comId)
-                console.log(company)
-
 
                 sessionStorage.setItem("comId",companyInfo.comId);
 

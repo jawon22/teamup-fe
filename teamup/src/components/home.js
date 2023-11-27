@@ -271,7 +271,7 @@ const toggleCal = ()=>{
       {/* 세로로 두 번째 줄 */}
       <div className="col-5 home-center">
         <div className="row graybox border-primary h-50">
-          <MainBoard />
+          <MainBoard/>
         </div>
         <div className="row graybox border-primary h-50 mt-3">
           <MainApprove/>

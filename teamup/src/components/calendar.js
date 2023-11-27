@@ -247,7 +247,7 @@ const Calendar = () => {
         plugins={plugin}
         initialView="dayGridMonth" // 초기뷰 dayGridMonth or timeGridWeek
         headerToolbar={{ // 띄어쓰면 갭이 생기고, 콤마가 있으면 그룹으로 묶는 형태
-          // right: 'month,agendaWeek,agendaDay'
+          right: 'month,agendaWeek,agendaDay'
         }}
 
         footerToolbar={{

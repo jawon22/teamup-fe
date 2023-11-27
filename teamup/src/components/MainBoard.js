@@ -16,7 +16,7 @@ const MainBoard=(props)=>{
 
     useEffect(()=>{
         boardListByCom();
-    },[]);
+    },[props.user]);
 
     
         // 화면 실행시 회사별 공지사항 리스트 출력
