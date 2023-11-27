@@ -50,7 +50,7 @@ class Weather extends Component {
 
                 <div className="row">
                     <div className="col-6 offset-3 text-center">
-                        <h2>서울특별시</h2>
+                        <h4 className='text-bold'>서울특별시</h4>
                         <div className='icon-container'>
                             <img src={iconUrl} alt='Weather Icon' style={{ width: "100px", height: "100px" }} />
                         </div>
