@@ -9,8 +9,6 @@ import BoardOne from "./BoardOne";
 const BoardDetail=(props)=>{
     const [user, setUser] = useRecoilState(userState);
     const empNo = user.substring(6)
-    const deptNo = user.substring(4, 6);
-    const [comId] = useRecoilState(companyState);
     const {idx} = useParams();// /board/:idx와 동일한 변수명으로 데이터를 꺼낼 수 있음.
     const [loading, setLoading] = useRecoilState(loadingState);
     const [board, setBoard] = useState({});
@@ -27,18 +25,13 @@ const BoardDetail=(props)=>{
             setUserReadHistory((prevHistory) => [...new Set([...prevHistory, idx])]);
     
             setLoading(false);
-        } catch (error) {
-            console.error("Error fetching board:", error);
-        }
+        } catch (error) {}
     };
     
     
     useEffect(() => {
         getBoard();
     }, [idx]);
-    
-    
-    console.log("사용자 읽은 이력:", userReadHistory);
 
 
     return(

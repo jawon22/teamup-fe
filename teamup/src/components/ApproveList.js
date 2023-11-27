@@ -181,7 +181,7 @@ const ApproveList = (props)=>{
     useEffect(()=>{
         susinButton();
         listEmp();
-    },[]);
+    },[props.user]);
     useEffect(()=>{
         divideReceiversDto();
         divideReferersDto();
@@ -409,7 +409,7 @@ const ApproveList = (props)=>{
                                                     </span>
                                                 ))}
                                                 <div></div>
-                                           
+                                                
                                                 {apprData.receiversDtoList.map((receiver,index)=>(
                                                     <span key={index} className='mx-4' style={{display:'inline'}}>
                                                         {receiver.receiversStatus === 'Y' ? <FaRegCheckSquare /> : 
