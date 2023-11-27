@@ -47,10 +47,6 @@ const DeptCalendar = () => {
 
     const clickedEvent = e.event;
     const clickedEventId = clickedEvent.id;
-    console.log("=", clickedEvent);
-
-
-    console.log("???",schedule)
 
 
     // 이벤트의 정보를 setSchedule 함수로 저장
@@ -65,11 +61,7 @@ const DeptCalendar = () => {
       calColor: clickedEvent.borderColor
     });
 
-    // setSchedule이 비동기적으로 동작하므로 업데이트된 schedule을 확인하기 위해 로그를 찍어보세요.
-
-    // 모달을 열기 전에 schedule을 확인해보세요.
     openModal();
-    console.log('Updated Schedule:', schedule);
   };
 
 
@@ -137,14 +129,9 @@ const DeptCalendar = () => {
       data: schedule
     })
       .then(response => {
-        console.log(response);
-        console.log(schedule.calNo);
         closeModal();
         clearSchedule();
         loadSchedule()
-      })
-      .catch(error => {
-        console.error("Edit Schedule Error:", schedule.calNo);
       });
   };
 
@@ -182,10 +169,8 @@ const DeptCalendar = () => {
       url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/deptList/${deptNo}`,
       method: "get"
     }).then(response => {
-      console.log(response);
       setScheduleList(response.data);
     }).catch(error => {
-      console.error("Error loading schedules", error);
     });
   };
 
@@ -200,9 +185,7 @@ const DeptCalendar = () => {
     const end = selectInfo.endStr;
     openModal();
     //모달열고 start end-1 로 추가 
-    console.log('선택한 날짜 범위: ', start, '에서', end);
-    console.log('id: ', eventClick.clickedEventId);
-
+    
     setSchedule({
       ...schedule,
       calStartDate: start,

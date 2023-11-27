@@ -26,8 +26,7 @@ const MainBoard=(props)=>{
             })
             .then(response => {
                 setBoardList(response.data);
-            })
-            .catch(error => {});
+            });
         };
 
         // 타임스탬프를 날짜로 변환하는 함수

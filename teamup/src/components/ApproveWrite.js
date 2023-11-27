@@ -87,8 +87,6 @@ const ApproveWrite = (props)=>{
         })
     }
     useEffect(()=>{selectCom()},[])
-    console.log(list);
-    console.log(receiverList);
 
     //기안 등록(최종)
     const saveAppr = async()=>{
@@ -124,7 +122,6 @@ const ApproveWrite = (props)=>{
         } catch (error) {
             // 오류 발생 시 알림 처리 또는 다른 작업 수행
             alert('기안 등록 중 오류가 발생했습니다.');
-            console.error('Error: ', error);
         }
     };
 

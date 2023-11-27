@@ -116,9 +116,6 @@ const Calendar = () => {
       if (error.response && error.response.status === 500) {
         // 서버에서 500번 에러가 발생한 경우
         alert("모든 항목을 입력해 주세요");
-      } else {
-        // 다른 종류의 에러 처리
-        console.error("에러 발생", error);
       }
     });
 };
@@ -129,14 +126,9 @@ const Calendar = () => {
       data: schedule
     })
       .then(response => {
-        console.log(response);
-        console.log(schedule.calNo);
         closeModal();
         clearSchedule();
         loadSchedule()
-      })
-      .catch(error => {
-        console.error("Edit Schedule Error:", schedule.calNo);
       });
   };
 
@@ -155,10 +147,8 @@ const Calendar = () => {
       url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/list/${empNo}`,
       method: "get"
     }).then(response => {
-      console.log(response);
       setScheduleList(response.data);
     }).catch(error => {
-      console.error("Error loading schedules", error);
     });
   };
 

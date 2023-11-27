@@ -32,7 +32,7 @@ const SalList=(prop)=>{
     //화면 실행시 최신 급여내역을 출력 
     const salDetail = () => {
         axios({
-            url: `http://localhost:8080/salList/salListDate/empNo/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/salList/salListDate/empNo/${empNo}`,
             method: "get"
         })
             .then(response => {
@@ -41,9 +41,6 @@ const SalList=(prop)=>{
                 } else {
                     setSalList(response.data);
                 }
-            })
-            .catch(error => {
-                console.error("급여 상세 정보를 가져오는 중 오류가 발생했습니다:", error);
             });
     };
     
@@ -57,7 +54,7 @@ const SalList=(prop)=>{
         const newDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
 
         axios({
-            url:`http://localhost:8080/salList/salListDate/empNo/${empNo}/salListDate/${newDate}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/salList/salListDate/empNo/${empNo}/salListDate/${newDate}`,
             method:"get"
         })
         .then(response=>{
@@ -67,9 +64,6 @@ const SalList=(prop)=>{
                 // console.log(response.data);
                 setSalList(response.data);
             }
-        })
-        .catch(error => {
-            console.error("급여 상세 정보를 가져오는 중 오류가 발생했습니다:", error);
         });
     };
 
@@ -83,7 +77,7 @@ const SalList=(prop)=>{
         const newDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`;
 
         axios({
-            url:`http://localhost:8080/salList/salListDate/empNo/${empNo}/salListDate/${newDate}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/salList/salListDate/empNo/${empNo}/salListDate/${newDate}`,
             method:"get"
         })
         .then(response=>{
@@ -93,9 +87,6 @@ const SalList=(prop)=>{
                 // console.log(response.data);
                 setSalList(response.data);
             }
-        })
-        .catch(error => {
-            console.error("급여 상세 정보를 가져오는 중 오류가 발생했습니다:", error);
         });
     };
 

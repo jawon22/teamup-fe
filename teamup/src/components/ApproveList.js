@@ -66,16 +66,11 @@ const ApproveList = (props)=>{
         getPosition();
     },[company])
 
-    console.log(checkInfo);
-
     // receivers
     const divideReceiversDto = ()=>{
         const receiversList = apprData.receiversDtoList ? apprData.receiversDtoList.map(receiver => receiver.receiversReceiver) : [];
         setReceiver(receiversList);
     }
-    console.log(receiver);
-    console.log(receiverInfo);
-    console.log(approveReceiver);
 
     // receivers의 모든정보추출
     const findReceiverInfo = ()=>{
@@ -112,11 +107,7 @@ const ApproveList = (props)=>{
     const isAllApproved = ()=>{
         return receiverPosition.length === ycount.length;
     }
-    
-    console.log(receiverPosition);
-    console.log(receiverPosition.length);
-    console.log(ycount);
-    console.log(ycount.length);
+
 
     useEffect(()=>{
         findReceiverInfo();
@@ -128,10 +119,6 @@ const ApproveList = (props)=>{
         setReferer(referersList);
     }
     
-    console.log(apprList);
-    // console.log(approveDto);
-    // console.log(receiver);
-    // console.log(referer);
     
     // 수신버튼을 눌렀을때 (페이지 기본)
     // 로그인한 사람이 결재의 승인자로 지정 되어있는 기안만
@@ -223,10 +210,6 @@ const ApproveList = (props)=>{
         })
     };
     
-    console.log(empList);
-    console.log(emp);
-    console.log(apprData);
-
     const [myApprInfo, SetMyApprInfo] = useState([]);
 
     //자신이 올린 결재 삭제 처리
