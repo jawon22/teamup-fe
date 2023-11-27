@@ -197,7 +197,7 @@ const formatDate = (timestamp) => {
                         <h2>공지사항</h2>
                 </div>
                 <div className="col-6 mb-3 mt-4 text-end">
-                        <button className="btn btn-primary text-white"onClick={handleShow}>글쓰기<TfiPencil /></button>
+                        <button className="btn btn-primary text-white"onClick={handleShow}>등록<TfiPencil /></button>
                 </div>
             </div>
                 

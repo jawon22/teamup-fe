@@ -142,7 +142,7 @@ const handleEditReply = (replyNo, currentContent, reply) => {
         <div className="col-6 mt-5 mb-3">
                 <h3>공지사항 상세</h3>
         </div>
-        <div className="col-6 text-end">
+        <div className="col-6 text-end mt-5 mb-3">
                 <button className="btn btn-primary text-white"
                                onClick={moveToBoard}>목록</button>
                                 {console.log('isAuthor:', isAuthor)}
@@ -151,7 +151,7 @@ const handleEditReply = (replyNo, currentContent, reply) => {
                               <button className="btn btn-success text-white ms-1" onClick={moveToUpdate}>
                                 수정
                               </button>
-                              <button className="btn btn-danger text-white ms-1" onClick={deleteBoard}>
+                              <button className="btn btn-secondary text-white ms-1" onClick={deleteBoard}>
                                 삭제
                               </button>
                             </>
@@ -268,12 +268,12 @@ const handleEditReply = (replyNo, currentContent, reply) => {
                   {canEditDeleteComment(reply) && (
                           <>
                             <button
-                              className="btn btn-warning btn-sm me-2"
+                              className="btn btn-success btn-sm me-2"
                               onClick={() => handleEditReply(reply.replyNo, reply.replyContent, reply)}
                             >
                               수정
                             </button>
-                            <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReply(reply.replyNo, reply)}>
+                            <button className="btn btn-secondary btn-sm" onClick={() => handleDeleteReply(reply.replyNo, reply)}>
                               삭제
                             </button>
                           </>
