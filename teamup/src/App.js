@@ -382,7 +382,7 @@ function App() {
             <div>
               <Routes>
                 {/* 각종 라우터 */}
-                <Route path="/approveList" element={<ApproveList />}></Route>
+                <Route path="/approveList" element={<ApproveList user={user} />}></Route>
                 <Route path="/approveWrite" element={<ApproveWrite />}></Route>
                 <Route path='/com' element={<Com />} ></Route>
                 <Route path='/search' element={<Search user={user} />}></Route>
