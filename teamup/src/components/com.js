@@ -69,7 +69,7 @@ const Com = () => {
 
     const comLoad = () => {
         axios({
-            url: "http://localhost:8080/com/list",
+            url: ` ${process.env.REACT_APP_REST_API_URL}/com/list`,
             method: "get"
         })
             .then(response => {
@@ -137,7 +137,7 @@ const Com = () => {
     const join = () => {
         delete com.pwRe
         axios({
-            url: "http://localhost:8080/com/",
+            url:  `${process.env.REACT_APP_REST_API_URL}/com/`,
             method: "post",
             data: com,
 
@@ -147,10 +147,7 @@ const Com = () => {
             alert("성공")
             setAddress("");
             setPost("")
-            console.log(response.data)
         }).catch(
-
-            console.error()
 
         );
 

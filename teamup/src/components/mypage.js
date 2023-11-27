@@ -38,10 +38,9 @@ const Mypage = (props) => {
     const myInfo = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_REST_API_URL}/emp/mypage/${empNo}`);
-            console.log("정보={}", response.data);
             setEmpInfo(response.data);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            // console.error('Error fetching data:', error);
         }
     };
 
@@ -81,9 +80,6 @@ const Mypage = (props) => {
 
                 // 프로필 로드가 완료된 후에 모달 열기
                 // openModal();
-            })
-            .catch(err => {//실패
-                console.error(err);
             });
     };
 
@@ -185,7 +181,6 @@ const Mypage = (props) => {
             closeModal();
         }
         catch (error) {
-            console.error("프로필 업데이트 에러", error);
             //수정한 이미지 파일이 없는 경우에도 모달 닫기
             closeModal();
         }
@@ -208,7 +203,7 @@ const Mypage = (props) => {
                 closeModal();
             }
             catch (error) {
-                console.error("프로필 이미지 삭제 에러", error);
+                // console.error("프로필 이미지 삭제 에러", error);
             }
         };
     };
@@ -270,7 +265,7 @@ const Mypage = (props) => {
 
     const findPw = () => {
         axios({
-            url: `http://localhost:8080/emp/findPw/${empNo}`,
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/findPw/${empNo}`,
             method: 'post',
             data: empInfomation.empPw
 
@@ -303,8 +298,6 @@ const Mypage = (props) => {
         }
         )
 
-        console.log(empInfomation.empPwCheck)
-
     }
 
 
@@ -317,9 +310,6 @@ const Mypage = (props) => {
             url: `${process.env.REACT_APP_REST_API_URL}/emp/changePw/${empNo}`,
             method: 'put',
             data: { empPw: empInfomation.empPw }
-        }).then(res => {
-            console.log(res.data)
-
         });
     };
 
@@ -363,7 +353,7 @@ const Mypage = (props) => {
         if (window.confirm("정보를 수정 하시겠습니까?")) {
         try {
             const response = await axios({
-                url:`http://localhost:8080/emp/empInfoUpdate/${empNo}`,
+                url:`${process.env.REACT_APP_REST_API_URL}/emp/empInfoUpdate/${empNo}`,
                 method:'put',
                 data:{
                     empName:empInfo.empName,
@@ -371,12 +361,11 @@ const Mypage = (props) => {
                     empEmail:empInfo.empEmail,
                     }
             })
-            console.log("정보={}", response.data);
             alert("수정되었습니다.")
             setShow2(false)
             
         } catch (error) {
-            console.error('Error fetching data:', error);
+            // console.error('Error fetching data:', error);
         }
     };
 };
@@ -396,10 +385,6 @@ const Mypage = (props) => {
             [e.target.name]: e.target.value
         }
         )
-
-        console.log(empInfo.empName)
-        console.log(empInfo.empTel)
-        console.log(empInfo.empEmail)
 
     }
 

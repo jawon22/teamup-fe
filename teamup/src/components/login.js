@@ -24,39 +24,34 @@ const Login = () => {
 
     const login = () => {
         axios({
-            url: "http://localhost:8080/emp/login/",
+            url: `${process.env.REACT_APP_REST_API_URL}/emp/login/`,
             method: "post",
             data: loginUser
         }).then(response => {
             if (response.data !== null) {
-                console.log(response.data);
                 const savedToken = response.data;
 
                 Cookies.set('userId', savedToken);
 
                 // 리코일에 저장
                 axios({
-                    url: `http://localhost:8080/emp/findtoken/${savedToken}`,
+                    url: `${process.env.REACT_APP_REST_API_URL}/emp/findtoken/${savedToken}`,
                     method: 'get',
                 }).then(res => {
                     if (savedToken && savedToken === res.data.token) {
                         const decode = jwtDecode(savedToken)
                         const userId = decode.sub
                         setUser(userId);
-                        console.log(userId)
                         let userNo = userId.substring(6);
 
 
                         axios({
-                            url: `http://localhost:8080/emp/mypage/${userNo}`,
+                            url: `${process.env.REACT_APP_REST_API_URL}/emp/mypage/${userNo}`,
                             method: 'get'
                         }).then(response => {
-                            console.log(response.data);
                             setCompany(response.data.comId);
                             sessionStorage.setItem("userName" , response.data.empName);
                             navigate('/home');
-                            
-                            
                         });
                     }
                 });
@@ -107,7 +102,7 @@ const Login = () => {
 
         const findPw =()=>{
             axios({
-                url:"http://localhost:8080/emp/empFindPw/",
+                url:`${process.env.REACT_APP_REST_API_URL}/emp/empFindPw/`,
                 method:"post",
                 data:info
             }).then(res=>{

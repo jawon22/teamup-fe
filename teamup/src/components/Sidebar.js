@@ -32,7 +32,6 @@ const Sidebar = (props) => {
 
     const logout = () => {
         window.confirm("로그아웃 하시겠습니까?")
-        console.log("logout function called");
         Cookies.remove('userId', { path: '/' });
         setUser("")
         navigate('/login');

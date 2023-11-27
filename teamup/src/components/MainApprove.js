@@ -23,7 +23,6 @@ const MainApprove = (props)=>{
             setApproveList(updateApprList);
         });
     };
-    console.log(approveList);
 
     // 두 날짜 간의 차이를 계산하는 함수
     const calculateDate = (startDate, endDate) => {

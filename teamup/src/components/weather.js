@@ -37,7 +37,6 @@ class Weather extends Component {
           loading: false,
         });
       })
-      .catch((error) => console.log(error));
   }
 
   // 날씨 정보 출력
@@ -46,19 +45,21 @@ class Weather extends Component {
 
     return (
         <>
-            <div className="container">
+            <div className="container p-3">
 
                 <div className="row">
                     <div className="col-6 offset-3 text-center">
-                        <h4 className='text-bold'>서울특별시</h4>
+                    <h4 className='text-bold'>서울특별시</h4>
                         <div className='icon-container'>
                             <img src={iconUrl} alt='Weather Icon' style={{ width: "100px", height: "100px" }} />
                         </div>
+                        <div>
                         <p>{this.state.desc}</p>
                         <p>현재: {(this.state.temp - 273.15).toFixed(0)}°C</p>
                         <p>최고: {(this.state.temp_max - 273.15).toFixed(0)}°C</p>
                         <p>최저: {(this.state.temp_min - 273.15).toFixed(0)}°C</p>
                         <p>습도: {this.state.humidity}%</p>
+                        </div>
                     </div>
                 </div>
 

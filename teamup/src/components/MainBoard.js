@@ -26,11 +26,7 @@ const MainBoard=(props)=>{
                 method: "get"
             })
             .then(response => {
-                console.log("응답 데이터:", response.data);
                 setBoardList(response.data);
-            })
-            .catch(error => {
-                console.error("공지사항 목록을 가져오는 중 오류가 발생", error);
             });
         };
 
