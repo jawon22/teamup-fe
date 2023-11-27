@@ -20,7 +20,6 @@ const CompanyJoin = ()=>{
             ...companyInfo,
             [e.target.name]:e.target.value
         })
-        console.log(companyInfo.comId)
 
     };
 

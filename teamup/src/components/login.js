@@ -50,15 +50,26 @@ const Login = () => {
                             method: 'get'
                         }).then(response => {
                             setCompany(response.data.comId);
-                            sessionStorage.setItem("userName" , response.data.empName);
+                            sessionStorage.setItem("userName", response.data.empName);
                             navigate('/home');
+
                         });
                     }
                 });
 
-   
+
             } else {
                 alert("실패");
+            }
+        }).catch(error => {
+            console.log(error.request.status)
+            if (error.request.status === 500) {
+                if (loginUser.empId.length <= 0) {
+                    alert('모든값을 입력해 주세요')
+                }
+                else {
+                    alert("정확한 값을 입력해 주세요")
+                }
             }
         });
     };
@@ -84,21 +95,57 @@ const Login = () => {
     };
     const openModal = () => {
         const modal = new Modal(bsModal.current);
-        modal.show();}
+        modal.show();
+    }
 
 
 
-        const [info , setInfo ] = useState(
-            {empId:"",
-            empEmail:"",}
-        );
-
-        const changeInfo = (e)=>{
-
-            setInfo({...info,
-                [e.target.name]:e.target.value}
-            )
+    const [info, setInfo] = useState(
+        {
+            empId: "",
+            empEmail: "",
         }
+    );
+
+    const changeInfo = (e) => {
+
+        setInfo({
+            ...info,
+            [e.target.name]: e.target.value
+        }
+        )
+    }
+
+    const findPw = () => {
+        axios({
+            url: "http://localhost:8080/emp/empFindPw/",
+            method: "post",
+            data: info
+        }).then(res => {
+            alert("success")
+        });
+    }
+
+
+
+    const [capsLockOn, setCapsLockOn] = useState(false);
+
+    const handleKeyPress = (event) => {
+        // 이벤트의 getModifierState 메서드를 사용하여 Caps Lock 상태 확인
+        const capsLockIsOn = event.getModifierState('CapsLock');
+        setCapsLockOn(capsLockIsOn);
+    };
+
+    useEffect(() => {
+        // 컴포넌트가 마운트되면 이벤트 리스너 추가
+        window.addEventListener('keydown', handleKeyPress);
+
+        // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, []);
+
 
         const findPw =()=>{
             axios({
@@ -109,7 +156,7 @@ const Login = () => {
                 alert("success")
             });
         }
-    
+
 
     return (
         <form autoComplete="off">
@@ -147,15 +194,20 @@ const Login = () => {
                             <div className="col-ms-6 offset-ms-3">
                                 <input type="text" name="empId" onChange={inputChange}
                                     className="form-control p-4" placeholder="id"></input>
+
                             </div>
                         </div>
 
                         {/* 패스워드 */}
-                        <div className="row mt-2 me-5">
+                        <div className="row mt-2 me-5 mb-3">
                             <div className="col-ms-6 offset-ms-3">
-                                <input type="passwosrd" className="form-control p-4" name="empPw"
+                                <input type="password" className="form-control p-4" name="empPw"
                                     onChange={inputChange} placeholder="password"></input>
                             </div>
+                        </div>
+                        <div>
+                        {capsLockOn?  <p>Caps Lock이 켜져 있습니다!</p> :<p>　</p>}
+                                {/* 나머지 컴포넌트 내용 */}
                         </div>
 
                         {/* 로그인 버튼 */}
@@ -168,13 +220,13 @@ const Login = () => {
 
                         {/* 회사가입 링크 / 링크 추가해야함 */}
                         <div className="row">
-                            <div className="col-ms-6 offset-ms-3 mt-2" style={{ textAlign: "right" }}>
+                            <div className="col-ms-6 offset-ms-3 mt-2 ms-5" style={{ textAlign: "center" }}>
                                 <NavLink to="/companyJoin" className="ms-5">관리자로그인</NavLink>
                                 <NavLink to="/com" className="ms-1 link">회사가입</NavLink>
                             </div>
                         </div>
 
-                        
+
 
                         {/* 비밀번호 찾기 / 링크 추가해야함 */}
                         <div className="row">
@@ -182,7 +234,7 @@ const Login = () => {
 
                                 <div>
                                     <span className="me-3">비밀번호를 잊어버리셨나요?</span>
-                                    <button className="btn btn-primary" onClick={openModal} style={{ backgroundColor: "rgb(195, 195, 195)", border: "none" }}>비밀번호 찾기</button>
+                                    <button type="button" className="btn btn-primary" onClick={openModal} style={{ backgroundColor: "rgb(195, 195, 195)", border: "none" }}>비밀번호 찾기</button>
                                 </div>
 
                             </div>
@@ -191,33 +243,33 @@ const Login = () => {
                     </div>
 
 
-   
+
 
 
                     <div class="modal fade" ref={bsModal} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호 찾기</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div className="row">
                                         <div className="col">
                                             <label className="form-label">사원번호</label>
-                                            <input className="form-control" name="empId" value={info.empId} onChange={changeInfo}/>
+                                            <input className="form-control" name="empId" value={info.empId} onChange={changeInfo} />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col">
-                                        <label className="form-label">이메일</label>
-                                        <input className="form-control" name="empEmail"value={info.empEmail} onChange={changeInfo}/>
+                                            <label className="form-label">이메일</label>
+                                            <input className="form-control" name="empEmail" value={info.empEmail} onChange={changeInfo} />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" onClick={closeModal} >취소</button>
-                                    <button type="button" class="btn btn-primary" onClick={findPw}>비밀번호 찾기</button>
+                                    <button type="button" class={`btn btn-primary`} onClick={findPw}>비밀번호 찾기</button>
                                 </div>
                             </div>
                         </div>

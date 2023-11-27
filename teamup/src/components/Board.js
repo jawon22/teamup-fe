@@ -6,7 +6,7 @@ import { TfiPencil } from "react-icons/tfi";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import { Link } from 'react-router-dom';
+import { Await, Link } from 'react-router-dom';
 import { Pagination } from "react-bootstrap";
 import moment from 'moment';
 import { FaComment } from 'react-icons/fa';
@@ -32,7 +32,7 @@ const Board =(props)=>{
         // 화면 실행시, 페이지별 게시물 목록 및 전체 게시물 수를 가져오는 함수 호출
         boardListByCom();
         fetchTotalCount();
-    }, [currentPage, pageSize]);
+    }, [currentPage, pageSize, props.user]);
 
         // 백엔드에서 전체 게시물 수를 가져오는 함수
         const fetchTotalCount = () => {
@@ -48,8 +48,8 @@ const Board =(props)=>{
         
 
         // 화면 실행시 회사별 공지사항 리스트 출력
-        const boardListByCom = () => {
-            axios({
+        const boardListByCom = async() => {
+           axios({
                 url: `${process.env.REACT_APP_REST_API_URL}/board/listPaged/${comId}?page=${currentPage}&size=${pageSize}`,
                 method: "get"
             })

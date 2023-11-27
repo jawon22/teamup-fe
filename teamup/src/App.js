@@ -223,6 +223,9 @@ function App() {
 
   const [lastVisitedPage, setLastVisitedPage] = useState(null);
 
+
+
+
   useEffect(() => {
     // 페이지 이동 시마다 현재 경로를 저장
     setLastVisitedPage(location.pathname);
@@ -389,11 +392,11 @@ function App() {
                 <Route path='/companyJoin' element={<CompanyJoin />}></Route>
                 <Route path='/salList' element={<SalList />}></Route>
                 <Route path="/deptCalendar" element={<DeptCalendar />} ></Route>
-                <Route path="/Board" element={<Board />} ></Route>
+                <Route path="/Board" element={<Board  user={user}/>} ></Route>
                 <Route path='/empTree' element={<Emp />} />
                 <Route path='/board/find/:idx' element={<BoardDetail />} />
                 <Route path='/board/update/:idx' element={<BoardUpdate />} />
-                <Route path='/mainBoard' element={<MainBoard />} />
+                <Route path='/mainBoard' element={<MainBoard user={user} />} />
 
 
 
