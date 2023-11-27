@@ -564,7 +564,7 @@ const DeptInsert = () => {
                                         <td className="hover" onClick={e => cellClick(dept)}>{dept.deptName}</td>
                                         <td>{dept.empCount} 명</td>
                                         <td>
-                                            <buttnon className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</buttnon>
+                                            <button className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</button>
                                             <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
                                             <button className="btn btn-outline-primary" onClick={e => deptDelete(dept)}>삭제</button>
                                         </td>

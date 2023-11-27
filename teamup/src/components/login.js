@@ -29,7 +29,7 @@ const Login = () => {
             data: loginUser
         }).then(response => {
             if (response.data !== null) {
-                console.log(response.data);
+                //console.log(response.data);
                 const savedToken = response.data;
 
                 Cookies.set('userId', savedToken);
@@ -43,7 +43,7 @@ const Login = () => {
                         const decode = jwtDecode(savedToken)
                         const userId = decode.sub
                         setUser(userId);
-                        console.log(userId)
+                        //console.log(userId)
                         let userNo = userId.substring(6);
 
 
@@ -51,7 +51,7 @@ const Login = () => {
                             url: `http://localhost:8080/emp/mypage/${userNo}`,
                             method: 'get'
                         }).then(response => {
-                            console.log(response.data);
+                            //console.log(response.data);
                             setCompany(response.data.comId);
                             sessionStorage.setItem("userName" , response.data.empName);
                             navigate('/home');

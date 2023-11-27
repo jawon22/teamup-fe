@@ -31,22 +31,17 @@ const TodoItemBlock = styled.div`
 `;
 
 const CheckCircle = styled.div`
-  width: 18px;
-  height: 18px;
+  width: 10px;
+  height: 10px;
   border-radius: 16px;
-  border: 1px solid #ced4da;
+  border: 1px solid #78C2AD;
+  background-color: #78C2AD; /* 배경색을 원하는 색상으로 설정 */
   font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-  cursor: pointer;
-  ${props =>
-    props.done &&
-    css`
-      border: 1px solid #218C74;
-      color: #218C74;
-    `}
+
 `;
 
 const Text = styled.div`
@@ -93,7 +88,7 @@ function TodoItem({ id, done, text }) {
 
   return (
     <TodoItemBlock>
-      <CheckCircle done={done} onClick={onToggle}>{done && <MdDone />}   
+      <CheckCircle done={done}>{done && <MdDone />}   
       </CheckCircle>
       <Text done={done}>{text}</Text>
       <Remove onClick={onRemove}>
