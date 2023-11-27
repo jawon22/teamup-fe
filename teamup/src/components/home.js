@@ -268,7 +268,7 @@ const Home = (props) => {
       </div>
 
       {/* 세로로 두 번째 줄 */}
-
+      <div className="col-5 home-center">
 
         <div className="h-50 pb-3">
           <div className="row graybox border-primary h-100">

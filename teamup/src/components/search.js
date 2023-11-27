@@ -185,20 +185,7 @@ const Search = (props) => {
         })
 
     };
-    const loadForSearch = () => {
-        // axios({
-        //     url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,
-        //     method: "post",
-        //     data:
-        //         data
-        // })
-        //     .then(response => {
-        //         console.log("보낸 데이터", data);
-        //         setSearchList(response.data);
-        //         console.log(response.data);
-        //     })
 
-   };
     const loadForSearch = () => {
         axios({
             url: `${process.env.REACT_APP_REST_API_URL}/emp/search/`,

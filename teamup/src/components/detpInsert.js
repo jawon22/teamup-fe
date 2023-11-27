@@ -81,8 +81,9 @@ const DeptInsert = () => {
         } catch (error) {
             console.error('Error loading department list:', error.message);
         }
-        });
-    };
+        };
+    
+
     const updateDept = () => {
         delete dept.comId;
         axios({

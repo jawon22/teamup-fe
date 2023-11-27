@@ -116,16 +116,6 @@ const Login = () => {
         )
     }
 
-    const findPw = () => {
-        axios({
-            url: "http://localhost:8080/emp/empFindPw/",
-            method: "post",
-            data: info
-        }).then(res => {
-            alert("success")
-        });
-    }
-
 
 
     const [capsLockOn, setCapsLockOn] = useState(false);
