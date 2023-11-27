@@ -6,6 +6,7 @@ import { Modal } from "bootstrap";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { NavLink } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const DeptInsert = () => {
     //세션스토리지 아이디만 저장
@@ -492,9 +493,8 @@ const DeptInsert = () => {
                     <div className="col-10 offset-1 item-center">
                         <h1>{comId}부서관리</h1>
                     </div>
-                    <NavLink onClick={logOut}>로그아웃</NavLink>
                 </div>
-
+                
 
             
                 <div className="row mt-5">
@@ -557,11 +557,11 @@ const DeptInsert = () => {
                         <table className="table wtable">
                             <thead className=" table-primary">
                                 <tr>
-                                    <th>직급</th>
-                                    <th>사원명</th>
+                                    <th width="10%">직급</th>
+                                    <th width="10%">사원명</th>
                                     <th>사원번호</th>
                                     <th>Email</th>
-                                    <th>관리</th>
+                                    <th width="50%">관리</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -696,6 +696,11 @@ const DeptInsert = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className="row text-end">
+                        <Link  onClick={logOut} style={{fontWeight:"bold"}}><button className="btn btn-primary">로그아웃</button></Link>
+                </div>
+
             </div>
 
 
