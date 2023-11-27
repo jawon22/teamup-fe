@@ -329,16 +329,16 @@ function App() {
                   </Navbar.Brand>
                 </div> */}
 
-                <div className='col-4 app-end' style={{ display: 'flex', flexDirection: 'row' }}>
+                <div className='col-4 app-end d-flex flex-row-reverse' style={{ display: 'flex', flexDirection: 'row' }}>
                   <div className='row'>
-                    <div className='col-3'></div>
-                      <div className='col-3 align-self-center'>
-                        <BsWechat onClick={openModal} className='me-2 text-green header-icon'
-                            style={{width: "40px", height: "40px"}}/>
-                      </div>
-                      <div className='col-3 align-self-center'>
-                          <HiMiniUserGroup onClick={handleShow} className='me-2 text-green header-icon '
-                              style={{width: "45px", height: "45px"}}/>
+                    {/* <div className='col-3'></div> */}
+                      {/* <div className='col-3 align-self-center'>
+                        <BsWechat onClick={openModal} className='header-icon'
+                            style={{width: "40px", height: "40px", color:"#218C74"}}/>
+                      </div> */}
+                      <div className='col-3 align-self-center me-2'>
+                          <HiMiniUserGroup onClick={handleShow} className='header-icon'
+                              style={{width: "45px", height: "45px", color:"#218C74"}}/>
                       </div>
                       <div className='col-3 text-end'>
                       <Navbar expand="sm" className="bg-body-white">
