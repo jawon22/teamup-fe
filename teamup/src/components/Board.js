@@ -191,13 +191,13 @@ const formatDate = (timestamp) => {
     return(
 
         <div className="row">
-        <div className="col-md-10 offset-md-1 mt-5">
+        <div className="col-md-10 offset-md-1">
 
             <div className="row mb-2">
-                <div className="col-6 mb-3 mt-4">
+                <div className="col-6 mb-3 mt-2">
                         <h2>공지사항</h2>
                 </div>
-                <div className="col-6 mb-3 mt-4 text-end">
+                <div className="col-6 mb-3 mt-2 text-end">
                         <button className="btn btn-primary text-white"onClick={handleShow}>등록<TfiPencil /></button>
                 </div>
             </div>

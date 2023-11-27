@@ -139,10 +139,10 @@ const handleEditReply = (replyNo, currentContent, reply) => {
     <div className="col-md-10 offset-md-1 ps-5 pe-5">
 
     <div className="row mb-2">
-        <div className="col-6 mt-5 mb-3">
+        <div className="col-6 mt-2 mb-3">
                 <h3>공지사항 상세</h3>
         </div>
-        <div className="col-6 text-end mt-5 mb-3">
+        <div className="col-6 text-end mt-2 mb-3">
                 <button className="btn btn-primary text-white"
                                onClick={moveToBoard}>목록</button>
                                 {console.log('isAuthor:', isAuthor)}
