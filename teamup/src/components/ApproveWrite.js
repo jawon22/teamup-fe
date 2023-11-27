@@ -80,7 +80,8 @@ const ApproveWrite = (props)=>{
         .then(response=>{
             setList(response.data);
 
-            const removeMy = response.data.filter(receiver => receiver.empNo !== empNo && receiver.comId === company);
+            const removeMy = response.data.filter(receiver => receiver.empNo !== empNo && receiver.comId === company
+                    && receiver.empExit === null);
             setReceiverList(removeMy);
             setRefererList(removeMy);
         })
