@@ -196,12 +196,12 @@ const Login = () => {
                             </div>
                         </div>
                         <div>
-                        {capsLockOn?  <p>Caps Lock이 켜져 있습니다!</p> :<p>　</p>}
+                        {capsLockOn?  <p className="ms-1" style={{ color: '#1abc9c' }}>Caps Lock이 켜져 있습니다!</p> :<p>　</p>}
                                 {/* 나머지 컴포넌트 내용 */}
                         </div>
 
                         {/* 로그인 버튼 */}
-                        <div className="row mt-4 me-5">
+                        <div className="row mt-3 me-5">
                             <div className="col-ms-6 offset-ms-3">
                                 <button type="button" className=" btn btn-primary w-100 p-3 text-bold" onClick={login}>Login</button>
                             </div>
@@ -210,11 +210,17 @@ const Login = () => {
 
                         {/* 회사가입 링크 / 링크 추가해야함 */}
                         <div className="row">
-                            <div className="col-ms-6 offset-ms-3 mt-2 ms-5" style={{ textAlign: "center" }}>
-                                <NavLink to="/companyJoin" className="ms-5">관리자로그인</NavLink>
-                                <NavLink to="/com" className="ms-1 link">회사가입</NavLink>
+                            <div className="col-ms-6 offset-ms-3 mt-2 text-center">
+                                <div className="d-flex justify-content-between">
+                                <div className="left">
+                                    <NavLink to="/companyJoin" className="link">관리자로그인</NavLink>
+                                </div>
+                                <div className="right me-5 pe-3">
+                                    <NavLink to="/com" className="link">회사가입</NavLink>
+                                </div>
+                                </div>
                             </div>
-                        </div>
+                            </div>
 
 
 
