@@ -207,7 +207,7 @@ const ApproveWrite = (props)=>{
 
                     <div className="row">
 
-                        <div className="border border-light col-8">
+                        <div className="col-8">
                             <table className="table">
                                 <tbody>
                                 <tr>
@@ -248,7 +248,7 @@ const ApproveWrite = (props)=>{
                                     <th scope="row">내용</th>
                                     <td>
                                         <textarea type="text" className="form-control" name="apprContent"
-                                            rows={10} value={appr.apprContent} onChange={changeappr}/>
+                                            rows={10} value={appr.apprContent} onChange={changeappr} style={{ resize: "none" }}/>
                                     </td>
                                 </tr>
 
@@ -256,9 +256,9 @@ const ApproveWrite = (props)=>{
                             </table>
                         </div>
 
-                        <div className="border border-light col-4">
+                        <div className=" col-4">
                             <span>결재자 지정</span>
-                            <div className="border border-light">
+                            <div className="">
                                 <div className="row">
                                     <div className="col-8">
                                         <select className="form-select col" onChange={selectedReceiver}>
@@ -295,7 +295,7 @@ const ApproveWrite = (props)=>{
                             </div>
 
                             <span className="my-2">참조자 지정</span>
-                            <div className="border border-light">
+                            <div className="">
                                 <div className="row">
                                     <div className="col-8">
                                         <select className="form-select col" onChange={selectedReferer}>
