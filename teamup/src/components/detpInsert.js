@@ -184,6 +184,12 @@ const DeptInsert = () => {
         );
     };
 
+    // 입력된 값에 한국어가 포함되어 있는지 확인하는 함수
+    const containsKorean = (text) => {
+        const koreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        return koreanPattern.test(text);
+    };
+
 
     /////-------------직급 등록
     const [positionData, setPositionData] = useState({
@@ -192,6 +198,13 @@ const DeptInsert = () => {
         empPositionOrder: ''
     });
     const changePositionData = (e) => {
+
+         // 입력된 값이 한국어인지 확인
+        if (containsKorean(e.target.value)) {
+            // 한국어 입력일 경우 무시
+            return;
+        }
+
         setPositionData({
             ...positionData,
             [e.target.name]: e.target.value
@@ -505,7 +518,8 @@ const DeptInsert = () => {
                         <button className="btn btn-primary" onClick={deptInsert}>추가 </button>
                     </div>
                     <div className="col-1 ">
-                        정렬<input type="number" className="form-control" name="empPositionOrder" onChange={changePositionData} />
+                        정렬<input type="number" className="form-control" name="empPositionOrder" 
+                            min={1} max={10} onChange={changePositionData}/>
                     </div>
                     <div className="col-3 ">
                         직급 <input className="form-control" name="empPositionName" onChange={changePositionData} />
