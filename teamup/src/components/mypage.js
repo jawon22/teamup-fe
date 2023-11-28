@@ -310,6 +310,10 @@ const Mypage = (props) => {
             url: `${process.env.REACT_APP_REST_API_URL}/emp/changePw/${empNo}`,
             method: 'put',
             data: { empPw: empInfomation.empPw }
+        }).then(res=>{
+            alert("수정되었습니다")
+            handleClose();
+            
         });
     };
 

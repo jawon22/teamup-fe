@@ -119,7 +119,12 @@ const Calendar = () => {
       }
     });
 };
-  const editSchedule = () => {
+const editSchedule = () => {
+  // Display a confirmation dialog
+  const isConfirmed = window.confirm("수정하시겠습니까??");
+
+  // Check if the user confirmed
+  if (isConfirmed) {
     axios({
       url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/updateCal/${schedule.calNo}`,
       method: "put",
@@ -128,9 +133,13 @@ const Calendar = () => {
       .then(response => {
         closeModal();
         clearSchedule();
-        loadSchedule()
+        loadSchedule();
       });
-  };
+  } else {
+    // Handle the case where the user didn't confirm (optional)
+    console.log("Update canceled by user");
+  }
+};
 
   // [{"calNo":16,"
   // empNo":11,"
@@ -217,13 +226,25 @@ const Calendar = () => {
 
   ///삭제 
   const deleteSchedule = () => {
-    axios({
-      url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/delete/${schedule.calNo}`,
-      method: "delete",
-    }).then(response => {
-      if (response.data !== null) alert("삭제되었습니다")
-      closeModal();
-    });
+    // Display a confirmation dialog
+    const isConfirmed = window.confirm("일정을 지울까요?");
+  
+    // Check if the user confirmed
+    if (isConfirmed) {
+      axios({
+        url: `${process.env.REACT_APP_REST_API_URL}/cal_emp/delete/${schedule.calNo}`,
+        method: "delete",
+      }).then(response => {
+        if (response.data !== null) {
+          alert("삭제되었습니다");
+        }
+        loadSchedule();
+        closeModal();
+      });
+    } else {
+      // Handle the case where the user didn't confirm (optional)
+      console.log("Delete canceled by user");
+    }
   };
 
   return (
@@ -237,7 +258,7 @@ const Calendar = () => {
         plugins={plugin}
         initialView="dayGridMonth" // 초기뷰 dayGridMonth or timeGridWeek
         headerToolbar={{ // 띄어쓰면 갭이 생기고, 콤마가 있으면 그룹으로 묶는 형태
-          right: 'month,agendaWeek,agendaDay'
+        //  right: 'month,agendaWeek,agendaDay'
         }}
 
         footerToolbar={{
