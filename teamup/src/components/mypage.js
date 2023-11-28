@@ -467,13 +467,7 @@ const Mypage = (props) => {
                     <div className="row">
                         <div className="col-10"></div>
                         <div className="col-2 mb-3 text-center">
-                            {/* <button className="btn btn-sm btn-secondary" value={empInfo.empNo} onClick={handleClickChange}>개인정보수정</button> */}
-
-                            <NavDropdown title="개인정보 수정" className="bage rounded-pill text-white"
-                                style={{fontSize:"14px", padding:"0.3em", backgroundColor:"#218C74", fontWeight:"bold"}}>
-                                <NavDropdown.Item onClick={handleShow2}>개인정보 수정</NavDropdown.Item>
-                                <NavDropdown.Item value={empInfo.empNo} onClick={handleClickChange}>비밀번호 수정</NavDropdown.Item>
-                            </NavDropdown>
+                                <button className="btn btn-sm btn-primary" value={empInfo.empNo} onClick={handleClickChange}>비밀번호 수정</button>
                         </div>
                     </div>
                 </div>
