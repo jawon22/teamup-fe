@@ -352,7 +352,7 @@ const DeptInsert = () => {
             if (response.data != null) {
                 alert("성공");
                 closeModal2()
-                loadDetpList();
+                loadDetpList(); 
             }
 
             // 성공 후에 상태 초기화 또는 필요한 작업 수행
