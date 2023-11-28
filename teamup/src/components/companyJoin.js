@@ -70,7 +70,7 @@ const CompanyJoin = ()=>{
             <div className="row mt-4">
                 <div className="col-4 offset-4">
                     <span>비밀번호</span> 
-                    <input type="text" className="form-control" name="comPw" onChange={changeInfo} value={companyInfo.comPw}/>
+                    <input type="password" className="form-control" name="comPw" onChange={changeInfo} value={companyInfo.comPw}/>
                 </div>
             </div>
             <div className="row mt-4">

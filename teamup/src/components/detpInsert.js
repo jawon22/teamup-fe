@@ -352,7 +352,7 @@ const DeptInsert = () => {
             if (response.data != null) {
                 alert("성공");
                 closeModal2()
-                loadDetpList();
+                loadDetpList(); 
             }
 
             // 성공 후에 상태 초기화 또는 필요한 작업 수행
@@ -504,7 +504,7 @@ const DeptInsert = () => {
 
                 <div className="row">
                     <div className="col-10 offset-1 item-center">
-                        <h1>{comId}부서관리</h1>
+                        <h1>[ {comId} ] 부서관리</h1>
                     </div>
                 </div>
                 
@@ -514,20 +514,25 @@ const DeptInsert = () => {
                     <div className="col-3 ">
                         부서명 <input className="form-control" name="deptName" onChange={changeInfo} />
                     </div>
-                    <div className="col-4 mt-4">
-                        <button type="button" className="btn btn-primary" onClick={deptInsert}>추가 </button>
+                    <div className="col-2 mt-4">
+                        <button className="btn btn-primary" onClick={deptInsert}>추가 </button>
+
                     </div>
                     <div className="col-1 ">
                         정렬<input type="number" className="form-control" name="empPositionOrder" 
                             min={1} max={10} onChange={changePositionData}/>
                     </div>
-                    <div className="col-3 ">
+                    <div className="col-2 ">
                         직급 <input className="form-control" name="empPositionName" onChange={changePositionData} />
                     </div>
-                    <div className="col-1 mt-4">
-                        <button type="button" className="btn btn-primary " onClick={addPosition}>추가 </button>
+                    <div className="col-4 mt-4">
+                        <button className="btn btn-primary " onClick={addPosition}>추가 </button>
+
                     </div>
                 </div>
+                    <div className="col-7 offset-5 mt-2">
+                        <p>높은 순서대로 직급명을 등록해주세요 (예시-정렬1번 대표이사, 2번 부장)</p>
+                    </div>
 
 
                 {/* 추가할 부분 드롭다운 만들어서 부서별 인원 찾기? 안해도 될거 같긴한데 -하지 말죠? */}
