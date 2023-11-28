@@ -313,6 +313,7 @@ const Mypage = (props) => {
         }).then(res=>{
             alert("수정되었습니다")
             handleClose();
+            
         });
     };
 

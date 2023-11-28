@@ -345,7 +345,6 @@ const Search = (props) => {
                     <div className="container">
                         <div className="mt-3 mb-4">
                             <h2>주소록</h2>
-                            {active}
                         </div>
 
                         <div className="row mb-1">
