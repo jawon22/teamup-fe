@@ -54,7 +54,7 @@ const MainBoard=(props)=>{
         <div>
 
             <div className="row">
-                <div className="col-6 mt-4 mb-3 ms-2">
+                <div className="col-6 mt-4 ms-2">
                         <h4>공지사항</h4>
                 </div>
             </div>

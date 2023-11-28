@@ -46,10 +46,16 @@ const MainApprove = (props)=>{
         susinList();
     },[props.user])
 
+    console.log(approveList);
+
+    const toDate = new Date();
+    const prevDate = new Date(toDate);
+    prevDate.setDate(toDate.getDate()-1);
+
     return(
         <div>
             <div className="row">
-                <div className="col mt-4 mb-3 ms-2">
+                <div className="col mt-4 ms-2">
                     <h4>전자결재</h4>
                 </div>
             </div>
@@ -67,23 +73,25 @@ const MainApprove = (props)=>{
                             <tr className="table-primary text-center">
                                 <th width="50%">제목</th>
                                 <th width="20%">발신인</th>
-                                <th width="30%">남은기간</th>
+                                <th width="30%">마감일</th>
                             </tr>
                         </thead>
                         <tbody className="text-center">
                             {Array.isArray(approveList) && approveList.length > 0 ? (
                                 approveList
-                                .filter((appr) => new Date(appr.approveDto.apprDateEnd) >= new Date())
+                                .filter((appr) => new Date(appr.approveDto.apprDateEnd) >= prevDate)
                                 .slice(0, 6)
+                                .reverse()
                                 .map((appr) => (
                                     <tr key={appr.approveDto.apprDateStart}>
                                     <td className="text-start">{appr.approveDto.apprTitle}</td>
                                     <td>{appr.empName}</td>
                                     <td>
-                                        {calculateDate(
+                                        {/* {calculateDate(
                                         appr.approveDto.apprDateStart,
                                         appr.approveDto.apprDateEnd
-                                        )}
+                                        )} */}
+                                        {appr.approveDto.apprDateEnd}
                                     </td>
                                     </tr>
                                 ))
