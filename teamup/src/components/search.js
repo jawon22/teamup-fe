@@ -304,6 +304,7 @@ const Search = (props) => {
         );
     };
 
+    
 
 
     // const empNo = parseInt(user.substring(6));
@@ -390,10 +391,11 @@ const Search = (props) => {
                                 </tr>
                             </thead>
                             <tbody>
+                                
                                 {searchList.map(list => (
                                     <tr key={list.empNo} onClick={e => handleProfileButtonClick(list)}
                                         style={{ cursor: "pointer" }}>
-                                        <td >{list.empName}</td>
+                                        <td >{list.empId}</td>
                                         <td className={list.empExit !== null ? 'text-danger' : ''}>{list.deptName}</td>
                                         <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empPositionName}</td>
                                         <td className={list.empExit !== null ? 'text-danger' : ''}>{list.empName}</td>
