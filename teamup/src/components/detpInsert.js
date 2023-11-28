@@ -515,7 +515,7 @@ const DeptInsert = () => {
                         부서명 <input className="form-control" name="deptName" onChange={changeInfo} />
                     </div>
                     <div className="col-2 mt-4">
-                        <button className="btn btn-primary" onClick={deptInsert}>추가 </button>
+                        <button type="button" className="btn btn-primary" onClick={deptInsert}>추가 </button>
 
                     </div>
                     <div className="col-1 ">
@@ -526,7 +526,7 @@ const DeptInsert = () => {
                         직급 <input className="form-control" name="empPositionName" onChange={changePositionData} />
                     </div>
                     <div className="col-4 mt-4">
-                        <button className="btn btn-primary " onClick={addPosition}>추가 </button>
+                        <button type="button" className="btn btn-primary " onClick={addPosition}>추가 </button>
 
                     </div>
                 </div>
