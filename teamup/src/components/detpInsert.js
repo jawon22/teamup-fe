@@ -22,6 +22,8 @@ const DeptInsert = () => {
     ///그냥 모달을 여는거로 합시다! 못해먹겠습니다!
 
 
+    
+
     useEffect(() => {
         setComId(sessionId);
 
@@ -680,7 +682,7 @@ const DeptInsert = () => {
                                 <label className="mt-1">이메일</label>
                                 <input className="form-control" name="empEmail" value={empData.empEmail} onChange={changeEmpChange} />
                                 <label className="mt-1">연봉</label>
-                                <input type="number" className="form-control" name="salAnnual" value={salData.salAnnual} onChange={changeSalChange} />
+                                <input type="number" className="form-control" name="salAnnual"  step={10000} value={salData.salAnnual} onChange={changeSalChange} />
 
 
                             </div>
@@ -739,7 +741,7 @@ const DeptInsert = () => {
                                 <div className="col-10 offset -1">
                                     <label className="form-label">이름</label>
                                     <input className="form-control" name="empName" onChange={change} value={empInfo.empName} />
-                                    <label className="form-label mt-1">급여</label>
+                                    <label className="form-label mt-1">연봉</label>
                                     <input className="form-control" name="salAnnual" onChange={change} value={empInfo.salAnnual} />
 
 
