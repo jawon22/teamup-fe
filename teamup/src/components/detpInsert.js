@@ -185,6 +185,12 @@ const DeptInsert = () => {
         );
     };
 
+    // 입력된 값에 한국어가 포함되어 있는지 확인하는 함수
+    const containsKorean = (text) => {
+        const koreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        return koreanPattern.test(text);
+    };
+
 
     /////-------------직급 등록
     const [positionData, setPositionData] = useState({
@@ -193,6 +199,13 @@ const DeptInsert = () => {
         empPositionOrder: ''
     });
     const changePositionData = (e) => {
+
+         // 입력된 값이 한국어인지 확인
+        if (containsKorean(e.target.value)) {
+            // 한국어 입력일 경우 무시
+            return;
+        }
+
         setPositionData({
             ...positionData,
             [e.target.name]: e.target.value
@@ -502,16 +515,17 @@ const DeptInsert = () => {
                         부서명 <input className="form-control" name="deptName" onChange={changeInfo} />
                     </div>
                     <div className="col-4 mt-4">
-                        <button className="btn btn-primary" onClick={deptInsert}>추가 </button>
+                        <button type="button" className="btn btn-primary" onClick={deptInsert}>추가 </button>
                     </div>
                     <div className="col-1 ">
-                        정렬<input type="number" className="form-control" name="empPositionOrder" onChange={changePositionData} />
+                        정렬<input type="number" className="form-control" name="empPositionOrder" 
+                            min={1} max={10} onChange={changePositionData}/>
                     </div>
                     <div className="col-3 ">
                         직급 <input className="form-control" name="empPositionName" onChange={changePositionData} />
                     </div>
                     <div className="col-1 mt-4">
-                        <button className="btn btn-primary " onClick={addPosition}>추가 </button>
+                        <button type="button" className="btn btn-primary " onClick={addPosition}>추가 </button>
                     </div>
                 </div>
 
@@ -539,9 +553,9 @@ const DeptInsert = () => {
                                         <td className="hover" onClick={e => cellClick(dept)}>{dept.deptName}</td>
                                         <td>{dept.empCount} 명</td>
                                         <td>
-                                            <button className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</button>
-                                            <button className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
-                                            <button className="btn btn-outline-primary" onClick={e => deptDelete(dept)}>삭제</button>
+                                            <button type="button" className="btn btn-outline-primary me-2" onClick={e => addEmp(dept)}>사원등록</button>
+                                            <button type="button" className="btn btn-outline-primary me-2" onClick={e => changeDeptName(dept)}>수정</button>
+                                            <button type="button" className="btn btn-outline-primary" onClick={e => deptDelete(dept)}>삭제</button>
                                         </td>
 
 
@@ -574,9 +588,9 @@ const DeptInsert = () => {
                                             <td>{emp.empId}</td>
                                             <td>{emp.empEmail}</td>
                                             <td>
-                                                <button className="btn btn-outline-primary me-2" onClick={e => empInfoChange(emp)}>정보수정</button>
-                                                <button className="btn btn-outline-primary me-2" onClick={e => changeEmpDept(emp)}>부서이동</button>
-                                                <button className="btn btn-outline-primary" onClick={e => opneDateInput(emp)}>퇴사처리</button>
+                                                <button type="button" className="btn btn-outline-primary me-2" onClick={e => empInfoChange(emp)}>정보수정</button>
+                                                <button type="button" className="btn btn-outline-primary me-2" onClick={e => changeEmpDept(emp)}>부서이동</button>
+                                                <button type="button" className="btn btn-outline-primary" onClick={e => opneDateInput(emp)}>퇴사처리</button>
 
 
                                                 {isEmpLeave === emp.empId && (
@@ -585,7 +599,7 @@ const DeptInsert = () => {
                                                             <input type="date" className="form-control" onChange={dateChange} value={leaveData.empExit} />
                                                         </div>
                                                         <div className="col-4">
-                                                            <button className="btn btn-sm btn-outline-success" onClick={empLeave} >저장</button>
+                                                            <button type="button" className="btn btn-sm btn-outline-success" onClick={empLeave} >저장</button>
                                                         </div>
                                                     </div>
                                                 )}
@@ -600,7 +614,7 @@ const DeptInsert = () => {
                                                             </select>
                                                         </div>
                                                         <div className="col-4">
-                                                            <button className="mt-2 btn btn-sm btn-outline-primary" onClick={transDept}>변경</button>
+                                                            <button type="button" className="mt-2 btn btn-sm btn-outline-primary" onClick={transDept}>변경</button>
                                                         </div>
                                                     </div>
                                                 )}
@@ -698,7 +712,10 @@ const DeptInsert = () => {
                 </div>
 
                 <div className="row text-end">
-                        <Link  onClick={logOut} style={{fontWeight:"bold"}}><button className="btn btn-primary">로그아웃</button></Link>
+                    <div className="col">
+
+                        <Link  onClick={logOut} style={{fontWeight:"bold"}}><button type="button" className="btn btn-primary">로그아웃</button></Link>
+                    </div>
                 </div>
 
             </div>
@@ -735,9 +752,9 @@ const DeptInsert = () => {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeUpdateModal}>취소</button>
+                            <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeUpdateModal}>취소</button>
 
-                            <button type="button" className={` btn btn-primary `} onClick={nameSalupdate}>수정</button>
+                            <button type="button"  className={` btn btn-primary `} onClick={nameSalupdate}>수정</button>
                         </div>
                     </div>
                 </div>
