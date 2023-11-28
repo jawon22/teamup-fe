@@ -44,7 +44,7 @@ const MainApprove = (props)=>{
     
     useEffect(()=>{
         susinList();
-    },[])
+    },[props.user])
 
     return(
         <div>

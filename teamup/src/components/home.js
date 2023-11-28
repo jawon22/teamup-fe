@@ -272,13 +272,13 @@ const Home = (props) => {
 
         <div className="h-50 pb-3">
           <div className="row graybox border-primary h-100">
-            <MainBoard />
+            <MainBoard user={user}/>
           </div>
         </div>
 
         <div className="h-50">
           <div className="row graybox border-primary h-100">
-            <MainApprove />
+            <MainApprove user={user}/>
           </div>
         </div>
 

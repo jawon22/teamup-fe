@@ -18,36 +18,36 @@ const MainBoard=(props)=>{
     },[props.user]);
 
     
-        // 화면 실행시 회사별 공지사항 리스트 출력
-        const boardListByCom = () => {
-            axios({
-                url: `${process.env.REACT_APP_REST_API_URL}/board/list/${comId}`,
-                method: "get"
-            })
-            .then(response => {
-                setBoardList(response.data);
-            });
-        };
+    // 화면 실행시 회사별 공지사항 리스트 출력
+    const boardListByCom = () => {
+        axios({
+            url: `${process.env.REACT_APP_REST_API_URL}/board/list/${comId}`,
+            method: "get"
+        })
+        .then(response => {
+            setBoardList(response.data);
+        });
+    };
 
-        // 타임스탬프를 날짜로 변환하는 함수
-        const formatDate = (timestamp) => {
-            const date = new Date(timestamp);
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    // 타임스탬프를 날짜로 변환하는 함수
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
-            // 현재 날짜와 비교하여 오늘 작성된 경우 시간까지 표시, 그렇지 않은 경우 날짜만 표시
-            const today = new Date();
-            if (
-                date.getDate() === today.getDate() &&
-                date.getMonth() === today.getMonth() &&
-                date.getFullYear() === today.getFullYear()
-            ) {
-                // 오늘 작성된 경우
-                return date.toLocaleString('ko-KR', { hour: 'numeric', minute: 'numeric' });
-            } else {
-                // 오늘이 아닌 경우
-                return moment(timestamp).format('YYYY-MM-DD');
-            }
-        };
+        // 현재 날짜와 비교하여 오늘 작성된 경우 시간까지 표시, 그렇지 않은 경우 날짜만 표시
+        const today = new Date();
+        if (
+            date.getDate() === today.getDate() &&
+            date.getMonth() === today.getMonth() &&
+            date.getFullYear() === today.getFullYear()
+        ) {
+            // 오늘 작성된 경우
+            return date.toLocaleString('ko-KR', { hour: 'numeric', minute: 'numeric' });
+        } else {
+            // 오늘이 아닌 경우
+            return moment(timestamp).format('YYYY-MM-DD');
+        }
+    };
         
     return(
 
