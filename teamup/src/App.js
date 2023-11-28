@@ -36,11 +36,11 @@ import { useRecoilState } from 'recoil';
 import { companyState, roomState, userState } from './recoil';
 import Emp from './components/Emp';
 import surf from "./components/images/profileImage.png";
-import Chat from './components/chat';
+// import Chat from './components/chat';
 
 import BoardDetail from './components/BoardDetail';
 
-import ChatList from './components/chatList';
+// import ChatList from './components/chatList';
 import SockJS from 'sockjs-client';
 import BoardUpdate from './components/BoardUpdate';
 import './components/img.css'
@@ -78,97 +78,97 @@ function App() {
   const [socket, setSocket] = useState();
   const [room, setRoom] = useRecoilState(roomState);
 
-  const [roomNo, setRoomNo] = useState("");
+  // const [roomNo, setRoomNo] = useState("");
 
 
 
-  const onRoomNoChange = () => {
-    //채팅방 번호 전달하기
+  // const onRoomNoChange = () => {
+  //   //채팅방 번호 전달하기
 
-    const data = {
-      type: 'enterRoom',
-      empNo:user,
-      chatRoomNo: `${roomNo}`,
-    };
+  //   const data = {
+  //     type: 'enterRoom',
+  //     empNo:user,
+  //     chatRoomNo: `${roomNo}`,
+  //   };
 
-    // 디버깅을 위해 데이터를 콘솔에 로그
-    // console.log('전송?', data);
+  //   // 디버깅을 위해 데이터를 콘솔에 로그
+  //   // console.log('전송?', data);
 
-    // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
-    webSock.send(JSON.stringify(data));
+  //   // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
+  //   webSock.send(JSON.stringify(data));
 
-    // console.log(roomNo);
+  //   // console.log(roomNo);
 
-    // console.log('useEffect in App.js triggered!');
-  };
-
-
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-  const [webSock, setWebSock] =useState();
+  //   // console.log('useEffect in App.js triggered!');
+  // };
 
 
+  // const [messages, setMessages] = useState([]);
+  // const [newMessage, setNewMessage] = useState('');
+  // const [webSock, setWebSock] =useState();
 
-  useEffect(() => {
-    const socket = new SockJS(`${process.env.REACT_APP_REST_API_URL}/ws/sockjs`);
-    setWebSock(socket);
+
+
+  // useEffect(() => {
+  //   const socket = new SockJS(`${process.env.REACT_APP_REST_API_URL}/ws/sockjs`);
+  //   setWebSock(socket);
   
-    socket.onopen = () => {
-      // console.log('WebSocket Connected!');
-      const data = {
-        type: 'enterRoom',
-        chatRoomNo: 'waitingRoom',
-        empNo: user,
-        empName: empName,
-      };
-      socket.send(JSON.stringify(data));
-      // console.log(data, '입장');
-      // 세션에 속성 설정
-      socket.sessionAttributes = {
-        empNo: `${user}`,
-        empName: empName,
-      };
-    };
+  //   socket.onopen = () => {
+  //     // console.log('WebSocket Connected!');
+  //     const data = {
+  //       type: 'enterRoom',
+  //       chatRoomNo: 'waitingRoom',
+  //       empNo: user,
+  //       empName: empName,
+  //     };
+  //     socket.send(JSON.stringify(data));
+  //     // console.log(data, '입장');
+  //     // 세션에 속성 설정
+  //     socket.sessionAttributes = {
+  //       empNo: `${user}`,
+  //       empName: empName,
+  //     };
+  //   };
   
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      // console.log('Received message:', message);
-      setMessages((prevMessages) => [...prevMessages, message]);
-      // 새로운 메시지를 기존 메시지 목록에 추가
-    };
+  //   socket.onmessage = (event) => {
+  //     const message = JSON.parse(event.data);
+  //     // console.log('Received message:', message);
+  //     setMessages((prevMessages) => [...prevMessages, message]);
+  //     // 새로운 메시지를 기존 메시지 목록에 추가
+  //   };
   
-    socket.onclose = () => {
-      // console.log('WebSocket Connection Closed.');
-    };
+  //   socket.onclose = () => {
+  //     // console.log('WebSocket Connection Closed.');
+  //   };
   
-    return () => {
-      if (socket.readyState === WebSocket.OPEN) {
-        socket.close();
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (socket.readyState === WebSocket.OPEN) {
+  //       socket.close();
+  //     }
+  //   };
+  // }, []);
 
-  const chatMessage = (message) => {
-    // WebSocket 연결이 열려 있는지 확인
-    if (webSock && webSock.readyState === WebSocket.OPEN) {
-      // 'message' 타입의 데이터 객체를 생성하고 주어진 메시지를 추가
-      const data = {
-        type: 'message',
-        id:user,
-        content: message,
-        chatRoomNo:roomNo,
-      };
+  // const chatMessage = (message) => {
+  //   // WebSocket 연결이 열려 있는지 확인
+  //   if (webSock && webSock.readyState === WebSocket.OPEN) {
+  //     // 'message' 타입의 데이터 객체를 생성하고 주어진 메시지를 추가
+  //     const data = {
+  //       type: 'message',
+  //       id:user,
+  //       content: message,
+  //       chatRoomNo:roomNo,
+  //     };
   
-      // 디버깅을 위해 데이터를 콘솔에 로그
-      // console.log('전송?', data);
+  //     // 디버깅을 위해 데이터를 콘솔에 로그
+  //     // console.log('전송?', data);
   
-      // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
-      webSock.send(JSON.stringify(data));
-    } else {
-      // WebSocket 연결이 열려 있지 않은 경우 오류 메시지를 로그
-      // console.error('WebSocket connection is not open.');
-    }
-  };
+  //     // 데이터를 JSON 문자열로 변환하여 WebSocket을 통해 전송
+  //     webSock.send(JSON.stringify(data));
+  //   } else {
+  //     // WebSocket 연결이 열려 있지 않은 경우 오류 메시지를 로그
+  //     // console.error('WebSocket connection is not open.');
+  //   }
+  // };
 
 
 
@@ -344,7 +344,6 @@ function App() {
                           <NavDropdown title={<img src={displayImage} alt="profileImage" className="rounded-circle header-icon"
                             style={{ width: "45px", height: "45px", objectFit: "cover"}} />} id="basic-nav-dropdown">
                             <NavDropdown.Item href="#mypage">마이페이지</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">로그아웃</NavDropdown.Item>
                           </NavDropdown>
 
                           {/* <div className='col'>
@@ -431,7 +430,7 @@ function App() {
 
 
 
-      {showModal && (
+      {/* {showModal && (
         <div className="chat-modal-background" >
           <div className="chat-modal-content">
             <button className="chat-modal-close-button" onClick={closeModal}>
@@ -463,7 +462,7 @@ function App() {
           <div>
           </div>
         </div>
-      )}
+      )} */}
 
     </>
   );
