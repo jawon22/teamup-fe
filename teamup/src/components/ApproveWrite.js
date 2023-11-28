@@ -235,7 +235,7 @@ const ApproveWrite = (props)=>{
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">마감</th>
+                                    <th scope="row">마감일</th>
                                     <td>
                                         <input type="date" className="form-control" name="apprDateEnd"
                                             value={appr.apprDateEnd} onChange={changeappr}/>
