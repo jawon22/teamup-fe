@@ -310,12 +310,12 @@ const Calendar = () => {
                 <div className="container-fluid">
                   <div className="row mt-2">
                     <div className="col">
-                      Title <input type="text" name="calTitle" onChange={changeSchedule} className="form-control" value={schedule.calTitle} />
+                      제목 <input type="text" name="calTitle" onChange={changeSchedule} className="form-control" value={schedule.calTitle} />
                     </div>
                     <div className="col">
-                      Type <select type="text" name="calColor" onChange={changeSchedule} className="form-control" value={schedule.calColor} >
+                      일정 분류 <select type="text" name="calColor" onChange={changeSchedule} className="form-control" value={schedule.calColor} >
                         <option>일정 타입 선택</option>
-                        <option value={"#74b9ff"}>부서일정</option>
+                        <option value={"#74b9ff"}>기안상신</option>
                         <option value={"#E6E6FA"}>개인일정</option>
                         <option value={"#ff7675"}>중요일정</option>
                       </select>
@@ -323,7 +323,7 @@ const Calendar = () => {
                   </div>
                   <div className="row mt-4">
                     <div className="col">
-                      Content <input type="text" name="calContent" onChange={changeSchedule} className="form-control" value={schedule.calContent} />
+                      내용 <input type="text" name="calContent" onChange={changeSchedule} className="form-control" value={schedule.calContent} />
                     </div>
                   </div>
                   <div className="row mt-4">
@@ -339,12 +339,11 @@ const Calendar = () => {
 
               </div>
               <div className="modal-footer border">
-                <button type="button" className="btn btn-secondary" onClick={closeModal} data-bs-dismiss="modal">Close</button>
 
                 {isEventClicked ?
                   <div>
                       <div className="position-absolute start-0 mb-3 ms-3">
-                        <button type="button" className="btn btn-danger " onClick={deleteSchedule}>삭제</button>
+                        <button type="button" className="btn btn-secondary " onClick={deleteSchedule}>삭제</button>
                       </div>
                       <div>
                         <button type="button" className="btn btn-primary" onClick={editSchedule}>수정</button>
@@ -353,6 +352,7 @@ const Calendar = () => {
                   :
                   <button type="button" className="btn btn-primary" onClick={addSchedule}>등록</button>
                 }
+                <button type="button" className="btn btn-success" onClick={closeModal} data-bs-dismiss="modal">닫기</button>
 
 
               </div>
