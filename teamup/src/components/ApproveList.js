@@ -586,7 +586,8 @@ const ApproveList = (props)=>{
                                                                             <div>
                                                                                 <Button variant="primary" className='me-1'
                                                                                     onClick={checkAppr}>승인</Button>
-                                                                                <Button variant='secondary' onClick={cancelAppr}>반려</Button>
+                                                                                <Button variant='secondary' onClick={cancelAppr}
+                                                                                    disabled={checkRecevier.receiversReturnRs.length === 0}>반려</Button>
                                                                             </div>
                                                                         );
                                                                     }
