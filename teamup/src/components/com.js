@@ -2,11 +2,11 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { postcodeScriptUrl } from 'react-daum-postcode/lib/loadPostcode';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 const Com = () => {
     const location = useLocation();
-
+    const navigate = useNavigate();
     //리스트 불러오고 
     const [companyList, setCompanyList] = useState([]);
     //input 의 values
@@ -147,6 +147,7 @@ const Com = () => {
             alert("성공")
             setAddress("");
             setPost("")
+            navigate('/login');
         }).catch(
 
         );
@@ -182,8 +183,8 @@ const Com = () => {
 
                     {/* 제목 */}
                     <div className="row mt-5">
-                        <div className="col-6 offset-3">
-                            <h4 className="primary text-bold">회사 가입을 위해 정보를 입력해주세요.</h4>
+                        <div className="col-6 offset-3 text-center">
+                            <h4 className="primary text-bold">회사 정보를 입력해주세요.</h4>
                         </div>
                     </div>
 
@@ -193,7 +194,9 @@ const Com = () => {
                             <label className="form-label">회사명</label>
                             <input className={`form-control 
                       ${com.comName.length > 0 ? 'is-valid' : ''}`
-                            } value={com.comName} name='comName' onChange={comChange} />
+                            } value={com.comName}
+                            autoComplete='off'
+                            name='comName' onChange={comChange} />
                         </div>
                     </div>
 
@@ -206,8 +209,11 @@ const Com = () => {
                       ${result.id === false || result.sameId === true ? 'is-invalid' : ''}
                       `
                             }
-                                value={com.comId} name='comId'
-                                onChange={comChange} onBlur={check} />
+                            autoComplete='off'
+                            placeholder='영문 소문자+숫자 8~20자'
+                            value={com.comId} name='comId'
+                            onChange={comChange} onBlur={check} 
+                            />
                         </div>
                     </div>
 
@@ -220,8 +226,10 @@ const Com = () => {
                       ${result.pw === false ? 'is-invalid' : ''}
                       `
                             }
-                                value={com.comPw} name='comPw'
-                                onChange={comChange} onBlur={check} type="password" />
+                            autoComplete='off'
+                            placeholder='영문 대소문자+숫자+특수기호(!@#$)가능 8~16자'
+                            value={com.comPw} name='comPw'
+                            onChange={comChange} onBlur={check} type="password" />
                         </div>
                     </div>
 
@@ -247,7 +255,9 @@ const Com = () => {
                             <div className="d-flex input-group">
                                 <input className={`form-control
                                 ${com.comPost.length > 0 ? 'is-valid' : ''}`
-                                } value={com.comPost} name='comPost' onChange={comChange} />
+                                } value={com.comPost} 
+                                autoComplete='off'
+                                name='comPost' onChange={comChange} />
                                 <button type='button' className='btn btn-outline-primary ps-4 pe-4' onClick={handleClick}>
                                     검색
                                 </button>
@@ -262,7 +272,9 @@ const Com = () => {
                             <label className="form-label">주소</label>
                             <input className={`form-control
                       ${com.comAddr.length > 0 ? 'is-valid' : ''}
-                      `} value={com.comAddr} name='comAddr' onChange={comChange} />
+                      `} value={com.comAddr} 
+                        autoComplete='off'
+                        name='comAddr' onChange={comChange} />
                         </div>
                     </div>
 
@@ -272,7 +284,9 @@ const Com = () => {
                             <label className="form-label">상세 주소</label>
                             <input className={`form-control
                       ${com.comAddr2.length > 0 ? 'is-valid' : ''}
-                      `} value={com.comAddr2} name='comAddr2' onChange={comChange} />
+                      `} value={com.comAddr2}
+                        autoComplete='off'
+                        name='comAddr2' onChange={comChange} />
                         </div>
                     </div>
 
@@ -282,7 +296,9 @@ const Com = () => {
                             <label className="form-label">전화번호</label>
                             <input className={`form-control
                       ${com.comTel.length > 0 ? 'is-valid' : ''}
-                      `} value={com.comTel} name='comTel' onChange={comChange} />
+                      `} value={com.comTel}
+                        autoComplete='off'
+                        name='comTel' onChange={comChange} />
                         </div>
                     </div>
 
@@ -292,7 +308,9 @@ const Com = () => {
                             <label className="form-label">사업자 등록번호</label>
                             <input className={`form-control
                       ${com.comBs.length > 0 ? 'is-valid' : ''}
-                      `} value={com.comBs} name='comBs' onChange={comChange} />
+                      `} value={com.comBs} 
+                        autoComplete='off'
+                        name='comBs' onChange={comChange} />
                         </div>
                     </div>
 
@@ -301,7 +319,9 @@ const Com = () => {
                         <div className="col-6 offset-3">
                             지역 <input className={`form-control
                       ${com.comRegion.length > 0 ? 'is-valid' : ''}
-                      `} value={com.comRegion} name='comRegion' onChange={comChange} />
+                      `} value={com.comRegion} 
+                        autoComplete='off'
+                        name='comRegion' onChange={comChange} />
                         </div>
                     </div>
 
@@ -311,7 +331,9 @@ const Com = () => {
                             <label className="form-label">이메일 </label>
                             <input className={`form-control
                       ${com.comEmail.length > 0 ? 'is-valid' : ''}
-                      `} value={com.comEmail} name='comEmail' onChange={comChange} />
+                      `} value={com.comEmail} 
+                        autoComplete='off'
+                        name='comEmail' onChange={comChange} />
                         </div>
                     </div>
 
@@ -323,7 +345,7 @@ const Com = () => {
 
                     {/* 가입 버튼 */}
                     <div className="text-center row mt-4">
-                        <div className="col-6 offset-3">
+                        <div className="col-3 offset-3">
                             <button className="btn btn-primary ps-5 pe-5 pt-2 pb-2 text-bold" onClick={join}
                                 disabled={!(result.id === true && result.pw === true
                                     && result.pwcheck === true)}
