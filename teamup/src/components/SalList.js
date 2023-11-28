@@ -36,6 +36,7 @@ const SalList=(prop)=>{
             method: "get"
         })
             .then(response => {
+                console.log(response.data); // 응답 데이터 확인
                 if (!response.data) {
                     alert("급여내역이 없습니다.");
                 } else {
@@ -58,6 +59,7 @@ const SalList=(prop)=>{
             method:"get"
         })
         .then(response=>{
+            console.log("월별응답",response.data); // 응답 데이터 확인
             if (!response.data) {
                 alert("급여내역이 없습니다.");
             } else {
