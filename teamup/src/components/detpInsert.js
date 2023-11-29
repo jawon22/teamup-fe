@@ -202,11 +202,6 @@ const DeptInsert = () => {
     });
     const changePositionData = (e) => {
 
-         // 입력된 값이 한국어인지 확인
-        if (containsKorean(e.target.value)) {
-            // 한국어 입력일 경우 무시
-            return;
-        }
 
         setPositionData({
             ...positionData,
